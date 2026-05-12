@@ -1,70 +1,40 @@
-﻿# Changelog
+# Changelog
 
 All notable changes to this project are documented here.
-
-This log is intentionally written as an engineering record rather than a launch theater timeline. Dates reflect when the concept, design, prototype, and public packaging phases were mature enough to document.
 
 ## [1.0.0] - 2026-05-12
 
 ### Released
-- Published **kinetic-gain-protocol-suite** as a public, portfolio-grade MCP governance system.
-- Packaged the current implementation, documentation, validation workflow, and proof surfaces into a repo that could be reviewed by engineering, product, and operating stakeholders.
-- Tightened the repo story around the real-world operating problem: the MCP governance gap around agent-connected tool surfaces in production.
+- Published **kinetic-gain-protocol-suite** as the canonical index for the open specification family.
+- Consolidated the suite narrative across AEO, prompt provenance, agent cards, MCP tool cards, AI evidence, and the vertical extensions.
+- Positioned the repo as the coordination layer for the suite, not just a link farm.
 
 ### Why this mattered
-- Existing approaches in traditional API security tools, AppSec scanners, and cloud posture platforms were useful for adjacent workflows.
-- They still missed the core need: a control layer that could explain tool exposure, schema drift, and prompt-driven misuse in operator terms.
-- This release made the repo readable as an operational capability rather than a narrow technical demo.
+- A specification family is hard to evaluate when each spec is technically valid but strategically isolated.
+- Buyers, recruiters, and implementers needed a single front door that explained the suite as a coherent answer to the answer-engine era.
+- This release made the suite legible as a program, not just a set of adjacent repos.
 
-## [0.1.0] - 2026-03-12
+## [0.1.0] - 2026-01-19
 
 ### Shipped
-- Cut the first coherent internal version of the product shape behind **kinetic-gain-protocol-suite**.
-- Standardized the core objects, decision surfaces, and operator outputs around the repo's main working problem.
-- Established the first reviewable version of the architecture described as: Kinetic Gain Protocol Suite — eight open JSON specs for the answer-engine and agent era. Five core (AEO, Prompt Provenance, Agent Cards, AI Evidence, MCP Tool Cards) plus the EdTech trio (Tutor Cards, Student AI Disclosure, Classroom AI AUP). One MCP server, one visualizer, three live properties.
+- Cut the first unified public index for the suite.
+- Standardized cross-references, positioning language, and entry points across the spec family.
 
-### Notes
-- This milestone was less about polish and more about proving the operating model.
-- The emphasis was on turning a messy domain problem into something a real team could reason about in CI, review, or day-to-day operations.
-
-## [Prototype] - 2025-08-15
+## [Prototype] - 2025-05-21
 
 ### Built
-- Created the first runnable prototype for the repo's core workflow and decision model.
-- Started validating the design against real operating pressures instead of idealized sample flows.
-- Added enough shape to test whether the project could surface action, not just information.
+- Built the first working index tying together the early specs and visualizers.
+- Tested whether the suite could be understood as a coherent governance stack rather than isolated declarations.
 
-### Problem pressure
-- The prototype phase was shaped by concrete issues such as MCP governance gaps, prompt injection, destructive tool exposure, and weak evidence chains.
-- This was the point where the project moved from a sketch into something worth hardening.
-
-## [Design Phase] - 2024-02-12
+## [Design Phase] - 2024-02-23
 
 ### Designed
-- Defined the core philosophy for the system:
-  - operator-first
-  - decision-legible
-  - CI- and review-friendly
-  - suitable for mixed technical and business audiences
-- Chose outputs that would make the repo useful to real operators instead of just visually impressive.
-- Focused the design on explainability, evidence, and next-best action rather than passive reporting.
+- Chose a suite framing instead of a loose collection of documents.
+- Treated discoverability and narrative coherence as first-class concerns.
+- Focused on the read-side experience for humans evaluating the ecosystem.
 
-### Rejected approaches
-- Avoided turning the repo into a generic dashboard or CRUD exercise.
-- Avoided thin wrapper patterns that would hide the actual operating problem behind fashionable tooling choices.
-
-## [Idea Origin] - 2023-03-12
+## [Idea Origin] - 2023-06-13
 
 ### Observed
-- The initial idea surfaced while looking at how teams were handling the MCP governance gap around agent-connected tool surfaces in production.
-- The recurring pattern was that people could often see fragments of the problem, but not the whole operational story in one place.
-
-### Insight
-- The missing product was not another point solution. It was a clearer operating layer that made the work legible to platform engineering and security teams.
-- That insight became the basis for **kinetic-gain-protocol-suite**.
-
-## [Background Signals] - 2022-08-09
-
-### Context
-- Earlier platform, governance, and operator-tooling work made one pattern obvious: the dangerous systems are rarely the ones with no controls at all. They are the ones where controls exist, but are fragmented, weakly owned, and hard to read under pressure.
-- That pattern shaped this project long before the public repo existed.
+- The idea surfaced when individual protocol ideas started to make more sense together than apart.
+- The missing artifact was a shared front door that explained the family structure clearly.
