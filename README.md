@@ -1,7 +1,7 @@
 # Kinetic Gain Protocol Suite
 
-> **A family of eight open JSON specifications for the answer-engine and agent era.**
-> Five core specs · three EdTech extensions · one unified visualizer · one unified MCP server · three live properties · all AGPL-3.0.
+> **A family of nine open JSON specifications for the answer-engine and agent era.**
+> Five core specs · three EdTech extensions · one cross-cutting incident-disclosure spec · one unified visualizer · one unified MCP server · three live properties · all AGPL-3.0.
 
 This repository is the **single landing** for the Suite. Each spec lives in its own repo with full normative text, JSON Schema, examples, and a permissive cross-link table. This meta-repo is where you start when you want the map.
 
@@ -34,6 +34,15 @@ This repository is the **single landing** for the Suite. Each spec lives in its 
 │      "Is this submission allowed?" → O(1) lookup.                         │
 │                                                                            │
 └────────────────────────────────────────────────────────────────────────────┘
+                                    │
+                                    │ when things break
+                                    ▼
+┌──────────────── Cross-cutting (vendor-published, references all) ──────────┐
+│                                                                            │
+│  AI Incident Card ── post-incident disclosure ("CVE for AI agents")       │
+│  references → Agent / Tutor / Tool Cards · Prompt Provenance · AI Evidence │
+│                                                                            │
+└────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
@@ -52,14 +61,15 @@ Every spec carries a top-level `<name>_version` field. The unified visualizer de
 | **AI Tutor Cards** _(EdTech)_ | [`ai-tutor-card-spec`](https://github.com/mizcausevic-dev/ai-tutor-card-spec) | `tutor_card_version` | `/.well-known/tutors/<tutor_id>.json` |
 | **Student AI Disclosure** _(EdTech)_ | [`student-ai-disclosure-spec`](https://github.com/mizcausevic-dev/student-ai-disclosure-spec) | `disclosure_version` | — (travels with the artifact) |
 | **Classroom AI AUP** _(EdTech)_ | [`classroom-ai-aup-spec`](https://github.com/mizcausevic-dev/classroom-ai-aup-spec) | `aup_version` | `/.well-known/ai-aup.json` |
+| **AI Incident Card** _(cross-cutting)_ | [`ai-incident-card-spec`](https://github.com/mizcausevic-dev/ai-incident-card-spec) | `incident_card_version` | `/.well-known/ai-incidents/<id>.json` (+ index at `/.well-known/ai-incidents.json`) |
 
-All eight: AGPL-3.0 spec text, freely implementable, v0.1 draft, JSON Schema draft 2020-12, tagged [`kinetic-gain-protocol-suite`](https://github.com/topics/kinetic-gain-protocol-suite).
+All nine: AGPL-3.0 spec text, freely implementable, v0.1 draft, JSON Schema draft 2020-12, tagged [`kinetic-gain-protocol-suite`](https://github.com/topics/kinetic-gain-protocol-suite).
 
 ---
 
-## 🔌 One MCP server. 29 tools. Seven of the eight specs.
+## 🔌 One MCP server. 34 tools. Eight of the nine specs.
 
-[`mcp-kinetic-gain`](https://github.com/mizcausevic-dev/mcp-kinetic-gain) is the unified [Model Context Protocol](https://modelcontextprotocol.io) server exposing every Kinetic Gain spec as callable tools. One Claude Desktop / Cursor / MCP-client config entry; 29 tools across seven specs (Classroom AI AUP is spec-only in v0.3.0).
+[`mcp-kinetic-gain`](https://github.com/mizcausevic-dev/mcp-kinetic-gain) (v0.4.0) is the unified [Model Context Protocol](https://modelcontextprotocol.io) server exposing every runtime Kinetic Gain spec as callable tools. One Claude Desktop / Cursor / MCP-client config entry; 34 tools across eight specs (AI Incident Card is spec-only in v0.4.0; cards are usually authored by humans on incident discovery, so a v0.5 will add `incident_validate` + `incident_inspect` + an `incident_index_fetch` tool).
 
 | Spec | Tools |
 |---|---|
@@ -70,19 +80,20 @@ All eight: AGPL-3.0 spec text, freely implementable, v0.1 draft, JSON Schema dra
 | MCP Tool Cards | `tool_card_well_known_url` · `tool_card_inspect` · `tool_card_tested_with` · `tool_card_validate` |
 | AI Tutor Cards | `tutor_card_well_known_url` · `tutor_card_fetch` · `tutor_card_validate` · `tutor_card_inspect` · `tutor_card_subject_check` · `tutor_card_coppa_check` |
 | Student AI Disclosure | `disclosure_validate` · `disclosure_inspect` · `disclosure_verify_artifact_hash` · `disclosure_verify_prompt_hash` · `disclosure_aup_check` |
+| Classroom AI AUP | `aup_well_known_url` · `aup_fetch` · `aup_validate` · `aup_inspect` · **`aup_check_compliance`** (headline: joins AUP + Disclosure into a single allow/deny call) |
 
-48 tests pass · typecheck clean · stdio MCP server, drops into any MCP-compatible client.
+61 tests pass · typecheck clean · stdio MCP server, drops into any MCP-compatible client.
 
 ---
 
-## 🖼️ One visualizer. Seven specs.
+## 🖼️ One visualizer. Eight specs.
 
 [`kinetic-gain-visualizer`](https://mizcausevic-dev.github.io/kinetic-gain-visualizer/) auto-detects the spec from the top-level `*_version` field and renders the appropriate procurement-grade view. Live on GitHub Pages.
 
-- **Visualize** — the auto-detected renderer (FERPA / COPPA / GDPR badges for tutor cards, role-tone pills + artifact-hash binding for disclosures, etc.)
+- **Visualize** — the auto-detected renderer (FERPA / COPPA / GDPR badges for tutor cards, role-tone pills + artifact-hash binding for disclosures, vendor-requirements card in dark/authority tone for AUPs, etc.)
 - **Editor** — paste any spec document and watch the right view light up
-- **Architecture** — the 7-spec map
-- **Tools** — searchable catalog of all 29 MCP tools
+- **Architecture** — the 8-spec map
+- **Tools** — searchable catalog of all 34 MCP tools
 - **About** — detection model + cross-links
 
 ---
@@ -93,7 +104,7 @@ All eight: AGPL-3.0 spec text, freely implementable, v0.1 draft, JSON Schema dra
 |---|---|
 | [aeo.kineticgain.com](https://aeo.kineticgain.com) | Dedicated AEO Protocol visualizer (React 19 + TypeScript, FTP-deployed) |
 | [tutor.kineticgain.com](https://tutor.kineticgain.com) | AI Tutor Card spec landing page (static HTML, FTP-deployed) |
-| [mizcausevic-dev.github.io/kinetic-gain-visualizer](https://mizcausevic-dev.github.io/kinetic-gain-visualizer/) | Unified visualizer for all seven runtime specs |
+| [mizcausevic-dev.github.io/kinetic-gain-visualizer](https://mizcausevic-dev.github.io/kinetic-gain-visualizer/) | Unified visualizer for all eight runtime specs |
 
 ---
 
@@ -105,7 +116,7 @@ Pick the entry that matches what you want to do:
 Start at the relevant spec's `examples/` folder, fork an example, validate against the schema, serve at the well-known URL.
 
 **I want to consume Kinetic Gain documents from an LLM agent.**
-Install [`mcp-kinetic-gain`](https://github.com/mizcausevic-dev/mcp-kinetic-gain), add one entry to your Claude Desktop config, get 29 tools.
+Install [`mcp-kinetic-gain`](https://github.com/mizcausevic-dev/mcp-kinetic-gain), add one entry to your Claude Desktop config, get 34 tools.
 
 **I want to see what a document looks like.**
 Open the [unified visualizer](https://mizcausevic-dev.github.io/kinetic-gain-visualizer/), pick an example from the Editor view.
@@ -115,6 +126,9 @@ Read the [Classroom AI AUP spec](https://github.com/mizcausevic-dev/classroom-ai
 
 **I'm a vendor trying to sell into K-12.**
 Publish a [Tutor Card](https://github.com/mizcausevic-dev/ai-tutor-card-spec) at `/.well-known/tutors/<id>.json`. A district AUP can then validate your card against its `vendor_requirements` in milliseconds.
+
+**An agent of mine misbehaved and I need to disclose.**
+Publish an [AI Incident Card](https://github.com/mizcausevic-dev/ai-incident-card-spec) at `/.well-known/ai-incidents/<id>.json` and add it to your `/.well-known/ai-incidents.json` index. The card cross-references every other affected document — Agent Card, Tutor Card, Tool Card, Prompt Provenance record, AI Evidence — so a reviewer can walk the document graph in one pass.
 
 ---
 
@@ -133,7 +147,7 @@ The AEO Protocol is the oldest spec in the suite and has the most complete tooli
 
 ## 🤝 Status & contribution
 
-**v0.1 draft across all eight specs.** Stable enough to publish; designed to evolve. Issues and pull requests welcome on any spec repo. Discussion of cross-spec concerns happens here in this meta-repo.
+**v0.1 draft across all nine specs.** Stable enough to publish; designed to evolve. Issues and pull requests welcome on any spec repo. Discussion of cross-spec concerns happens here in this meta-repo.
 
 A future v0.2 sweep will probably add: detached cryptographic signing across the family, a `kinetic-gain-protocol-suite` validator that walks document references and joins the EdTech trio, and a conformance suite for MCP servers claiming Kinetic Gain support.
 
