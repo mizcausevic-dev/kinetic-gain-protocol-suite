@@ -1,7 +1,9 @@
 # Kinetic Gain Protocol Suite
 
 > **A family of ten open JSON specifications for the answer-engine and agent era.**
-> Five core specs · three EdTech extensions · one HealthTech extension · one cross-cutting incident-disclosure spec · one unified visualizer · one unified MCP server · four live properties · all AGPL-3.0.
+> Five core specs · three EdTech extensions · one HealthTech extension · one cross-cutting incident-disclosure spec · one unified visualizer · one unified MCP server · **seven live properties on kineticgain.com** · all AGPL-3.0.
+>
+> Public front door: **[suite.kineticgain.com](https://suite.kineticgain.com)**.
 
 This repository is the **single landing** for the Suite. Each spec lives in its own repo with full normative text, JSON Schema, examples, and a permissive cross-link table. This meta-repo is where you start when you want the map.
 
@@ -121,9 +123,12 @@ The bench is **not a tenth spec** — it's the *testing-counterpart* to the disc
 
 | URL | What it serves |
 |---|---|
-| [aeo.kineticgain.com](https://aeo.kineticgain.com) | Dedicated AEO Protocol visualizer (React 19 + TypeScript, FTP-deployed) |
-| [tutor.kineticgain.com](https://tutor.kineticgain.com) | AI Tutor Card spec landing page (static HTML, FTP-deployed) |
+| **[suite.kineticgain.com](https://suite.kineticgain.com)** | **Canonical front door for the entire Suite** — 10-spec map, full spec table, two-front-doors section, all 4 live properties (static HTML) |
+| [aeo.kineticgain.com](https://aeo.kineticgain.com) | Dedicated AEO Protocol visualizer (React 19 + TypeScript) |
+| [tutor.kineticgain.com](https://tutor.kineticgain.com) | AI Tutor Card spec landing — EdTech vertical (static HTML) |
+| [clinical.kineticgain.com](https://clinical.kineticgain.com) | **Clinical AI Disclosure spec landing** — HealthTech vertical (static HTML); CMIO / compliance / procurement pitch |
 | [bench.kineticgain.com](https://bench.kineticgain.com) | **prompt-injection-bench visual harness** — paste a JSONL transcript, see pass rates by category and severity, critical failures called out. Client-side React + TS. |
+| [walker.kineticgain.com](https://walker.kineticgain.com) | **well-known-walker** — type any domain, see every Kinetic Gain disclosure it publishes. Client-side parallel `/.well-known/` probe. Procurement-grade summary. |
 | [mizcausevic-dev.github.io/kinetic-gain-visualizer](https://mizcausevic-dev.github.io/kinetic-gain-visualizer/) | Unified visualizer for all eight runtime specs |
 
 ---
