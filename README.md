@@ -102,7 +102,7 @@ All nine: AGPL-3.0 spec text, freely implementable, v0.1 draft, JSON Schema draf
 
 | Repo | What it does |
 |---|---|
-| [`prompt-injection-bench`](https://github.com/mizcausevic-dev/prompt-injection-bench) | Open 30-attack prompt-injection corpus + Python harness. Every record carries an `agent_card_refusal_categories` back-ref to the [Agent Card](https://github.com/mizcausevic-dev/agent-cards-spec) `refusal_taxonomy[].category` it tests. A vendor can grep their declared categories against the corpus to verify their stated commitments hold under attack — and failed runs become natural inputs for [AI Incident Cards](https://github.com/mizcausevic-dev/ai-incident-card-spec). |
+| [`prompt-injection-bench`](https://github.com/mizcausevic-dev/prompt-injection-bench) | Open 30-attack prompt-injection corpus + Python harness. Every record carries an `agent_card_refusal_categories` back-ref to the [Agent Card](https://github.com/mizcausevic-dev/agent-cards-spec) `refusal_taxonomy[].category` it tests. A vendor can grep their declared categories against the corpus to verify their stated commitments hold under attack — and failed runs become natural inputs for [AI Incident Cards](https://github.com/mizcausevic-dev/ai-incident-card-spec). **Visual harness live at [bench.kineticgain.com](https://bench.kineticgain.com).** |
 
 The bench is **not a tenth spec** — it's the *testing-counterpart* to the disclosure layer. The Suite tells you what an agent should refuse; the bench tells you whether it actually does.
 
@@ -114,6 +114,7 @@ The bench is **not a tenth spec** — it's the *testing-counterpart* to the disc
 |---|---|
 | [aeo.kineticgain.com](https://aeo.kineticgain.com) | Dedicated AEO Protocol visualizer (React 19 + TypeScript, FTP-deployed) |
 | [tutor.kineticgain.com](https://tutor.kineticgain.com) | AI Tutor Card spec landing page (static HTML, FTP-deployed) |
+| [bench.kineticgain.com](https://bench.kineticgain.com) | **prompt-injection-bench visual harness** — paste a JSONL transcript, see pass rates by category and severity, critical failures called out. Client-side React + TS. |
 | [mizcausevic-dev.github.io/kinetic-gain-visualizer](https://mizcausevic-dev.github.io/kinetic-gain-visualizer/) | Unified visualizer for all eight runtime specs |
 
 ---
