@@ -1,7 +1,7 @@
 # Kinetic Gain Protocol Suite
 
-> **A family of nine open JSON specifications for the answer-engine and agent era.**
-> Five core specs · three EdTech extensions · one cross-cutting incident-disclosure spec · one unified visualizer · one unified MCP server · three live properties · all AGPL-3.0.
+> **A family of ten open JSON specifications for the answer-engine and agent era.**
+> Five core specs · three EdTech extensions · one HealthTech extension · one cross-cutting incident-disclosure spec · one unified visualizer · one unified MCP server · four live properties · all AGPL-3.0.
 
 This repository is the **single landing** for the Suite. Each spec lives in its own repo with full normative text, JSON Schema, examples, and a permissive cross-link table. This meta-repo is where you start when you want the map.
 
@@ -34,6 +34,14 @@ This repository is the **single landing** for the Suite. Each spec lives in its 
 │      "Is this submission allowed?" → O(1) lookup.                         │
 │                                                                            │
 └────────────────────────────────────────────────────────────────────────────┘
+
+┌──────────────── HealthTech extension (vendor-side disclosure) ─────────────┐
+│                                                                            │
+│  Clinical AI Disclosure ── what a healthcare AI system does               │
+│  HIPAA / FDA / SaMD posture · bias audits · EHR (FHIR / CDS Hooks)        │
+│  references → Agent Card · AI Evidence · AI Incident Card                  │
+│                                                                            │
+└────────────────────────────────────────────────────────────────────────────┘
                                     │
                                     │ when things break
                                     ▼
@@ -61,9 +69,10 @@ Every spec carries a top-level `<name>_version` field. The unified visualizer de
 | **AI Tutor Cards** _(EdTech)_ | [`ai-tutor-card-spec`](https://github.com/mizcausevic-dev/ai-tutor-card-spec) | `tutor_card_version` | `/.well-known/tutors/<tutor_id>.json` |
 | **Student AI Disclosure** _(EdTech)_ | [`student-ai-disclosure-spec`](https://github.com/mizcausevic-dev/student-ai-disclosure-spec) | `disclosure_version` | — (travels with the artifact) |
 | **Classroom AI AUP** _(EdTech)_ | [`classroom-ai-aup-spec`](https://github.com/mizcausevic-dev/classroom-ai-aup-spec) | `aup_version` | `/.well-known/ai-aup.json` |
+| **Clinical AI Disclosure** _(HealthTech)_ | [`clinical-ai-disclosure-spec`](https://github.com/mizcausevic-dev/clinical-ai-disclosure-spec) | `clinical_ai_card_version` | `/.well-known/clinical-ai/<system_id>.json` |
 | **AI Incident Card** _(cross-cutting)_ | [`ai-incident-card-spec`](https://github.com/mizcausevic-dev/ai-incident-card-spec) | `incident_card_version` | `/.well-known/ai-incidents/<id>.json` (+ index at `/.well-known/ai-incidents.json`) |
 
-All nine: AGPL-3.0 spec text, freely implementable, v0.1 draft, JSON Schema draft 2020-12, tagged [`kinetic-gain-protocol-suite`](https://github.com/topics/kinetic-gain-protocol-suite).
+All ten: AGPL-3.0 spec text, freely implementable, v0.1 draft, JSON Schema draft 2020-12, tagged [`kinetic-gain-protocol-suite`](https://github.com/topics/kinetic-gain-protocol-suite).
 
 ---
 
@@ -138,6 +147,9 @@ Read the [Classroom AI AUP spec](https://github.com/mizcausevic-dev/classroom-ai
 **I'm a vendor trying to sell into K-12.**
 Publish a [Tutor Card](https://github.com/mizcausevic-dev/ai-tutor-card-spec) at `/.well-known/tutors/<id>.json`. A district AUP can then validate your card against its `vendor_requirements` in milliseconds.
 
+**I'm a healthcare AI vendor selling into hospitals.**
+Publish a [Clinical AI Disclosure](https://github.com/mizcausevic-dev/clinical-ai-disclosure-spec) at `/.well-known/clinical-ai/<system_id>.json` with your FDA / SaMD / HIPAA / EHR-integration posture. A CMIO can read it in seconds; the bias-audit URI is procurement-blocking for SaMD class II+.
+
 **An agent of mine misbehaved and I need to disclose.**
 Publish an [AI Incident Card](https://github.com/mizcausevic-dev/ai-incident-card-spec) at `/.well-known/ai-incidents/<id>.json` and add it to your `/.well-known/ai-incidents.json` index. The card cross-references every other affected document — Agent Card, Tutor Card, Tool Card, Prompt Provenance record, AI Evidence — so a reviewer can walk the document graph in one pass.
 
@@ -161,7 +173,7 @@ The AEO Protocol is the oldest spec in the suite and has the most complete tooli
 
 ## 🤝 Status & contribution
 
-**v0.1 draft across all nine specs.** Stable enough to publish; designed to evolve. Issues and pull requests welcome on any spec repo. Discussion of cross-spec concerns happens here in this meta-repo.
+**v0.1 draft across all ten specs.** Stable enough to publish; designed to evolve. Issues and pull requests welcome on any spec repo. Discussion of cross-spec concerns happens here in this meta-repo.
 
 A future v0.2 sweep will probably add: detached cryptographic signing across the family, a `kinetic-gain-protocol-suite` validator that walks document references and joins the EdTech trio, and a conformance suite for MCP servers claiming Kinetic Gain support.
 
