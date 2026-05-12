@@ -1,7 +1,7 @@
 # Kinetic Gain Protocol Suite
 
 > **A family of ten open JSON specifications for the answer-engine and agent era.**
-> Five core specs · three EdTech extensions · one HealthTech extension · one cross-cutting incident-disclosure spec · one unified visualizer · one unified MCP server · **seven live properties on kineticgain.com** · all AGPL-3.0.
+> Five core specs · three EdTech extensions · one HealthTech extension · one cross-cutting incident-disclosure spec · one unified visualizer · one unified MCP server · **twenty live properties on kineticgain.com** (front door + quickstart hub + vendor directory + examples gallery + walker + bench + 10 per-spec landings + 4 earlier product surfaces) · all AGPL-3.0.
 >
 > Public front door: **[suite.kineticgain.com](https://suite.kineticgain.com)**.
 
@@ -119,17 +119,41 @@ The bench is **not a tenth spec** — it's the *testing-counterpart* to the disc
 
 ---
 
-## 🌐 Live properties
+## 🌐 Live properties — 20 total
 
+### Hubs + tools (6)
 | URL | What it serves |
 |---|---|
-| **[suite.kineticgain.com](https://suite.kineticgain.com)** | **Canonical front door for the entire Suite** — 10-spec map, full spec table, two-front-doors section, all 4 live properties (static HTML) |
-| [aeo.kineticgain.com](https://aeo.kineticgain.com) | Dedicated AEO Protocol visualizer (React 19 + TypeScript) |
-| [tutor.kineticgain.com](https://tutor.kineticgain.com) | AI Tutor Card spec landing — EdTech vertical (static HTML) |
-| [clinical.kineticgain.com](https://clinical.kineticgain.com) | **Clinical AI Disclosure spec landing** — HealthTech vertical (static HTML); CMIO / compliance / procurement pitch |
-| [bench.kineticgain.com](https://bench.kineticgain.com) | **prompt-injection-bench visual harness** — paste a JSONL transcript, see pass rates by category and severity, critical failures called out. Client-side React + TS. |
-| [walker.kineticgain.com](https://walker.kineticgain.com) | **well-known-walker** — type any domain, see every Kinetic Gain disclosure it publishes. Client-side parallel `/.well-known/` probe. Procurement-grade summary. |
-| [mizcausevic-dev.github.io/kinetic-gain-visualizer](https://mizcausevic-dev.github.io/kinetic-gain-visualizer/) | Unified visualizer for all eight runtime specs |
+| **[suite.kineticgain.com](https://suite.kineticgain.com)** | **Canonical front door** for the entire Suite — 10-spec map, full spec table, two-front-doors section |
+| [docs.kineticgain.com](https://docs.kineticgain.com) | **Quickstart hub** — per-role guides + canonical `/.well-known/` path map |
+| [directory.kineticgain.com](https://directory.kineticgain.com) | **Vendor directory** — curated list of domains publishing Kinetic Gain documents |
+| [examples.kineticgain.com](https://examples.kineticgain.com) | **Examples gallery** — sidebar of 10 specs, click for canonical example with JSON highlight |
+| [walker.kineticgain.com](https://walker.kineticgain.com) | **well-known-walker** — paste any domain, see every Kinetic Gain disclosure it publishes |
+| [bench.kineticgain.com](https://bench.kineticgain.com) | **prompt-injection-bench** — paste a JSONL transcript, see pass rates by category and severity |
+
+### Per-spec landings (10 — one per spec in the Suite)
+| URL | Spec |
+|---|---|
+| [aeo.kineticgain.com](https://aeo.kineticgain.com) | AEO Protocol — interactive visualizer |
+| [prompts.kineticgain.com](https://prompts.kineticgain.com) | Prompt Provenance |
+| [agents.kineticgain.com](https://agents.kineticgain.com) | Agent Cards |
+| [evidence.kineticgain.com](https://evidence.kineticgain.com) | AI Evidence Format |
+| [toolcards.kineticgain.com](https://toolcards.kineticgain.com) | MCP Tool Cards |
+| [tutor.kineticgain.com](https://tutor.kineticgain.com) | AI Tutor Cards (EdTech) |
+| [student.kineticgain.com](https://student.kineticgain.com) | Student AI Disclosure (EdTech) |
+| [aup.kineticgain.com](https://aup.kineticgain.com) | Classroom AI AUP (EdTech) |
+| [clinical.kineticgain.com](https://clinical.kineticgain.com) | Clinical AI Disclosure (HealthTech) |
+| [incidents.kineticgain.com](https://incidents.kineticgain.com) | AI Incident Card (cross-cutting) |
+
+### Earlier product surfaces (4)
+| URL | What it does |
+|---|---|
+| [gv.kineticgain.com](https://gv.kineticgain.com) | GitVisualizer — visual portfolio intelligence for any GitHub user |
+| [mcp.kineticgain.com](https://mcp.kineticgain.com) | MCP Sentinel — governance dashboard for MCP servers |
+| [rag.kineticgain.com](https://rag.kineticgain.com) | RAG Sentinel — hallucination, drift, citation quality monitoring |
+| [observe.kineticgain.com](https://observe.kineticgain.com) | AgentObserve — operator console for AI agent fleets |
+
+Plus the unified visualizer at [mizcausevic-dev.github.io/kinetic-gain-visualizer](https://mizcausevic-dev.github.io/kinetic-gain-visualizer/) (GitHub Pages).
 
 ---
 
