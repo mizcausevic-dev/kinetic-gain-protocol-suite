@@ -98,6 +98,16 @@ All nine: AGPL-3.0 spec text, freely implementable, v0.1 draft, JSON Schema draf
 
 ---
 
+## 🛡️ Testing artifact
+
+| Repo | What it does |
+|---|---|
+| [`prompt-injection-bench`](https://github.com/mizcausevic-dev/prompt-injection-bench) | Open 30-attack prompt-injection corpus + Python harness. Every record carries an `agent_card_refusal_categories` back-ref to the [Agent Card](https://github.com/mizcausevic-dev/agent-cards-spec) `refusal_taxonomy[].category` it tests. A vendor can grep their declared categories against the corpus to verify their stated commitments hold under attack — and failed runs become natural inputs for [AI Incident Cards](https://github.com/mizcausevic-dev/ai-incident-card-spec). |
+
+The bench is **not a tenth spec** — it's the *testing-counterpart* to the disclosure layer. The Suite tells you what an agent should refuse; the bench tells you whether it actually does.
+
+---
+
 ## 🌐 Live properties
 
 | URL | What it serves |
@@ -129,6 +139,9 @@ Publish a [Tutor Card](https://github.com/mizcausevic-dev/ai-tutor-card-spec) at
 
 **An agent of mine misbehaved and I need to disclose.**
 Publish an [AI Incident Card](https://github.com/mizcausevic-dev/ai-incident-card-spec) at `/.well-known/ai-incidents/<id>.json` and add it to your `/.well-known/ai-incidents.json` index. The card cross-references every other affected document — Agent Card, Tutor Card, Tool Card, Prompt Provenance record, AI Evidence — so a reviewer can walk the document graph in one pass.
+
+**I want to verify my agent's declared refusals hold under attack.**
+Run [`prompt-injection-bench`](https://github.com/mizcausevic-dev/prompt-injection-bench) against your agent. Every attack carries an `agent_card_refusal_categories` back-ref to your Agent Card's `refusal_taxonomy[].category` values, so the pass rate per category is direct evidence of whether your stated commitments hold. Drop the result into your Agent Card's `evaluations[]` field.
 
 ---
 
