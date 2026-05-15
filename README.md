@@ -90,7 +90,47 @@ All eleven: AGPL-3.0 spec text, freely implementable, v0.1 draft, JSON Schema dr
 
 ## 🛠️ Suite × Implementations
 
-The Suite is a set of specs. **This section is the software that consumes them** — fifteen repos across Tiers A–E, all CI-green, semver-tagged, MIT-licensed, with **four cross-ecosystem hooks** tying them together. Grouped by the buyer most likely to land on the repo first:
+The Suite is a set of specs. **This section is the software that consumes them** — fifteen repos across Tiers A–E, all CI-green, semver-tagged, MIT-licensed, with **four cross-ecosystem hooks** tying them together. Grouped by the buyer most likely to land on the repo first.
+
+### 🕸️ How it composes
+
+```mermaid
+flowchart TB
+    classDef spec fill:#10b981,stroke:#065f46,color:#fff,stroke-width:2px
+    classDef hook fill:#3b82f6,stroke:#1e40af,color:#fff,stroke-width:2px
+    classDef sup fill:#f3f4f6,stroke:#6b7280,color:#1f2937
+    classDef stream fill:#f59e0b,stroke:#92400e,color:#fff
+    classDef mcp fill:#a855f7,stroke:#581c87,color:#fff,stroke-width:2px
+
+    SPECS["📐 11 Suite specs<br/>AEO · Agent · Tool · Tutor · AUP · Disclosure<br/>Evidence · Provenance · Clinical · Incident · Decision"]:::spec
+
+    SPECS -->|"#1 ingest Suite docs"| PDA["procurement-decision-api<br/>drafts Decision Cards"]:::hook
+    PDA -->|"#2 conditions → runtime gates"| PAC["policy-as-code-engine<br/>PolicyBundle enforcement"]:::hook
+    PDA -->|"#3 extract owners"| DCR["data-contract-registry<br/>schema + SLAs"]:::hook
+    DCR -->|"#4 streaming CSV check"| CDQ["csv-data-quality-rs<br/>row-by-row validation"]:::hook
+
+    SPECS -.->|sign + verify| HA["hash-attestation-rs<br/>ed25519 over canonical hash"]:::sup
+    SPECS -.->|drift detection| AVS["aeo-validator-service<br/>always-on validation"]:::sup
+    AVS -.->|JSONL feed| AGE["aeo-graph-explorer-rs<br/>graph-query layer #5"]:::sup
+    SPECS -.->|incident → plan| ICR["incident-correlation-rs<br/>Suite-graph BFS"]:::sup
+    ICR -.->|drives| PAC
+
+    PDA --> AS
+    PAC --> AS
+    DCR --> AS
+    AVS --> AS
+    ICR --> AS
+    HA --> AS
+    AS["📋 audit-stream-py<br/>hash-chained tamper-evident spine"]:::stream
+
+    SPECS ==>|spec tools| MCP
+    PDA ==>|preview tools| MCP
+    AS ==>|event tools| MCP
+    HA ==>|verify tools| MCP
+    MCP["🤖 mcp-kinetic-gain v0.6.0<br/>60 tools · one Claude Desktop config entry"]:::mcp
+```
+
+**Green** = the spec foundation. **Blue** = the four cross-ecosystem hooks that make this a stack rather than a pile of repos. **Grey** = supporting tools that feed either side. **Amber** = the tamper-evident audit-stream spine every governance moment writes to. **Purple** = the unified MCP surface that exposes the whole thing to Claude.
 
 ### 🛒 Procurement reviewer / buyer-side governance
 
