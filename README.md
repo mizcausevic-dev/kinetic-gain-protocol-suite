@@ -132,9 +132,9 @@ flowchart TB
 
 **Green** = the spec foundation. **Blue** = the four cross-ecosystem hooks that make this a stack rather than a pile of repos. **Grey** = supporting tools that feed either side. **Amber** = the tamper-evident audit-stream spine every governance moment writes to. **Purple** = the unified MCP surface that exposes the whole thing to Claude.
 
-### 📋 The audit-stream spine — six producers, two ecosystems
+### 📋 The audit-stream spine — seven producers, two ecosystems
 
-Zoom in on the amber spine: every governance moment in the stack writes to **one hash-chained, tamper-evident log** via `audit-stream-py`. Same opt-in env-var contract (`AUDIT_STREAM_URL`) across all six producers; same best-effort semantics (a failed POST is logged, never raised). **15 event kinds, six producers, four FastAPI services + two Rust crates**, all feeding one verifiable narrative an auditor can replay end-to-end.
+Zoom in on the amber spine: every governance moment in the stack writes to **one hash-chained, tamper-evident log** via `audit-stream-py`. Same opt-in env-var contract (`AUDIT_STREAM_URL`) across all seven producers; same best-effort semantics (a failed POST is logged, never raised). **17 event kinds, seven producers, four FastAPI services + three Rust crates**, all feeding one verifiable narrative an auditor can replay end-to-end.
 
 ```mermaid
 flowchart LR
@@ -147,14 +147,16 @@ flowchart LR
     AVS["aeo-validator-service<br/>Python · FastAPI"]:::pyprod
     PCE["policy-as-code-engine<br/>Python · FastAPI"]:::pyprod
     DCR["data-contract-registry<br/>Python · FastAPI"]:::pyprod
-    ICR["incident-correlation<br/>Rust · library"]:::rsprod
+    HA["hash-attestation<br/>Rust · crypto library"]:::rsprod
+    ICR["incident-correlation<br/>Rust · graph library"]:::rsprod
     AGE["aeo-graph-explorer<br/>Rust · axum service"]:::rsprod
 
-    PDA -->|"decision_card_drafted<br/>decision_card_published<br/>decision_card_revoked"| AS
-    AVS -->|"aeo_validation_passed<br/>aeo_validation_failed"| AS
+    PDA -->|"decision_card_drafted"| AS
+    AVS -->|"watch_created<br/>watch_drifted<br/>watch_validity_flipped"| AS
     PCE -->|"policy_bundle_registered<br/>request_allowed<br/>request_denied"| AS
     DCR -->|"contract_promoted<br/>contract_deprecated<br/>contract_compatibility_failed"| AS
-    ICR -->|"incident_correlated"| AS
+    HA -->|"attestation_signed<br/>attestation_verified<br/>attestation_failed"| AS
+    ICR -->|"incident_correlated<br/>incident_correlation_failed"| AS
     AGE -->|"graph_ingested<br/>graph_ingest_failed"| AS
 
     AS{{"📋 audit-stream-py<br/>hash-chained · tamper-evident<br/>SSE live tail · REST query · GET /verify"}}:::spine
@@ -164,9 +166,9 @@ flowchart LR
     AS -->|GET /verify| V["auditor replay<br/>(walk the chain)"]:::sink
 ```
 
-**Blue** = Python FastAPI producers. **Tan** = Rust producers (one library, one axum service — both gated behind `--features audit-stream` so library consumers can strip out the HTTP dep). **Amber** = the spine itself. **Grey** = the three downstream surfaces auditors and operators consume.
+**Blue** = Python FastAPI producers. **Tan** = Rust producers (two libraries gated behind `--features audit-stream` so library consumers can strip out the HTTP dep, one axum service with the feature on by default). **Amber** = the spine itself. **Grey** = the three downstream surfaces auditors and operators consume.
 
-Adding a seventh producer is a 60-line module: copy the `audit_stream` shape (Python or Rust), pick your event kinds, point at `AUDIT_STREAM_URL`. `hash-attestation-rs` is the obvious next one — emit `attestation_verified` / `attestation_failed` on every signature check.
+Adding an eighth producer is a 60-line module: copy the `audit_stream` shape (Python or Rust), pick your event kinds, point at `AUDIT_STREAM_URL`. Natural candidates: `slo-budget-tracker` (emit `slo_burn_started` / `slo_recovered`) or `reliability-toolkit-rs` (emit `breaker_opened` / `breaker_recovered`).
 
 ### 🛒 Procurement reviewer / buyer-side governance
 
