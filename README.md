@@ -1,7 +1,7 @@
 # Kinetic Gain Protocol Suite
 
 > **A family of eleven open JSON specifications for the answer-engine and agent era — plus a fifteen-repo implementation stack that consumes them.**
-> Five core specs · three EdTech extensions · one HealthTech extension · one cross-cutting incident-disclosure spec · one buyer-side procurement Decision Card · one unified visualizer · one unified MCP server · **twenty-two live properties on kineticgain.com** · all AGPL-3.0 (specs) + MIT (implementations).
+> Five core specs · three EdTech extensions · one HealthTech extension · one cross-cutting incident-disclosure spec · one buyer-side procurement Decision Card · one unified visualizer · one unified MCP server · **twenty-three live properties on kineticgain.com** · all AGPL-3.0 (specs) + MIT (implementations).
 >
 > Public front door: **[suite.kineticgain.com](https://suite.kineticgain.com)**.
 
@@ -90,7 +90,7 @@ All eleven: AGPL-3.0 spec text, freely implementable, v0.1 draft, JSON Schema dr
 
 ## 🛠️ Suite × Implementations
 
-The Suite is a set of specs. **This section is the software that consumes them** — fifteen repos across Tiers A–E, all CI-green, semver-tagged, MIT-licensed, with **four cross-ecosystem hooks** tying them together. Grouped by the buyer most likely to land on the repo first.
+The Suite is a set of specs. **This section is the software that consumes them** — fifteen repos across Tiers A–E, all CI-green, semver-tagged, MIT-licensed, with **five cross-ecosystem hooks** tying them together. Grouped by the buyer most likely to land on the repo first.
 
 ### 🕸️ How it composes
 
@@ -108,6 +108,7 @@ flowchart TB
     PDA -->|"#2 conditions → runtime gates"| PAC["policy-as-code-engine<br/>PolicyBundle enforcement"]:::hook
     PDA -->|"#3 extract owners"| DCR["data-contract-registry<br/>schema + SLAs"]:::hook
     DCR -->|"#4 streaming CSV check"| CDQ["csv-data-quality-rs<br/>row-by-row validation"]:::hook
+    DCR -->|"#5 contract → DDL"| SCE["sql-contract-enforcer<br/>cross-dialect table constraints"]:::hook
 
     SPECS -.->|sign + verify| HA["hash-attestation-rs<br/>ed25519 over canonical hash"]:::sup
     SPECS -.->|drift detection| AVS["aeo-validator-service<br/>always-on validation"]:::sup
@@ -130,11 +131,11 @@ flowchart TB
     MCP["🤖 mcp-kinetic-gain v0.6.0<br/>60 tools · one Claude Desktop config entry"]:::mcp
 ```
 
-**Green** = the spec foundation. **Blue** = the four cross-ecosystem hooks that make this a stack rather than a pile of repos. **Grey** = supporting tools that feed either side. **Amber** = the tamper-evident audit-stream spine every governance moment writes to. **Purple** = the unified MCP surface that exposes the whole thing to Claude.
+**Green** = the spec foundation. **Blue** = the five cross-ecosystem hooks that make this a stack rather than a pile of repos. **Grey** = supporting tools that feed either side. **Amber** = the tamper-evident audit-stream spine every governance moment writes to. **Purple** = the unified MCP surface that exposes the whole thing to Claude.
 
-### 📋 The audit-stream spine — seven producers, two ecosystems
+### 📋 The audit-stream spine — eleven producers, five runtimes
 
-Zoom in on the amber spine: every governance moment in the stack writes to **one hash-chained, tamper-evident log** via `audit-stream-py`. Same opt-in env-var contract (`AUDIT_STREAM_URL`) across all seven producers; same best-effort semantics (a failed POST is logged, never raised). **17 event kinds, seven producers, four FastAPI services + three Rust crates**, all feeding one verifiable narrative an auditor can replay end-to-end.
+Zoom in on the amber spine: every governance moment in the stack writes to **one hash-chained, tamper-evident log** via `audit-stream-py`. Same opt-in env-var contract (`AUDIT_STREAM_URL`) across every producer; same best-effort semantics (a failed POST is logged, never raised). The original seven (four FastAPI services + three Rust crates) are now joined by four runtime + data-tier producers — **`mcp-permission-broker`** and **`azure-openai-governance-bridge`** (tool-invocation gates), **`pg-audit-stream-extension`** (Postgres CRUD via `pg_notify`), and **`wp-kinetic-gain-audit`** (WordPress/MySQL) — so the spine now spans **Python, Rust, PL/pgSQL, PHP, and Azure Functions**. One verifiable narrative an auditor can replay end-to-end, no matter which tier emitted the event.
 
 ```mermaid
 flowchart LR
@@ -150,6 +151,9 @@ flowchart LR
     HA["hash-attestation<br/>Rust · crypto library"]:::rsprod
     ICR["incident-correlation<br/>Rust · graph library"]:::rsprod
     AGE["aeo-graph-explorer<br/>Rust · axum service"]:::rsprod
+    MPB["mcp-permission-broker +<br/>azure-openai-governance-bridge<br/>Python · runtime gates"]:::pyprod
+    PGX["pg-audit-stream-extension<br/>PL/pgSQL · pg_notify"]:::rsprod
+    WPA["wp-kinetic-gain-audit<br/>PHP · WordPress/MySQL"]:::rsprod
 
     PDA -->|"decision_card_drafted"| AS
     AVS -->|"watch_created<br/>watch_drifted<br/>watch_validity_flipped"| AS
@@ -158,6 +162,9 @@ flowchart LR
     HA -->|"attestation_signed<br/>attestation_verified<br/>attestation_failed"| AS
     ICR -->|"incident_correlated<br/>incident_correlation_failed"| AS
     AGE -->|"graph_ingested<br/>graph_ingest_failed"| AS
+    MPB -->|"tool_invocation_allowed<br/>tool_invocation_denied<br/>tool_invocation_required_approval"| AS
+    PGX -->|"&lt;configured kind&gt; on table CRUD"| AS
+    WPA -->|"content_published<br/>plugin_activated<br/>user_role_changed"| AS
 
     AS{{"📋 audit-stream-py<br/>hash-chained · tamper-evident<br/>SSE live tail · REST query · GET /verify"}}:::spine
 
@@ -168,7 +175,7 @@ flowchart LR
 
 **Blue** = Python FastAPI producers. **Tan** = Rust producers (two libraries gated behind `--features audit-stream` so library consumers can strip out the HTTP dep, one axum service with the feature on by default). **Amber** = the spine itself. **Grey** = the three downstream surfaces auditors and operators consume.
 
-Adding an eighth producer is a 60-line module: copy the `audit_stream` shape (Python or Rust), pick your event kinds, point at `AUDIT_STREAM_URL`. Natural candidates: `slo-budget-tracker` (emit `slo_burn_started` / `slo_recovered`) or `reliability-toolkit-rs` (emit `breaker_opened` / `breaker_recovered`).
+Adding the next producer is a ~60-line module: copy the `audit_stream` shape (Python, Rust, PL/pgSQL, or PHP), pick your event kinds, point at `AUDIT_STREAM_URL`. The data-tier producers prove the point — `pg-audit-stream-extension` catches direct DML the application path would miss, and `wp-kinetic-gain-audit` brings the same tamper-evident chain to any WordPress estate. Next natural candidates: `slo-budget-tracker` (`slo_burn_started` / `slo_recovered`) or `reliability-toolkit-rs` (`breaker_opened` / `breaker_recovered`).
 
 ### 🛒 Procurement reviewer / buyer-side governance
 
@@ -192,6 +199,7 @@ Adding an eighth producer is a 60-line module: copy the `audit_stream` shape (Py
 |---|---|---|
 | [`data-contract-registry`](https://github.com/mizcausevic-dev/data-contract-registry) | Python · FastAPI | Schema registry with semver versioning, compatibility checks (backward / forward / full), declared owners, freshness SLAs. **`POST /contracts/owners/from-decision-card` pulls Owner records out of a Procurement Decision Card. Cross-ecosystem hook #3.** |
 | [`csv-data-quality-rs`](https://github.com/mizcausevic-dev/csv-data-quality-rs) | Rust · tokio · csv | Streaming CSV validator against a `data-contract-registry` contract. Async, row-by-row, structured violation report (`required` / `bad_type` / `enum_mismatch` / `column_count_mismatch` / `invalid_json`). **Cross-ecosystem hook #4.** |
+| [`sql-contract-enforcer`](https://github.com/mizcausevic-dev/sql-contract-enforcer) | Python · SQL | Turns a `data-contract-registry` contract into enforceable cross-dialect DDL (CHECK / NOT NULL / UNIQUE / PK / FK) for Postgres, MySQL, Snowflake, BigQuery, plus a contract-vs-schema checker for CI. Dialect-aware (BigQuery demotes CHECK/UNIQUE to comments + PK/FK to NOT ENFORCED). **Cross-ecosystem hook #5.** |
 
 ### 🛡️ SRE / Platform reliability stack
 
@@ -214,16 +222,26 @@ Ten repos that compose into a single layered reliability story: identity → rat
 | [`mcp-reliability-toolkit`](https://github.com/mizcausevic-dev/mcp-reliability-toolkit) | TypeScript | Reliability MCP server — `compute_slo_burn`, `design_rate_limiter`, `design_circuit_breaker`, `compose_reliability_pattern`. Same math as `slo-budget-tracker`; emits Python + Rust configs. |
 | [`mcp-decision-intelligence`](https://github.com/mizcausevic-dev/mcp-decision-intelligence) | TypeScript | Decision Intelligence MCP server — `validate_decision_card`, `preview_policy_bundle`, `plan_incident_remediation`, `check_contract_compatibility`. Read-only preview of what the live Python/Rust services would compute. |
 
-### The four cross-ecosystem hooks
+### 🚦 Runtime enforcement — turning "buyer signed off" into "request denied"
+
+The Decision Card layer decides; these gates enforce, at the moment a tool is invoked, and write every verdict to the spine:
+
+| Repo | Lang | What it does |
+|---|---|---|
+| [`mcp-permission-broker`](https://github.com/mizcausevic-dev/mcp-permission-broker) | Python | Runtime gate between a Decision Card and an MCP tool call. Composes Decision Card conditions into deny-trumps-allow PolicyBundles; emits `tool_invocation_*` to the spine. |
+| [`azure-openai-governance-bridge`](https://github.com/mizcausevic-dev/azure-openai-governance-bridge) | Python · Azure Functions · Bicep | The Azure-native sibling — an Azure Function in front of Azure OpenAI enforcing the same PolicyBundle contract on every chat-completion call (deployment + each declared tool). Puts the Suite's governance on the data path enterprises actually run AI on. |
+
+### The five cross-ecosystem hooks
 
 What makes the stack *a stack* rather than a list of repos:
 
 1. **`procurement-decision-api` → Suite documents.** Ingests AEO / agent-card / tool-card / ai-evidence by URL; emits a Decision Card. (Suite × Decision Intelligence.)
 2. **`policy-as-code-engine` → `procurement-decision-api`.** `POST /bundles/from-decision-card` turns approve / reject / approve-with-conditions into runtime-enforceable allow / deny / per-condition gates.
 3. **`data-contract-registry` → `procurement-decision-api`.** `POST /contracts/owners/from-decision-card` extracts buyer + decision_maker into Owner records so freshly registered contracts carry paging info nobody re-types.
-4. **`csv-data-quality-rs` → `data-contract-registry`.** Streaming CSV validator against a registered contract — producers prove their output matches.
+4. **`csv-data-quality-rs` → `data-contract-registry`.** Streaming CSV validator against a registered contract — producers prove their output matches, row by row.
+5. **`sql-contract-enforcer` → `data-contract-registry`.** Compiles the same contract into cross-dialect DDL (CHECK / NOT NULL / UNIQUE / PK / FK across Postgres, MySQL, Snowflake, BigQuery) — enforcing at the table boundary what hook #4 validates row-wise.
 
-All fifteen: CI green on first or second push, semver-tagged at v0.1.0, MIT-licensed. The implementation stack is **independently usable** — any repo composes with the rest, none requires it.
+The implementation stack is **independently usable** — any repo composes with the rest, none requires it — and the Decision Card now enforces at three layers: the MCP tool call (`mcp-permission-broker`), the Azure OpenAI call (`azure-openai-governance-bridge`), and the database table (`sql-contract-enforcer`).
 
 ---
 
@@ -271,9 +289,9 @@ The bench is **not a twelfth spec** — it's the *testing-counterpart* to the di
 
 ---
 
-## 🌐 Live properties — 22 total
+## 🌐 Live properties — 23 total
 
-### Hubs + tools (6)
+### Hubs + tools (7)
 | URL | What it serves |
 |---|---|
 | **[suite.kineticgain.com](https://suite.kineticgain.com)** | **Canonical front door** for the entire Suite — 11-spec map, full spec table, two-front-doors section, NIST RMF crosswalk |
@@ -282,6 +300,7 @@ The bench is **not a twelfth spec** — it's the *testing-counterpart* to the di
 | [examples.kineticgain.com](https://examples.kineticgain.com) | **Examples gallery** — sidebar of 11 specs, click for canonical example with JSON highlight |
 | [walker.kineticgain.com](https://walker.kineticgain.com) | **well-known-walker** — paste any domain, see every Kinetic Gain disclosure it publishes |
 | [bench.kineticgain.com](https://bench.kineticgain.com) | **prompt-injection-bench** — paste a JSONL transcript, see pass rates by category and severity |
+| [pulse.kineticgain.com](https://pulse.kineticgain.com) | **AI Procurement Pulse** — quarterly research index of vendor disclosure across the open internet. [Issue #1 "The Zero Baseline"](https://pulse.kineticgain.com/issue-1/) is live (powered by `procurement-pulse-engine` + `well-known-probe-js`) |
 
 ### Per-spec landings (11)
 | URL | Spec |
@@ -296,7 +315,7 @@ The bench is **not a twelfth spec** — it's the *testing-counterpart* to the di
 | [aup.kineticgain.com](https://aup.kineticgain.com) | Classroom AI AUP (EdTech) |
 | [clinical.kineticgain.com](https://clinical.kineticgain.com) | Clinical AI Disclosure (HealthTech) |
 | [incidents.kineticgain.com](https://incidents.kineticgain.com) | AI Incident Card (cross-cutting, vendor-side) |
-| [procurement.kineticgain.com](https://procurement.kineticgain.com) | AI Procurement Decision Card (cross-cutting, buyer-side) |
+| [decisions.kineticgain.com](https://decisions.kineticgain.com) | AI Procurement Decision Card (cross-cutting, buyer-side) |
 
 ### Earlier product surfaces (5)
 | URL | What it does |
