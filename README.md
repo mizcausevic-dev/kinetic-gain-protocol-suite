@@ -398,5 +398,5 @@ Supporting sites are unrestricted under their own licenses.
 
 ## 👤 Author
 
-**Miz Causevic** · Director / Principal Platform Engineering · Boston, MA
+**Miz Causevic** · Enterprise Technologist · Boston, MA
 [GitHub](https://github.com/mizcausevic-dev) · [LinkedIn](https://www.linkedin.com/in/mirzacausevic/) · [Kinetic Gain](https://kineticgain.com) · [Medium](https://medium.com/@mizcausevic/) · [Skills](https://mizcausevic.com/skills/)
