@@ -132,7 +132,7 @@ flowchart TB
     PDA ==>|preview tools| MCP
     AS ==>|event tools| MCP
     HA ==>|verify tools| MCP
-    MCP["🤖 mcp-kinetic-gain v0.6.0<br/>60 tools · one Claude Desktop config entry"]:::mcp
+    MCP["🤖 mcp-kinetic-gain v0.7.1<br/>63 tools · one Claude Desktop config entry"]:::mcp
 ```
 
 **Green** = the spec foundation. **Blue** = the five cross-ecosystem hooks that make this a stack rather than a pile of repos. **Grey** = supporting tools that feed either side. **Amber** = the tamper-evident audit-stream spine every governance moment writes to. **Purple** = the unified MCP surface that exposes the whole thing to Claude.
@@ -222,7 +222,7 @@ Ten repos that compose into a single layered reliability story: identity → rat
 
 | Repo | Lang | What it does |
 |---|---|---|
-| [`mcp-kinetic-gain`](https://github.com/mizcausevic-dev/mcp-kinetic-gain) | TypeScript | **Unified Suite MCP server** — 47 tools across 11 specs (v0.5.2). One Claude Desktop config entry. Headline tools: `aup_check_compliance` (joins AUP + Disclosure into one allow/deny call); `decision_card_validate` (enforces the full Decision Card conditional rule set). |
+| [`mcp-kinetic-gain`](https://github.com/mizcausevic-dev/mcp-kinetic-gain) | TypeScript | **Unified Suite MCP server** — 63 tools across 11 specs (v0.7.1). One Claude Desktop config entry. Headline tools: `aup_check_compliance` (joins AUP + Disclosure into one allow/deny call); `decision_card_validate` (enforces the full Decision Card conditional rule set). |
 | [`mcp-reliability-toolkit`](https://github.com/mizcausevic-dev/mcp-reliability-toolkit) | TypeScript | Reliability MCP server — `compute_slo_burn`, `design_rate_limiter`, `design_circuit_breaker`, `compose_reliability_pattern`. Same math as `slo-budget-tracker`; emits Python + Rust configs. |
 | [`mcp-decision-intelligence`](https://github.com/mizcausevic-dev/mcp-decision-intelligence) | TypeScript | Decision Intelligence MCP server — `validate_decision_card`, `preview_policy_bundle`, `plan_incident_remediation`, `check_contract_compatibility`. Read-only preview of what the live Python/Rust services would compute. |
 
@@ -249,9 +249,9 @@ The implementation stack is **independently usable** — any repo composes with 
 
 ---
 
-## 🔌 One MCP server. 47 tools. Eleven specs.
+## 🔌 One MCP server. 63 tools. Eleven specs.
 
-[`mcp-kinetic-gain`](https://github.com/mizcausevic-dev/mcp-kinetic-gain) (v0.5.2) is the unified [Model Context Protocol](https://modelcontextprotocol.io) server exposing every runtime Kinetic Gain spec as callable tools. One Claude Desktop / Cursor / MCP-client config entry; 47 tools across all eleven specs.
+[`mcp-kinetic-gain`](https://github.com/mizcausevic-dev/mcp-kinetic-gain) (v0.7.1) is the unified [Model Context Protocol](https://modelcontextprotocol.io) server exposing every runtime Kinetic Gain spec as callable tools. One Claude Desktop / Cursor / MCP-client config entry; 63 tools across all eleven specs.
 
 | Spec | Tools |
 |---|---|
@@ -267,7 +267,7 @@ The implementation stack is **independently usable** — any repo composes with 
 | AI Incident Card | `incident_validate` · `incident_inspect` · `incident_index_fetch` · `incident_affected_walk` |
 | AI Procurement Decision Card | **`decision_card_validate`** · `decision_card_inspect` · `decision_card_conditions` · `decision_card_signature_check` |
 
-96 tests pass · typecheck clean · stdio MCP server, drops into any MCP-compatible client. Sibling MCP servers for the Reliability Stack (`mcp-reliability-toolkit`) and Decision Intelligence (`mcp-decision-intelligence`) exist for narrower use cases.
+126 tests pass · typecheck clean · stdio MCP server, drops into any MCP-compatible client. Sibling MCP servers for the Reliability Stack (`mcp-reliability-toolkit`) and Decision Intelligence (`mcp-decision-intelligence`) exist for narrower use cases.
 
 ---
 
@@ -278,7 +278,7 @@ The implementation stack is **independently usable** — any repo composes with 
 - **Visualize** — the auto-detected renderer (FERPA / COPPA / GDPR badges for tutor cards, role-tone pills + artifact-hash binding for disclosures, vendor-requirements card in dark/authority tone for AUPs, full conditional-rule preview for Decision Cards, etc.)
 - **Editor** — paste any spec document and watch the right view light up
 - **Architecture** — the 11-spec map
-- **Tools** — searchable catalog of all 47 MCP tools
+- **Tools** — searchable catalog of all 63 MCP tools
 - **About** — detection model + cross-links
 
 ---
@@ -341,7 +341,7 @@ Pick the entry that matches what you want to do:
 Start at the relevant spec's `examples/` folder, fork an example, validate against the schema, serve at the well-known URL.
 
 **I want to consume Kinetic Gain documents from an LLM agent.**
-Install [`mcp-kinetic-gain`](https://github.com/mizcausevic-dev/mcp-kinetic-gain), add one entry to your Claude Desktop config, get 47 tools.
+Install [`mcp-kinetic-gain`](https://github.com/mizcausevic-dev/mcp-kinetic-gain), add one entry to your Claude Desktop config, get 63 tools.
 
 **I want to see what a document looks like.**
 Open the [unified visualizer](https://mizcausevic-dev.github.io/kinetic-gain-visualizer/), pick an example from the Editor view.
