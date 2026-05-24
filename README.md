@@ -1,9 +1,13 @@
 # Kinetic Gain Protocol Suite
 
 > **A family of eleven open JSON specifications for the answer-engine and agent era — plus a fifteen-repo implementation stack that consumes them.**
-> Five core specs · three EdTech extensions · one HealthTech extension · one cross-cutting incident-disclosure spec · one buyer-side procurement Decision Card · one unified visualizer · one unified MCP server · **twenty-three live properties on kineticgain.com** · all AGPL-3.0 (specs) + MIT (implementations).
+> Five core specs · three EdTech extensions · one HealthTech extension · one cross-cutting incident-disclosure spec · one buyer-side procurement Decision Card · one unified visualizer · one operator console · one unified MCP server · **twenty-four live properties on kineticgain.com** · all AGPL-3.0 (specs) + MIT (implementations).
 >
 > Public front door: **[suite.kineticgain.com](https://suite.kineticgain.com)**.
+
+[![Kinetic Gain Operator Console](https://raw.githubusercontent.com/mizcausevic-dev/kinetic-gain-operator-console/main/screenshots/operator-dashboard.png)](https://console.kineticgain.com)
+
+> **[Kinetic Gain Operator Console](https://console.kineticgain.com)** — mission-control for the whole Suite: interactive topology mesh, a configurable SRE operator dashboard (savable layouts, simulation throttle, per-channel latency sliders, PDF export), and live audit-stream visualization. ([repo](https://github.com/mizcausevic-dev/kinetic-gain-operator-console))
 
 This repository is the **single landing** for the Suite — both for the **specs** (the "what to publish" layer) and for the **implementation stack** that consumes them (the "what to actually run" layer). Each spec lives in its own repo with full normative text, JSON Schema, examples, and a permissive cross-link table. This meta-repo is where you start when you want the map.
 
@@ -289,9 +293,9 @@ The bench is **not a twelfth spec** — it's the *testing-counterpart* to the di
 
 ---
 
-## 🌐 Live properties — 23 total
+## 🌐 Live properties — 24 total
 
-### Hubs + tools (7)
+### Hubs + tools (8)
 | URL | What it serves |
 |---|---|
 | **[suite.kineticgain.com](https://suite.kineticgain.com)** | **Canonical front door** for the entire Suite — 11-spec map, full spec table, two-front-doors section, NIST RMF crosswalk |
@@ -301,6 +305,7 @@ The bench is **not a twelfth spec** — it's the *testing-counterpart* to the di
 | [walker.kineticgain.com](https://walker.kineticgain.com) | **well-known-walker** — paste any domain, see every Kinetic Gain disclosure it publishes |
 | [bench.kineticgain.com](https://bench.kineticgain.com) | **prompt-injection-bench** — paste a JSONL transcript, see pass rates by category and severity |
 | [pulse.kineticgain.com](https://pulse.kineticgain.com) | **AI Procurement Pulse** — quarterly research index of vendor disclosure across the open internet. [Issue #1 "The Zero Baseline"](https://pulse.kineticgain.com/issue-1/) is live (powered by `procurement-pulse-engine` + `well-known-probe-js`) |
+| [console.kineticgain.com](https://console.kineticgain.com) | **Operator Console** — mission-control for the Suite: interactive topology mesh, configurable SRE operator dashboard, live audit-stream visualization, PDF export ([repo](https://github.com/mizcausevic-dev/kinetic-gain-operator-console)) |
 
 ### Per-spec landings (11)
 | URL | Spec |
