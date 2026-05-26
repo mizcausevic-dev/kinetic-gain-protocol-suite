@@ -92,8 +92,26 @@ All eleven: AGPL-3.0 spec text, freely implementable, v0.1 draft, JSON Schema dr
 
 ---
 
-## 🛠️ Suite × Implementations
+## 🧱 Reference implementations
 
+The Suite now has real implementation tooling attached to several of its disclosure and distribution patterns:
+
+- **MCP Tool Cards**
+  - [`mcp-tool-card-generator`](https://github.com/mizcausevic-dev/mcp-tool-card-generator) — emits Tool Card disclosures directly from MCP `tools/list` output
+  - [`mcp-registry-risk-scanner`](https://github.com/mizcausevic-dev/mcp-registry-risk-scanner) — validates manifest and registry posture around published MCP servers
+  - [`mcp-tools-diff`](https://github.com/mizcausevic-dev/mcp-tools-diff) — detects `tools/list` drift and breaking-change posture over time
+- **Agent Cards**
+  - [`agent-card-runtime-adapters`](https://github.com/mizcausevic-dev/agent-card-runtime-adapters) — maps Agent Cards into runtime adapters for OpenAI, Anthropic, and Vercel execution layers
+- **AI Evidence Format / Evidence Ledger**
+  - [`rag-evidence-graph`](https://github.com/mizcausevic-dev/rag-evidence-graph) — corpus-level citation graph and evidence coverage analysis
+  - [`rag-evidence-trace-linker`](https://github.com/mizcausevic-dev/rag-evidence-trace-linker) — per-call trace linkage for evidence integrity on RAG and generation flows
+- **`/.well-known/` distribution pattern**
+  - [`wellknown-index-aggregator`](https://github.com/mizcausevic-dev/wellknown-index-aggregator) — builds and validates `/.well-known/index.json` for multi-doc publisher estates
+  - [`governance-disclosure-operator`](https://github.com/mizcausevic-dev/governance-disclosure-operator) — Kubernetes-native publisher for governance disclosures
+
+---
+
+## 🛠️ Suite × Implementations
 The Suite is a set of specs. **This section is the software that consumes them** — fifteen repos across Tiers A–E, all CI-green, semver-tagged, MIT-licensed, with **five cross-ecosystem hooks** tying them together. Grouped by the buyer most likely to land on the repo first.
 
 ### 🕸️ How it composes
