@@ -311,7 +311,7 @@ The bench is **not a twelfth spec** — it's the *testing-counterpart* to the di
 
 ---
 
-## 🌐 Live properties — 31 total
+## 🌐 Live properties — 32 total
 
 ### Hubs + tools (8)
 | URL | What it serves |
@@ -349,7 +349,7 @@ The bench is **not a twelfth spec** — it's the *testing-counterpart* to the di
 | [observe.kineticgain.com](https://observe.kineticgain.com) | AgentObserve — operator console for AI agent fleets |
 | [mizcausevic-dev.github.io/kinetic-gain-visualizer](https://mizcausevic-dev.github.io/kinetic-gain-visualizer/) | Unified visualizer (GitHub Pages, all 11 specs) |
 
-### Cloud Identity, Platform & FinOps Governance lane (7)
+### Cloud Identity, Platform, FinOps & Threat Detection Governance lane (8)
 Production-hardened (v1.0-prod) synthetic-data operator consoles covering the multi-cloud admin stack — Microsoft, AWS, GCP, Azure. AGPL-3.0-or-later, dual-Node CI, dependabot, 95%+ statement coverage, each deployed on its own GitHub Pages subdomain.
 
 | URL | What it does | Repo |
@@ -358,9 +358,10 @@ Production-hardened (v1.0-prod) synthetic-data operator consoles covering the mu
 | [intune.kineticgain.com](https://intune.kineticgain.com) | Microsoft Intune device compliance, jailbreak/root detection, encryption gaps, OS-drift, stale check-ins, BYOD scope | [`intune-device-compliance-ops`](https://github.com/mizcausevic-dev/intune-device-compliance-ops) |
 | [retention.kineticgain.com](https://retention.kineticgain.com) | Microsoft 365 Purview retention coverage and eDiscovery custodian / hold orchestration | [`m365-retention-case-orchestrator`](https://github.com/mizcausevic-dev/m365-retention-case-orchestrator) |
 | [aws.kineticgain.com](https://aws.kineticgain.com) | AWS IAM Access Analyzer posture, public-access bindings, cross-account trust, remediation sequencing | [`aws-iam-access-analyzer-console`](https://github.com/mizcausevic-dev/aws-iam-access-analyzer-console) |
+| [guardduty.kineticgain.com](https://guardduty.kineticgain.com) | AWS GuardDuty detector posture, threat-finding triage, credential exfiltration / crypto-mining / anomalous-API behavior, response sequencing | [`aws-guardduty-triage-board`](https://github.com/mizcausevic-dev/aws-guardduty-triage-board) |
 | [gcp.kineticgain.com](https://gcp.kineticgain.com) | GCP IAM snapshot drift, public `allUsers` bindings, `roles/editor` creep, service-account token-creator grants, org-policy mismatch | [`gcp-iam-policy-diff-lab`](https://github.com/mizcausevic-dev/gcp-iam-policy-diff-lab) |
-| [zone.kineticgain.com](https://zone.kineticgain.com) | Azure landing-zone baseline drift, owner-role drift, missing deny assignments, disabled Defender, diagnostics gaps, route bypass | [`azure-landing-zone-drift-radar`](https://github.com/mizcausevic-dev/azure-landing-zone-drift-radar) |
 | [billing.kineticgain.com](https://billing.kineticgain.com) | GCP billing-anomaly routing, budget breaches, spend-spike escalation, idle commitments, unlabeled-cost drift, billing-export gaps | [`gcp-billing-anomaly-router`](https://github.com/mizcausevic-dev/gcp-billing-anomaly-router) |
+| [zone.kineticgain.com](https://zone.kineticgain.com) | Azure landing-zone baseline drift, owner-role drift, missing deny assignments, disabled Defender, diagnostics gaps, route bypass | [`azure-landing-zone-drift-radar`](https://github.com/mizcausevic-dev/azure-landing-zone-drift-radar) |
 
 ---
 
