@@ -301,6 +301,35 @@ The implementation stack is **independently usable** — any repo composes with 
 
 ---
 
+## ⚙️ Suite governance Actions — 9-action CI ecosystem
+
+A pre-built set of GitHub Actions for **PR-gating governance documents** before merge. Drop them into any repo that holds AgentCards / Tool Cards / prompt-provenance / evidence bundles / OTel spans and they post a Markdown summary as a PR comment + fail the build on high-severity findings.
+
+### Per-protocol fleet-summary gates (4)
+| Action | Wraps | Catches |
+|---|---|---|
+| [`agent-card-fleet-summary-action`](https://github.com/mizcausevic-dev/agent-card-fleet-summary-action) | `agent-card-fleet-summary` | autonomous-without-IRU, destructive-on-non-autonomous, persistent-memory-without-refusal-taxonomy |
+| [`mcp-tool-card-fleet-summary-action`](https://github.com/mizcausevic-dev/mcp-tool-card-fleet-summary-action) | `mcp-tool-card-fleet-summary` | destructive-without-human-approval, high-PII-without-rate-limit, writes-secrets-without-audit |
+| [`prompt-provenance-fleet-summary-action`](https://github.com/mizcausevic-dev/prompt-provenance-fleet-summary-action) | `prompt-provenance-fleet-summary` | approved-without-evaluations, no-reviewers, failing-eval-on-approved, deprecated-still-referenced |
+| [`evidence-bundle-fleet-summary-action`](https://github.com/mizcausevic-dev/evidence-bundle-fleet-summary-action) | `evidence-bundle-fleet-summary` | bundle-expired, unsigned-regulated-bundle, cross-bundle-hash-collision, oversized-bundle |
+
+### Cross-protocol governance gates (3)
+| Action | Catches |
+|---|---|
+| [`kg-suite-spec-version-tracker-action`](https://github.com/mizcausevic-dev/kg-suite-spec-version-tracker-action) | **Version drift** — same protocol on two different spec versions in one fleet |
+| [`kg-suite-conformance-runner-action`](https://github.com/mizcausevic-dev/kg-suite-conformance-runner-action) | **Structural conformance** — missing required top-level blocks per spec |
+| [`kg-suite-canonicalize-action`](https://github.com/mizcausevic-dev/kg-suite-canonicalize-action) | **Silent edits** — doc's canonical sha256 changed without a version bump |
+
+### Cost + cluster gates (2 — pre-existing)
+| Action | Catches |
+|---|---|
+| [`llm-cost-rollup-action`](https://github.com/mizcausevic-dev/llm-cost-rollup-action) | GenAI FinOps — budget breaches across OTel cost-annotated spans |
+| [`k8s-pre-merge-action`](https://github.com/mizcausevic-dev/k8s-pre-merge-action) | K8s pre-merge — deprecated APIs, RBAC over-scope, Pod Security, Helm values coverage |
+
+All nine are composite Node 20 actions with `dist/` committed for SHA/tag pinning — no build step needed in the consuming workflow.
+
+---
+
 ## 🛡️ Testing artifact
 
 | Repo | What it does |
