@@ -9,6 +9,8 @@
 
 > **[Kinetic Gain Operator Console](https://console.kineticgain.com)** — mission-control for the whole Suite: an interactive topology mesh (*v0.2* — runtime-gate overlays for the MCP Permission Broker / Azure Governance Bridge / SQL Contract Enforcer, ed25519 signature posture, and blast-radius tracing across the hash-chained spine), a configurable SRE operator dashboard (savable layouts, simulation throttle, per-channel latency sliders, PDF export), and live audit-stream visualization. ([repo](https://github.com/mizcausevic-dev/kinetic-gain-operator-console))
 
+[![kg pulse self-score · 100/100 · comprehensive](https://raw.githubusercontent.com/mizcausevic-dev/kineticgain-com-apex/main/docs/pulse-badge.svg)](https://kineticgain.com/.well-known/pulse-receipt.json) &nbsp; *We publish the specs AND we score against them. Live receipt at [kineticgain.com/.well-known/pulse-receipt.json](https://kineticgain.com/.well-known/pulse-receipt.json), refreshed weekly by [procurement-pulse-action](https://github.com/mizcausevic-dev/procurement-pulse-action) on kineticgain.com's own GitHub Actions.*
+
 This repository is the **single landing** for the Suite — both for the **specs** (the "what to publish" layer) and for the **implementation stack** that consumes them (the "what to actually run" layer). Each spec lives in its own repo with full normative text, JSON Schema, examples, and a permissive cross-link table. This meta-repo is where you start when you want the map.
 
 ---
