@@ -1,7 +1,7 @@
 # Kinetic Gain Protocol Suite
 
 > **A family of eleven open JSON specifications for the answer-engine and agent era — plus a fifteen-repo implementation stack that consumes them.**
-> Five core specs · three EdTech extensions · one HealthTech extension · one cross-cutting incident-disclosure spec · one buyer-side procurement Decision Card · one unified visualizer · one operator console · one unified MCP server · **twenty-four live properties on kineticgain.com** · all AGPL-3.0 (specs) + MIT (implementations).
+> Five core specs · three EdTech extensions · one HealthTech extension · one cross-cutting incident-disclosure spec · one buyer-side procurement Decision Card (v0.3 — adds `data_vault_targets` + `retention_envelope`) · one unified visualizer · one operator console · one unified MCP server · **49 live properties on kineticgain.com** · all AGPL-3.0 (specs) + MIT (implementations).
 >
 > Public front door: **[suite.kineticgain.com](https://suite.kineticgain.com)**.
 
