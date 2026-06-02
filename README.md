@@ -152,7 +152,7 @@ flowchart TB
     PDA ==>|preview tools| MCP
     AS ==>|event tools| MCP
     HA ==>|verify tools| MCP
-    MCP["🤖 mcp-kinetic-gain v0.7.1<br/>63 tools · one Claude Desktop config entry"]:::mcp
+    MCP["🤖 mcp-kinetic-gain v0.8.0<br/>71 tools · one Claude Desktop config entry"]:::mcp
 ```
 
 **Green** = the spec foundation. **Blue** = the five cross-ecosystem hooks that make this a stack rather than a pile of repos. **Grey** = supporting tools that feed either side. **Amber** = the tamper-evident audit-stream spine every governance moment writes to. **Purple** = the unified MCP surface that exposes the whole thing to Claude.
@@ -242,7 +242,7 @@ Ten repos that compose into a single layered reliability story: identity → rat
 
 | Repo | Lang | What it does |
 |---|---|---|
-| [`mcp-kinetic-gain`](https://github.com/mizcausevic-dev/mcp-kinetic-gain) | TypeScript | **Unified Suite MCP server** — 63 tools across 11 specs (v0.7.1). One Claude Desktop config entry. Headline tools: `aup_check_compliance` (joins AUP + Disclosure into one allow/deny call); `decision_card_validate` (enforces the full Decision Card conditional rule set). |
+| [`mcp-kinetic-gain`](https://github.com/mizcausevic-dev/mcp-kinetic-gain) | TypeScript | **Unified Suite MCP server** — 71 tools across 11 specs + DefenseTech 6-pack (v0.8.0, on the official MCP Registry). One Claude Desktop config entry. Headline tools: `aup_check_compliance` (joins AUP + Disclosure into one allow/deny call); `decision_card_validate` (enforces the full Decision Card conditional rule set); `defensetech_vault_resolve_3axis` (resolves CUI × export-control × foreign-person to the most-restrictive vault policy). |
 | [`mcp-reliability-toolkit`](https://github.com/mizcausevic-dev/mcp-reliability-toolkit) | TypeScript | Reliability MCP server — `compute_slo_burn`, `design_rate_limiter`, `design_circuit_breaker`, `compose_reliability_pattern`. Same math as `slo-budget-tracker`; emits Python + Rust configs. |
 | [`mcp-decision-intelligence`](https://github.com/mizcausevic-dev/mcp-decision-intelligence) | TypeScript | Decision Intelligence MCP server — `validate_decision_card`, `preview_policy_bundle`, `plan_incident_remediation`, `check_contract_compatibility`. Read-only preview of what the live Python/Rust services would compute. |
 
@@ -269,9 +269,9 @@ The implementation stack is **independently usable** — any repo composes with 
 
 ---
 
-## 🔌 One MCP server. 63 tools. Eleven specs.
+## 🔌 One MCP server. 71 tools. Eleven specs + DefenseTech.
 
-[`mcp-kinetic-gain`](https://github.com/mizcausevic-dev/mcp-kinetic-gain) (v0.7.1) is the unified [Model Context Protocol](https://modelcontextprotocol.io) server exposing every runtime Kinetic Gain spec as callable tools. One Claude Desktop / Cursor / MCP-client config entry; 63 tools across all eleven specs.
+[`mcp-kinetic-gain`](https://github.com/mizcausevic-dev/mcp-kinetic-gain) (v0.8.0, on the official MCP Registry) is the unified [Model Context Protocol](https://modelcontextprotocol.io) server exposing every runtime Kinetic Gain spec as callable tools. One Claude Desktop / Cursor / MCP-client config entry; 71 tools across all eleven specs plus the DefenseTech 6-pack (3-axis vault resolver + CUI/ITAR/DFARS invariants + CMMC evidence summarizer + Incident Card event classifier).
 
 | Spec | Tools |
 |---|---|
@@ -404,7 +404,7 @@ Pick the entry that matches what you want to do:
 Start at the relevant spec's `examples/` folder, fork an example, validate against the schema, serve at the well-known URL.
 
 **I want to consume Kinetic Gain documents from an LLM agent.**
-Install [`mcp-kinetic-gain`](https://github.com/mizcausevic-dev/mcp-kinetic-gain), add one entry to your Claude Desktop config, get 63 tools.
+Install [`mcp-kinetic-gain`](https://github.com/mizcausevic-dev/mcp-kinetic-gain), add one entry to your Claude Desktop config, get 71 tools.
 
 **I want to see what a document looks like.**
 Open the [unified visualizer](https://mizcausevic-dev.github.io/kinetic-gain-visualizer/), pick an example from the Editor view.
