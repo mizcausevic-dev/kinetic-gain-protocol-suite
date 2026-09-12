@@ -109,11 +109,11 @@
         "path": null,
         "workflow": null
       },
-      "status": "dead-tls",
+      "status": "dead-dns-conflict",
       "title_observed": null,
       "favicon": null,
       "listed_in_readme": true,
-      "notes": "Resolves to 82.25.87.13, confirmed via nslookup this session. This IP is documented elsewhere (~/.claude/CLAUDE.md identity block) as a stale, wrong deploy host from a past incident, a different account, not the current web-estate host (82.25.89.47). Likely provisioned during that same stale period and never repointed."
+      "notes": "Has BOTH a correct ALIAS record (walker.kineticgain.com.cdn.hstgr.net.) and a stale A record (82.25.87.13, the wrong host documented in ~/.claude/CLAUDE.md). The stale A record wins. Confirmed this session that Hostinger's DNS API refuses to let an A and ALIAS coexist on the same name at all (rejects any A-record update with 'RRset ... IN ALIAS must not be used with A on the same name'), and the only delete tool available this session is scoped to the whole domain with no way to target a single record, too risky to use blind on a 300+ record zone. Needs a human to delete just the stale A record via hPanel's DNS editor (a few seconds); the ALIAS is already correct and does not need to change."
     },
     {
       "host": "bench.kineticgain.com",
@@ -188,11 +188,11 @@
         "path": null,
         "workflow": null
       },
-      "status": "dead-tls",
+      "status": "dns-fixed-tls-pending",
       "title_observed": null,
       "favicon": null,
       "listed_in_readme": true,
-      "notes": "Resolves to 82.25.87.13, same stale/wrong host as walker. See walker's notes."
+      "notes": "DNS A record corrected this session from 82.25.87.13 (stale/wrong host) to 82.25.89.47 (the real web-estate host). Content was already fully deployed here the whole time (index.html, fonts, assets, ORIGIN.md all present in Hostinger before the fix). Not yet visitable over HTTPS: the Hostinger AutoSSL cert for this subdomain is expired (SEC_E_CERT_EXPIRED, confirmed via curl this session), because AutoSSL never issued/renewed a valid cert while DNS pointed at the wrong host. Should self-resolve once Hostinger's next AutoSSL cycle notices the now-correct DNS; if not, needs a manual SSL re-issue for this subdomain in hPanel."
     },
     {
       "host": "agents.kineticgain.com",
@@ -204,11 +204,11 @@
         "path": null,
         "workflow": null
       },
-      "status": "dead-tls",
+      "status": "dns-fixed-tls-pending",
       "title_observed": null,
       "favicon": null,
       "listed_in_readme": true,
-      "notes": "Resolves to 82.25.87.13, same stale/wrong host as walker."
+      "notes": "Same fix and same remaining TLS issue as prompts.kineticgain.com: DNS A record corrected to 82.25.89.47 this session, content already fully deployed, cert expired pending Hostinger AutoSSL renewal."
     },
     {
       "host": "evidence.kineticgain.com",
@@ -282,11 +282,11 @@
         "path": null,
         "workflow": null
       },
-      "status": "dead-tls",
+      "status": "dns-fixed-tls-pending",
       "title_observed": null,
       "favicon": null,
       "listed_in_readme": true,
-      "notes": "Resolves to 82.25.87.13, same stale/wrong host as walker."
+      "notes": "Same fix and same remaining TLS issue as prompts.kineticgain.com and agents.kineticgain.com: DNS A record corrected to 82.25.89.47 this session, content already fully deployed, cert expired pending Hostinger AutoSSL renewal."
     },
     {
       "host": "clinical.kineticgain.com",
@@ -431,17 +431,17 @@
       "host": "retention.kineticgain.com",
       "role": "cloud-console",
       "spec": null,
-      "source_repo": "unknown, repo has CNAME + pages.yml per audit but DNS was never created",
+      "source_repo": "m365-retention-case-orchestrator",
       "deploy": {
         "target": "github-pages",
         "path": null,
         "workflow": "pages.yml"
       },
-      "status": "dead-dns",
+      "status": "dns-fixed-tls-pending",
       "title_observed": null,
       "favicon": null,
       "listed_in_readme": true,
-      "notes": "NXDOMAIN, confirmed via nslookup this session. Build artifact exists (Pages workflow), DNS record simply never created."
+      "notes": "CNAME record added this session (-> mizcausevic-dev.github.io.); repo's GitHub Pages config confirmed verified (protected_domain_state: verified) with a successful prior build. Not yet visitable over HTTPS: GitHub's ACME cert was stuck in bad_authz (expired 2026-08-24) because it could never complete domain validation while DNS was absent. Confirmed via curl this session still SEC_E_CERT_EXPIRED even after the DNS fix; GitHub's ACME re-check can take time. If it hasn't self-resolved in 24h, toggling 'Enforce HTTPS' off/on (or removing and re-adding the custom domain) in the repo's Pages settings forces an immediate re-check."
     },
     {
       "host": "aws.kineticgain.com",
@@ -479,15 +479,15 @@
       "spec": null,
       "source_repo": "gcp-iam-policy-diff-lab",
       "deploy": {
-        "target": "github-pages",
-        "path": null,
-        "workflow": "pages.yml, but CNAME conflict, see notes"
+        "target": "hostinger-ftp",
+        "path": "/gcp/",
+        "workflow": "manual one-off this session, no repeatable CI wired yet, see notes"
       },
-      "status": "wrong-content",
-      "title_observed": "GCP Billing Anomaly Router",
+      "status": "live",
+      "title_observed": "GCP IAM Policy Diff Lab",
       "favicon": null,
       "listed_in_readme": true,
-      "notes": "CONFIRMED this session: byte-identical body (same md5) to billing.kineticgain.com. Both gcp-iam-policy-diff-lab and gcp-billing-anomaly-router ship a CNAME file for gcp.kineticgain.com. Needs Miz decision (Phase 2) on which repo owns this host; gcp-iam-policy-diff-lab is not live anywhere right now."
+      "notes": "Fixed this session. Root cause was NOT a CNAME conflict between the two repos as previously recorded here: gcp-billing-anomaly-router's own CNAME file correctly says billing.kineticgain.com, not gcp.kineticgain.com (re-verified via GitHub's contents API). The real cause was Hostinger's /gcp document root containing a full copy of gcp-billing-anomaly-router's build (identical filenames and byte sizes), evidently deployed there by mistake at some point. DNS (an ALIAS to gcp.kineticgain.com.cdn.hstgr.net.) was already correct and distinct from billing's own ALIAS the whole time. gcp-iam-policy-diff-lab does have a working GitHub Pages config (verified, prior successful builds), but that path is unused since DNS routes to Hostinger instead, matching the lane's other members (entra, guardduty, zone, billing all work the same way: Pages config present but dormant, Hostinger is what's actually live). Fix: built gcp-iam-policy-diff-lab locally (lint/typecheck clean, 17/18 tests pass, the one failure confirmed as a local sandbox network artifact via the repo's own real CI logs), ran npm run prerender, deployed via Hostinger's own deploy API (hosting_deployStaticWebsite), which does a full clean replace, not an overlay, removing the wrong billing-shaped routes (anomaly-risks/, billing-lane/, routing-posture/) automatically. Verified live: correct title, old wrong routes now 404, new correct routes 200, billing.kineticgain.com unchanged and still correct. No repeatable CI deploy path exists yet for this repo to Hostinger; if it needs to be redeployed in the future this was a manual, one-off fix, not a wired pipeline."
     },
     {
       "host": "billing.kineticgain.com",
