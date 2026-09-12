@@ -67,7 +67,10 @@ try {
 } catch (e) {
   console.log(`BLOCKED: could not fetch npm registry (${e.message}). Falling back to manifest.mcp_kinetic_gain.`);
 }
-console.log(`manifest_recorded_version: ${manifest.mcp_kinetic_gain.version_observed}`);
+console.log(
+  `manifest_recorded_npm_published_version: ${manifest.mcp_kinetic_gain.npm_published_version} (this is what README should cite)`
+);
+console.log(`manifest_recorded_tagged_unpublished_version: ${manifest.mcp_kinetic_gain.tagged_unpublished_version}`);
 console.log(`manifest_recorded_tools: ${manifest.mcp_kinetic_gain.tools_observed}`);
 console.log(`manifest_recorded_tests: ${manifest.mcp_kinetic_gain.tests_observed}`);
 
@@ -97,11 +100,15 @@ if (staleSpecWord.test(readme) || staleSpecDigit.test(readme)) {
   );
 }
 
-const readmeVersionMatches = [...readme.matchAll(/\bv(0\.\d+\.\d+)\b/g)].map((m) => m[1]);
-const staleVersions = readmeVersionMatches.filter((v) => v !== manifest.mcp_kinetic_gain.version_observed);
+// Scoped to lines that mention mcp-kinetic-gain by name, not every v0.x.y in
+// the document (spec version mentions like "v0.1 draft" are unrelated and
+// would otherwise false-positive here).
+const mcpLines = readme.split("\n").filter((l) => /mcp-kinetic-gain/i.test(l));
+const mcpVersionMatches = mcpLines.flatMap((l) => [...l.matchAll(/\bv(0\.\d+\.\d+)\b/g)].map((m) => m[1]));
+const staleVersions = mcpVersionMatches.filter((v) => v !== manifest.mcp_kinetic_gain.npm_published_version);
 if (staleVersions.length) {
   failures.push(
-    `README.md cites version(s) ${[...new Set(staleVersions)].join(", ")} but manifest.mcp_kinetic_gain.version_observed is ${manifest.mcp_kinetic_gain.version_observed}.`
+    `README.md cites mcp-kinetic-gain version(s) ${[...new Set(staleVersions)].join(", ")} on a line mentioning mcp-kinetic-gain, but the npm-published version is ${manifest.mcp_kinetic_gain.npm_published_version}.`
   );
 }
 

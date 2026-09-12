@@ -12,7 +12,7 @@ Every Suite repo SHOULD link back here. Repo-level briefs are short addenda; the
 
 | Thing | Canonical source | Posture |
 | --- | --- | --- |
-| The eleven spec documents (AEO, Prompt Provenance, Agent Cards, AI Evidence, MCP Tool Cards, Tutor Cards, Student AI Disclosure, Classroom AI AUP, Clinical AI Disclosure, AI Incident Card, AI Procurement Decision Card) | Each `*-spec` repo's `*.schema.json` + canonical examples | Schemas are stable. New fields are additive. Renaming a field is a breaking change. |
+| The twelve spec documents (AEO, Prompt Provenance, Agent Cards, AI Evidence, MCP Tool Cards, Tutor Cards, Student AI Disclosure, Classroom AI AUP, Clinical AI Disclosure, AI Incident Card, AI Procurement Decision Card, AI Claims Decision Card) | Each `*-spec` repo's `*.schema.json` + canonical examples | Schemas are stable. New fields are additive. Renaming a field is a breaking change. |
 | Discriminator pattern | `<thing>_version` at the top level of every Suite JSON doc | All Suite tooling auto-detects which spec a doc belongs to via this single field. Do not invent alternate detection schemes. |
 | Well-known URL paths | `/.well-known/aeo.json`, `/.well-known/agents/<id>.json`, `/.well-known/decisions/<id>.json`, etc. | Path is part of the contract. Do not relocate. |
 | Audit-stream contract | [`audit-stream-py`](https://github.com/mizcausevic-dev/audit-stream-py) — `EventKind` Literal + `GovernanceEvent` envelope | Hash-chained, tamper-evident. New event kinds are added by PR to the Literal — do NOT invent parallel hash chains. |
@@ -41,9 +41,10 @@ The Suite uses *specific* nouns. These names appear in JSON schemas, MCP tool na
 
 | Canonical term | Meaning | Common confusion to avoid |
 | --- | --- | --- |
-| **The Suite** | The Kinetic Gain Protocol Suite — the 11 specs taken together | "The Suite" never means the implementation stack. The implementation stack is "the Suite Implementation Stack" or "the AEO Reference Stack" etc. |
-| **AI Procurement Decision Card** (spec #11) | A *whole buyer-published document* declaring the outcome of a vendor review. Lives at `/.well-known/decisions/<id>.json`. | NOT a single rule inside a runtime bundle. That's a `PolicyRule`. |
-| **Decision Card** (shorthand) | Same as above when context is unambiguous. | If the surrounding code talks about "rules", "patterns", "conditions" — those are NOT Decision Cards. They are rules INSIDE a policy bundle that was *derived from* a Decision Card. |
+| **The Suite** | The Kinetic Gain Protocol Suite — the 12 specs taken together | "The Suite" never means the implementation stack. The implementation stack is "the Suite Implementation Stack" or "the AEO Reference Stack" etc. |
+| **AI Procurement Decision Card** | A *whole buyer-published document* declaring the outcome of a vendor review. Lives at `/.well-known/decisions/<id>.json`. Buyer-side (procurement). Not the same document as the AI Claims Decision Card below (buyer-side there too, but InsurTech claims adjudication, not vendor procurement). | NOT a single rule inside a runtime bundle. That's a `PolicyRule`. |
+| **AI Claims Decision Card** | A signed, hash-chained record of an AI-assisted insurance-claim adjudication decision, with evidence provenance and governance context. Discriminator: `claims_card_version`. Lives wherever the insurer's own claims system stores it (no fixed well-known path in the spec, unlike the well-known-path-based specs above). | NOT the same as the AI Procurement Decision Card. Different domain (claims adjudication vs. vendor procurement), different schema, different discriminator field. |
+| **Decision Card** (shorthand) | Ambiguous on its own now that there are two. Say "Procurement Decision Card" or "Claims Decision Card" explicitly. | If the surrounding code talks about "rules", "patterns", "conditions" — those are NOT Decision Cards. They are rules INSIDE a policy bundle that was *derived from* a Procurement Decision Card. |
 | **PolicyBundle** | A runtime-enforceable collection of rules, typically produced by `policy-as-code-engine` from a single Decision Card's `conditions[]` array. | NOT a Decision Card. NOT a spec. It's the compiled, runtime form. |
 | **PolicyRule** | One rule inside a PolicyBundle. Has an id, priority, effect (allow / deny / require_approval), match grammar, and an optional `because` provenance pointer back to the Decision Card condition that produced it. | The visualization layer in the broker dashboard called these "Decision Cards" — that's wrong vocabulary. |
 | **Agent Card** | A vendor's published declaration of an AI agent's capabilities + refusal posture. Lives at `/.well-known/agents/<id>.json`. Discriminator: `agent_card_version`. | Not the agent itself. Not the agent's code. Not a runtime registration record. |
@@ -66,7 +67,7 @@ These already exist. If you find yourself reimplementing one, stop and integrate
 | Always-on HTTP validator for every Suite spec | [`aeo-validator-service`](https://github.com/mizcausevic-dev/aeo-validator-service) (hosted at validator.kineticgain.com) |
 | BFS crawler over AEO graphs | [`aeo-crawler`](https://github.com/mizcausevic-dev/aeo-crawler) |
 | Graph-query layer over crawled AEO output | [`aeo-graph-explorer-rs`](https://github.com/mizcausevic-dev/aeo-graph-explorer-rs) |
-| MCP tool surface exposing every Suite spec | [`mcp-kinetic-gain`](https://github.com/mizcausevic-dev/mcp-kinetic-gain) — 47+ tools, one Claude Desktop config entry |
+| MCP tool surface exposing every Suite spec | [`mcp-kinetic-gain`](https://github.com/mizcausevic-dev/mcp-kinetic-gain) — 75 tools (npm-published v0.9.1; see `estate/manifest.json`), one Claude Desktop config entry |
 | Unified visualizer that auto-detects which spec via discriminator | [`kinetic-gain-visualizer`](https://github.com/mizcausevic-dev/kinetic-gain-visualizer) |
 | Reusable async reliability primitives (Tokio Rust) | [`reliability-toolkit-rs`](https://github.com/mizcausevic-dev/reliability-toolkit-rs) |
 | Async server-side feature flags (Rust) | [`feature-flag-rs`](https://github.com/mizcausevic-dev/feature-flag-rs) |
@@ -81,7 +82,7 @@ If your spec or library wants any of these capabilities — **add a dependency, 
 If you are an LLM (or human) handed a single repo from this ecosystem and asked to build a sibling — visualizer, dashboard, alternate-language port, vendor connector — read these in this order before scaffolding anything:
 
 1. **This file** — you're here.
-2. **[suite README](README.md)** — the eleven specs, the implementation stack, the cross-ecosystem hooks.
+2. **[suite README](README.md)** — the twelve specs, the implementation stack, the cross-ecosystem hooks.
 3. **The repo's own `README.md`** — what it does + where it composes.
 4. **The discriminator field name** in the schema (`<thing>_version`) — your tooling MUST respect this for auto-detection to work across the Suite.
 5. **The producer table in `audit-stream-py/README.md`** — see which event kinds your work should emit + add new ones via PR if needed.
@@ -93,7 +94,7 @@ If you are an LLM (or human) handed a single repo from this ecosystem and asked 
 
 If you're creating a new repo in the Kinetic Gain org:
 
-1. **License**: spec repos → AGPL-3.0; implementation libraries → MIT (matches `policy-as-code-engine`, `audit-stream-py`, `mcp-permission-broker`).
+1. **License**: MIT by default for both spec repos and implementation libraries (matches `policy-as-code-engine`, `audit-stream-py`, `mcp-permission-broker`, and the twelve spec repos as of this session's reconciliation). The one deliberate exception is the Cloud Identity/Platform/FinOps/Threat-Detection governance lane (entra-access-review-control-plane and siblings, see suite README), which stays AGPL-3.0-or-later. Don't default a new repo to AGPL-3.0 without a stated reason.
 2. **CI**: Python — ruff lint + ruff format check + mypy strict + pytest on py 3.11/3.12/3.13 (copy `policy-as-code-engine/.github/workflows/ci.yml`). Rust — `cargo fmt --check + cargo clippy -- -D warnings + cargo test`.
 3. **Repo metadata**: GitHub **Topics** and **Website** (`homepageUrl`) MUST be set immediately on creation. See sibling repos for the established topic taxonomy.
 4. **Audit-stream integration**: optional, opt-in via `AUDIT_STREAM_URL` env var, best-effort POST that never raises. Rust crates put this behind a `--features audit-stream` flag.
