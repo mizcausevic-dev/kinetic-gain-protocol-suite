@@ -1,7 +1,7 @@
 # Kinetic Gain Protocol Suite
 
-> **A family of eleven open JSON specifications for the answer-engine and agent era — plus a fifteen-repo implementation stack that consumes them.**
-> Five core specs · three EdTech extensions · one HealthTech extension · one cross-cutting incident-disclosure spec · one buyer-side procurement Decision Card (v0.3 — adds `data_vault_targets` + `retention_envelope`) · one unified visualizer · one operator console · one unified MCP server · **49 live properties on kineticgain.com** · all AGPL-3.0 (specs) + MIT (implementations).
+> **A family of twelve open JSON specifications for the answer-engine and agent era — plus a fifteen-repo implementation stack that consumes them.**
+> Five core specs · three EdTech extensions · one HealthTech extension · one cross-cutting incident-disclosure spec · one buyer-side procurement Decision Card (v0.3 — adds `data_vault_targets` + `retention_envelope`) · one InsurTech Claims Decision Card · one unified visualizer · one operator console · one unified MCP server · **107 live properties on kineticgain.com** · all AGPL-3.0 (specs) + MIT (implementations).
 >
 > Public front door: **[suite.kineticgain.com](https://suite.kineticgain.com)**.
 
@@ -89,8 +89,9 @@ Every spec carries a top-level `<name>_version` field. The unified visualizer de
 | **Clinical AI Disclosure** _(HealthTech)_ | [`clinical-ai-disclosure-spec`](https://github.com/mizcausevic-dev/clinical-ai-disclosure-spec) | `clinical_ai_card_version` | `/.well-known/clinical-ai/<system_id>.json` |
 | **AI Incident Card** _(cross-cutting, vendor-side)_ | [`ai-incident-card-spec`](https://github.com/mizcausevic-dev/ai-incident-card-spec) | `incident_card_version` | `/.well-known/ai-incidents/<id>.json` (+ index at `/.well-known/ai-incidents.json`) |
 | **AI Procurement Decision Card** _(cross-cutting, buyer-side)_ | [`ai-procurement-decision-spec`](https://github.com/mizcausevic-dev/ai-procurement-decision-spec) | `decision_card_version` | `/.well-known/procurement-decisions/<id>.json` |
+| **AI Claims Decision Card** _(InsurTech, buyer-side)_ | [`ai-claims-decision-card-spec`](https://github.com/mizcausevic-dev/ai-claims-decision-card-spec) | `claims_card_version` | (travels with the artifact) |
 
-All eleven: AGPL-3.0 spec text, freely implementable, v0.1 draft, JSON Schema draft 2020-12, tagged [`kinetic-gain-protocol-suite`](https://github.com/topics/kinetic-gain-protocol-suite). The **[NIST AI RMF crosswalk](https://suite.kineticgain.com/docs/nist-rmf-crosswalk.md)** maps every spec — plus the implementation tooling below — to specific NIST AI RMF subcategories.
+All twelve: AGPL-3.0 spec text, freely implementable, v0.1 draft, JSON Schema draft 2020-12, tagged [`kinetic-gain-protocol-suite`](https://github.com/topics/kinetic-gain-protocol-suite). The **[NIST AI RMF crosswalk](https://suite.kineticgain.com/docs/nist-rmf-crosswalk.md)** maps every spec — plus the implementation tooling below — to specific NIST AI RMF subcategories.
 
 ---
 
@@ -152,7 +153,7 @@ flowchart TB
     PDA ==>|preview tools| MCP
     AS ==>|event tools| MCP
     HA ==>|verify tools| MCP
-    MCP["🤖 mcp-kinetic-gain v0.8.0<br/>71 tools · one Claude Desktop config entry"]:::mcp
+    MCP["🤖 mcp-kinetic-gain v0.9.1<br/>75 tools · one Claude Desktop config entry"]:::mcp
 ```
 
 **Green** = the spec foundation. **Blue** = the five cross-ecosystem hooks that make this a stack rather than a pile of repos. **Grey** = supporting tools that feed either side. **Amber** = the tamper-evident audit-stream spine every governance moment writes to. **Purple** = the unified MCP surface that exposes the whole thing to Claude.
@@ -242,7 +243,7 @@ Ten repos that compose into a single layered reliability story: identity → rat
 
 | Repo | Lang | What it does |
 |---|---|---|
-| [`mcp-kinetic-gain`](https://github.com/mizcausevic-dev/mcp-kinetic-gain) | TypeScript | **Unified Suite MCP server** — 71 tools across 11 specs + DefenseTech 6-pack (v0.8.0, on the official MCP Registry). One Claude Desktop config entry. Headline tools: `aup_check_compliance` (joins AUP + Disclosure into one allow/deny call); `decision_card_validate` (enforces the full Decision Card conditional rule set); `defensetech_vault_resolve_3axis` (resolves CUI × export-control × foreign-person to the most-restrictive vault policy). |
+| [`mcp-kinetic-gain`](https://github.com/mizcausevic-dev/mcp-kinetic-gain) | TypeScript | **Unified Suite MCP server** — 75 tools across 12 specs + DefenseTech 6-pack (v0.9.1, on the official MCP Registry). One Claude Desktop config entry. Headline tools: `aup_check_compliance` (joins AUP + Disclosure into one allow/deny call); `decision_card_validate` (enforces the full Decision Card conditional rule set); `defensetech_vault_resolve_3axis` (resolves CUI × export-control × foreign-person to the most-restrictive vault policy). |
 | [`mcp-reliability-toolkit`](https://github.com/mizcausevic-dev/mcp-reliability-toolkit) | TypeScript | Reliability MCP server — `compute_slo_burn`, `design_rate_limiter`, `design_circuit_breaker`, `compose_reliability_pattern`. Same math as `slo-budget-tracker`; emits Python + Rust configs. |
 | [`mcp-decision-intelligence`](https://github.com/mizcausevic-dev/mcp-decision-intelligence) | TypeScript | Decision Intelligence MCP server — `validate_decision_card`, `preview_policy_bundle`, `plan_incident_remediation`, `check_contract_compatibility`. Read-only preview of what the live Python/Rust services would compute. |
 
@@ -269,9 +270,9 @@ The implementation stack is **independently usable** — any repo composes with 
 
 ---
 
-## 🔌 One MCP server. 71 tools. Eleven specs + DefenseTech.
+## 🔌 One MCP server. 75 tools. Twelve specs + DefenseTech.
 
-[`mcp-kinetic-gain`](https://github.com/mizcausevic-dev/mcp-kinetic-gain) (v0.8.0, on the official MCP Registry) is the unified [Model Context Protocol](https://modelcontextprotocol.io) server exposing every runtime Kinetic Gain spec as callable tools. One Claude Desktop / Cursor / MCP-client config entry; 71 tools across all eleven specs plus the DefenseTech 6-pack (3-axis vault resolver + CUI/ITAR/DFARS invariants + CMMC evidence summarizer + Incident Card event classifier).
+[`mcp-kinetic-gain`](https://github.com/mizcausevic-dev/mcp-kinetic-gain) (v0.9.1, on the official MCP Registry) is the unified [Model Context Protocol](https://modelcontextprotocol.io) server exposing every runtime Kinetic Gain spec as callable tools. One Claude Desktop / Cursor / MCP-client config entry; 75 tools across all twelve specs plus the DefenseTech 6-pack (3-axis vault resolver + CUI/ITAR/DFARS invariants + CMMC evidence summarizer + Incident Card event classifier).
 
 | Spec | Tools |
 |---|---|
@@ -287,7 +288,7 @@ The implementation stack is **independently usable** — any repo composes with 
 | AI Incident Card | `incident_validate` · `incident_inspect` · `incident_index_fetch` · `incident_affected_walk` |
 | AI Procurement Decision Card | **`decision_card_validate`** · `decision_card_inspect` · `decision_card_conditions` · `decision_card_signature_check` |
 
-126 tests pass · typecheck clean · stdio MCP server, drops into any MCP-compatible client. Sibling MCP servers for the Reliability Stack (`mcp-reliability-toolkit`) and Decision Intelligence (`mcp-decision-intelligence`) exist for narrower use cases.
+172 tests pass · typecheck clean · stdio MCP server, drops into any MCP-compatible client. Sibling MCP servers for the Reliability Stack (`mcp-reliability-toolkit`) and Decision Intelligence (`mcp-decision-intelligence`) exist for narrower use cases.
 
 ---
 
@@ -297,7 +298,7 @@ The implementation stack is **independently usable** — any repo composes with 
 
 - **Visualize** — the auto-detected renderer (FERPA / COPPA / GDPR badges for tutor cards, role-tone pills + artifact-hash binding for disclosures, vendor-requirements card in dark/authority tone for AUPs, full conditional-rule preview for Decision Cards, etc.)
 - **Editor** — paste any spec document and watch the right view light up
-- **Architecture** — the 11-spec map
+- **Architecture** — the 12-spec map
 - **Tools** — searchable catalog of all 63 MCP tools
 - **About** — detection model + cross-links
 
@@ -347,7 +348,7 @@ The bench is **not a twelfth spec** — it's the *testing-counterpart* to the di
 ### Hubs + tools (8)
 | URL | What it serves |
 |---|---|
-| **[suite.kineticgain.com](https://suite.kineticgain.com)** | **Canonical front door** for the entire Suite — 11-spec map, full spec table, two-front-doors section, NIST RMF crosswalk |
+| **[suite.kineticgain.com](https://suite.kineticgain.com)** | **Canonical front door** for the entire Suite — 12-spec map, full spec table, two-front-doors section, NIST RMF crosswalk |
 | [docs.kineticgain.com](https://docs.kineticgain.com) | **Quickstart hub** — per-role guides + canonical `/.well-known/` path map |
 | [directory.kineticgain.com](https://directory.kineticgain.com) | **Vendor directory** — curated list of domains publishing Kinetic Gain documents |
 | [examples.kineticgain.com](https://examples.kineticgain.com) | **Examples gallery** — sidebar of 11 specs, click for canonical example with JSON highlight |
@@ -404,7 +405,7 @@ Pick the entry that matches what you want to do:
 Start at the relevant spec's `examples/` folder, fork an example, validate against the schema, serve at the well-known URL.
 
 **I want to consume Kinetic Gain documents from an LLM agent.**
-Install [`mcp-kinetic-gain`](https://github.com/mizcausevic-dev/mcp-kinetic-gain), add one entry to your Claude Desktop config, get 71 tools.
+Install [`mcp-kinetic-gain`](https://github.com/mizcausevic-dev/mcp-kinetic-gain), add one entry to your Claude Desktop config, get 75 tools.
 
 **I want to see what a document looks like.**
 Open the [unified visualizer](https://mizcausevic-dev.github.io/kinetic-gain-visualizer/), pick an example from the Editor view.
@@ -454,7 +455,7 @@ The same five-layer pattern is now feasible for other specs: the Tutor Card and 
 
 ## 🤝 Status & contribution
 
-**v0.1 draft across all eleven specs · v0.1.0 across all fifteen implementation repos.** Stable enough to publish; designed to evolve. Issues and pull requests welcome on any repo. Discussion of cross-spec concerns happens here in this meta-repo.
+**v0.1 draft across all twelve specs · v0.1.0 across all fifteen implementation repos.** Stable enough to publish; designed to evolve. Issues and pull requests welcome on any repo. Discussion of cross-spec concerns happens here in this meta-repo.
 
 A future v0.2 sweep will probably add: detached cryptographic signing across the family (foundation already shipped in [`hash-attestation-rs`](https://github.com/mizcausevic-dev/hash-attestation-rs)), an automated `kinetic-gain-protocol-suite` validator that walks document references end-to-end, and a conformance suite for MCP servers claiming Kinetic Gain support.
 
