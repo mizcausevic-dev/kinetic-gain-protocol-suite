@@ -1,0 +1,30 @@
+name: facts-check
+
+# Fails when README.md disagrees with estate/manifest.json on the numbers
+# that actually matter (spec count, mcp-kinetic-gain version). This exists
+# because the 2026-09-12 estate audit found the README contradicting itself
+# and its neighbors on every headline number (11 vs 12 specs, 63 vs 75
+# tools, v0.9.1 vs 0.9.2, three different live-property counts). The
+# manifest is the one place those numbers are allowed to be typed; this job
+# is what keeps README.md honest against it.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  facts-check:
+    name: README.md matches estate/manifest.json
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5  # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020  # v4
+        with:
+          node-version: "22"
+      - run: node scripts/render-readme-facts.mjs
