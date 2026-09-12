@@ -1,7 +1,7 @@
 # Kinetic Gain Protocol Suite
 
-> **A family of twelve open JSON specifications for the answer-engine and agent era — plus a fifteen-repo implementation stack that consumes them.**
-> Five core specs · three EdTech extensions · one HealthTech extension · one cross-cutting incident-disclosure spec · one buyer-side procurement Decision Card (v0.3 — adds `data_vault_targets` + `retention_envelope`) · one InsurTech Claims Decision Card · one unified visualizer · one operator console · one unified MCP server · **107 live properties on kineticgain.com** · all AGPL-3.0 (specs) + MIT (implementations).
+> **A family of twelve open JSON specifications for the answer-engine and agent era — plus a 23-repo implementation stack that consumes them.**
+> Five core specs · three EdTech extensions · one HealthTech extension · one cross-cutting incident-disclosure spec · one buyer-side procurement Decision Card (v0.3 — adds `data_vault_targets` + `retention_envelope`) · one InsurTech Claims Decision Card · one unified visualizer · one operator console · one unified MCP server · **25 live properties on kineticgain.com** (see [Live properties](#-live-properties) for the current count, including which are down) · all MIT.
 >
 > Public front door: **[suite.kineticgain.com](https://suite.kineticgain.com)**.
 
@@ -9,7 +9,15 @@
 
 > **[Kinetic Gain Operator Console](https://console.kineticgain.com)** — mission-control for the whole Suite: an interactive topology mesh (*v0.2* — runtime-gate overlays for the MCP Permission Broker / Azure Governance Bridge / SQL Contract Enforcer, ed25519 signature posture, and blast-radius tracing across the hash-chained spine), a configurable SRE operator dashboard (savable layouts, simulation throttle, per-channel latency sliders, PDF export), and live audit-stream visualization. ([repo](https://github.com/mizcausevic-dev/kinetic-gain-operator-console))
 
-[![kg pulse self-score · 100/100 · comprehensive](https://raw.githubusercontent.com/mizcausevic-dev/kineticgain-com-apex/main/docs/pulse-badge.svg)](https://kineticgain.com/.well-known/pulse-receipt.json) &nbsp; *We publish the specs AND we score against them. Live receipt at [kineticgain.com/.well-known/pulse-receipt.json](https://kineticgain.com/.well-known/pulse-receipt.json), refreshed weekly by [procurement-pulse-action](https://github.com/mizcausevic-dev/procurement-pulse-action) on kineticgain.com's own GitHub Actions.*
+<!-- Pulse self-score badge removed 2026-09-12: kineticgain-com-apex (source
+     of both the badge SVG and the linked receipt) is private or unreachable
+     from here, so the badge 404s. The claim it made ("100/100 comprehensive")
+     also measured file presence, not schema conformance -- the real number,
+     independently checked the same day, is 0 of 11 sampled /.well-known
+     documents conforming to their own spec schema (estate/manifest.json,
+     well_known_conformance). Restore only once Phase 4 makes the receipt
+     honest and the repo is reachable. -->
+*We publish the specs AND we intend to score against them. That self-score is not currently verifiable from outside the org, see [estate/manifest.json](estate/manifest.json) for what's independently confirmed instead.*
 
 This repository is the **single landing** for the Suite — both for the **specs** (the "what to publish" layer) and for the **implementation stack** that consumes them (the "what to actually run" layer). Each spec lives in its own repo with full normative text, JSON Schema, examples, and a permissive cross-link table. This meta-repo is where you start when you want the map.
 
@@ -79,7 +87,7 @@ Every spec carries a top-level `<name>_version` field. The unified visualizer de
 | Spec | Repo | Detect via | Well-known path |
 |---|---|---|---|
 | **AEO Protocol** | [`aeo-protocol-spec`](https://github.com/mizcausevic-dev/aeo-protocol-spec) | `aeo_version` | `/.well-known/aeo.json` |
-| **Prompt Provenance** | [`prompt-provenance-spec`](https://github.com/mizcausevic-dev/prompt-provenance-spec) | `provenance_version` | — |
+| **Prompt Provenance** | [`prompt-provenance-spec`](https://github.com/mizcausevic-dev/prompt-provenance-spec) | `provenance_version` | `/.well-known/prompts/<id>/latest.json` |
 | **Agent Cards** | [`agent-cards-spec`](https://github.com/mizcausevic-dev/agent-cards-spec) | `agent_card_version` | `/.well-known/agents/<agent_id>.json` |
 | **AI Evidence Format** | [`ai-evidence-format-spec`](https://github.com/mizcausevic-dev/ai-evidence-format-spec) | `evidence_version` | — |
 | **MCP Tool Cards** | [`mcp-tool-card-spec`](https://github.com/mizcausevic-dev/mcp-tool-card-spec) | `tool_card_version` | `/.well-known/mcp-tools/<tool_name>.json` |
@@ -88,10 +96,12 @@ Every spec carries a top-level `<name>_version` field. The unified visualizer de
 | **Classroom AI AUP** _(EdTech)_ | [`classroom-ai-aup-spec`](https://github.com/mizcausevic-dev/classroom-ai-aup-spec) | `aup_version` | `/.well-known/ai-aup.json` |
 | **Clinical AI Disclosure** _(HealthTech)_ | [`clinical-ai-disclosure-spec`](https://github.com/mizcausevic-dev/clinical-ai-disclosure-spec) | `clinical_ai_card_version` | `/.well-known/clinical-ai/<system_id>.json` |
 | **AI Incident Card** _(cross-cutting, vendor-side)_ | [`ai-incident-card-spec`](https://github.com/mizcausevic-dev/ai-incident-card-spec) | `incident_card_version` | `/.well-known/ai-incidents/<id>.json` (+ index at `/.well-known/ai-incidents.json`) |
-| **AI Procurement Decision Card** _(cross-cutting, buyer-side)_ | [`ai-procurement-decision-spec`](https://github.com/mizcausevic-dev/ai-procurement-decision-spec) | `decision_card_version` | `/.well-known/procurement-decisions/<id>.json` |
+| **AI Procurement Decision Card** _(cross-cutting, buyer-side)_ | [`ai-procurement-decision-spec`](https://github.com/mizcausevic-dev/ai-procurement-decision-spec) | `decision_card_version` | `/.well-known/decisions/<decision_id>.json` |
 | **AI Claims Decision Card** _(InsurTech, buyer-side)_ | [`ai-claims-decision-card-spec`](https://github.com/mizcausevic-dev/ai-claims-decision-card-spec) | `claims_card_version` | (travels with the artifact) |
 
-All twelve: AGPL-3.0 spec text, freely implementable, v0.1 draft, JSON Schema draft 2020-12, tagged [`kinetic-gain-protocol-suite`](https://github.com/topics/kinetic-gain-protocol-suite). The **[NIST AI RMF crosswalk](https://suite.kineticgain.com/docs/nist-rmf-crosswalk.md)** maps every spec — plus the implementation tooling below — to specific NIST AI RMF subcategories.
+All twelve: MIT spec text, freely implementable, v0.1 draft, JSON Schema draft 2020-12, tagged [`kinetic-gain-protocol-suite`](https://github.com/topics/kinetic-gain-protocol-suite). The **[NIST AI RMF crosswalk](https://suite.kineticgain.com/docs/nist-rmf-crosswalk.md)** maps every spec — plus the implementation tooling below — to specific NIST AI RMF subcategories.
+
+Note on the Decision Card path: this table previously read `/.well-known/procurement-decisions/<id>.json`. The spec repo and `CROSS_MODEL_BRIEF.md` both use `/.well-known/decisions/{decision_id}.json`; the apex currently serves both paths. Standardized on the spec's own path here; the apex should drop the alias once it's confirmed nothing external depends on it (Phase 4).
 
 ---
 
@@ -115,7 +125,7 @@ The Suite now has real implementation tooling attached to several of its disclos
 ---
 
 ## 🛠️ Suite × Implementations
-The Suite is a set of specs. **This section is the software that consumes them** — fifteen repos across Tiers A–E, all CI-green, semver-tagged, MIT-licensed, with **five cross-ecosystem hooks** tying them together. Grouped by the buyer most likely to land on the repo first.
+The Suite is a set of specs. **This section is the software that consumes them** — 23 repos across the sections below, semver-tagged, MIT-licensed, with **five cross-ecosystem hooks** tying them together. Grouped by the buyer most likely to land on the repo first. ("CI-green" is this repo's own claim about itself, not independently re-run across all 23 this session, see the manifest for what has been re-verified.)
 
 ### 🕸️ How it composes
 
@@ -127,7 +137,7 @@ flowchart TB
     classDef stream fill:#f59e0b,stroke:#92400e,color:#fff
     classDef mcp fill:#a855f7,stroke:#581c87,color:#fff,stroke-width:2px
 
-    SPECS["📐 11 Suite specs<br/>AEO · Agent · Tool · Tutor · AUP · Disclosure<br/>Evidence · Provenance · Clinical · Incident · Decision"]:::spec
+    SPECS["📐 12 Suite specs<br/>AEO · Agent · Tool · Tutor · AUP · Disclosure<br/>Evidence · Provenance · Clinical · Incident · Decision · Claims"]:::spec
 
     SPECS -->|"#1 ingest Suite docs"| PDA["procurement-decision-api<br/>drafts Decision Cards"]:::hook
     PDA -->|"#2 conditions → runtime gates"| PAC["policy-as-code-engine<br/>PolicyBundle enforcement"]:::hook
@@ -214,7 +224,7 @@ Adding the next producer is a ~60-line module: copy the `audit_stream` shape (Py
 
 | Repo | Lang | What it does |
 |---|---|---|
-| [`aeo-validator-service`](https://github.com/mizcausevic-dev/aeo-validator-service) | Python · FastAPI | Always-on HTTP validator for AEO + all 11 Suite docs. Auto-detects the spec via `*_version` sniffing, hashes canonically, tracks **drift** across re-checks (`POST /watches/{id}/recheck` returns a structured `DriftReport`). Layer 4 of the AEO Reference Stack. |
+| [`aeo-validator-service`](https://github.com/mizcausevic-dev/aeo-validator-service) | Python · FastAPI | Always-on HTTP validator for AEO + all Suite docs (11 at last independent check; 12th-spec support not reverified this session). Auto-detects the spec via `*_version` sniffing, hashes canonically, tracks **drift** across re-checks (`POST /watches/{id}/recheck` returns a structured `DriftReport`). Layer 4 of the AEO Reference Stack. |
 | [`aeo-graph-explorer-rs`](https://github.com/mizcausevic-dev/aeo-graph-explorer-rs) | Rust · axum · petgraph | HTTP graph-query service over `aeo-crawler` JSONL output. `GET /neighbors`, `GET /shortest-path`, `GET /find-by-claim`, atomic `POST /ingest`. Layer 5 of the AEO Reference Stack. |
 | [`incident-correlation-rs`](https://github.com/mizcausevic-dev/incident-correlation-rs) | Rust · petgraph | Walks the Suite graph from an `IncidentCard` and emits a structured remediation plan: `DecisionCard → RecheckPolicy`, `Vendor → RequestReview`, AEO/agent/tool → `Revalidate`. |
 
@@ -228,7 +238,7 @@ Adding the next producer is a ~60-line module: copy the `audit_stream` shape (Py
 
 ### 🛡️ SRE / Platform reliability stack
 
-Ten repos that compose into a single layered reliability story: identity → rate limits → canary → registry → SLO budget → Rust primitives → feature flags → shadow traffic → tamper-evident audit log.
+Nine repos that compose into a single layered reliability story: identity → rate limits → canary → registry → SLO budget → Rust primitives → feature flags → shadow traffic → tamper-evident audit log.
 
 | Repo | Lang | What it does |
 |---|---|---|
@@ -237,7 +247,7 @@ Ten repos that compose into a single layered reliability story: identity → rat
 | [`feature-flag-rs`](https://github.com/mizcausevic-dev/feature-flag-rs) | Rust · Tokio | Server-side flag eval — targeting rules, sticky percentage rollouts (SHA-256 bucketing, no RNG), hot reload. |
 | [`request-shadow-rs`](https://github.com/mizcausevic-dev/request-shadow-rs) | Rust · Tokio | Async request mirroring with sampling + divergence detection. The SRE primitive for safe migrations. |
 | [`audit-stream-py`](https://github.com/mizcausevic-dev/audit-stream-py) | Python · FastAPI · SSE | Append-only governance event stream, hash-chained for tamper-evidence. Every portfolio repo can produce events here. |
-| _(Plus 5 earlier reliability repos)_ | Python | `rate-limit-shield` · `identity-mesh` · `agent-canary` · `model-registry-pro` — defense-in-depth predecessors. |
+| _(Plus 4 earlier reliability repos)_ | Python | `rate-limit-shield` · `identity-mesh` · `agent-canary` · `model-registry-pro` — defense-in-depth predecessors. |
 
 ### 🤖 MCP / Claude integrator
 
@@ -288,18 +298,18 @@ The implementation stack is **independently usable** — any repo composes with 
 | AI Incident Card | `incident_validate` · `incident_inspect` · `incident_index_fetch` · `incident_affected_walk` |
 | AI Procurement Decision Card | **`decision_card_validate`** · `decision_card_inspect` · `decision_card_conditions` · `decision_card_signature_check` |
 
-172 tests pass · typecheck clean · stdio MCP server, drops into any MCP-compatible client. Sibling MCP servers for the Reliability Stack (`mcp-reliability-toolkit`) and Decision Intelligence (`mcp-decision-intelligence`) exist for narrower use cases.
+191 tests pass · typecheck clean · stdio MCP server, drops into any MCP-compatible client. Sibling MCP servers for the Reliability Stack (`mcp-reliability-toolkit`) and Decision Intelligence (`mcp-decision-intelligence`) exist for narrower use cases.
 
 ---
 
-## 🖼️ One visualizer. Eleven specs.
+## 🖼️ One visualizer. Twelve specs.
 
-[`kinetic-gain-visualizer`](https://mizcausevic-dev.github.io/kinetic-gain-visualizer/) auto-detects the spec from the top-level `*_version` field and renders the appropriate procurement-grade view. Live on GitHub Pages.
+[`kinetic-gain-visualizer`](https://mizcausevic-dev.github.io/kinetic-gain-visualizer/) auto-detects the spec from the top-level `*_version` field and renders the appropriate procurement-grade view. Live on GitHub Pages. **Not independently re-verified this session against the 12th spec (AI Claims Decision Card)** — the Architecture view below claiming a 12-spec map is the visualizer's own claim, not something checked live here.
 
 - **Visualize** — the auto-detected renderer (FERPA / COPPA / GDPR badges for tutor cards, role-tone pills + artifact-hash binding for disclosures, vendor-requirements card in dark/authority tone for AUPs, full conditional-rule preview for Decision Cards, etc.)
 - **Editor** — paste any spec document and watch the right view light up
 - **Architecture** — the 12-spec map
-- **Tools** — searchable catalog of all 63 MCP tools
+- **Tools** — searchable catalog of MCP tools (README previously said "63"; `mcp-kinetic-gain` is independently confirmed at 75 tools as of this session, the visualizer's own catalog count wasn't re-checked)
 - **About** — detection model + cross-links
 
 ---
@@ -343,57 +353,79 @@ The bench is **not a twelfth spec** — it's the *testing-counterpart* to the di
 
 ---
 
-## 🌐 Live properties — 32 total
+## 🌐 Live properties
 
-### Hubs + tools (8)
+Source of truth: [`estate/manifest.json`](estate/manifest.json), independently curl/DNS-checked 2026-09-12, not copied from any prior claim without re-verifying. Of 34 tracked subdomains: **27 live and correct, 6 down, 1 serving another property's content.** `scripts/render-readme-facts.mjs` / `facts-check.yml` fail the build if these numbers drift from the manifest without this section being updated too.
+
+### Hubs + tools (7 live)
 | URL | What it serves |
 |---|---|
 | **[suite.kineticgain.com](https://suite.kineticgain.com)** | **Canonical front door** for the entire Suite — 12-spec map, full spec table, two-front-doors section, NIST RMF crosswalk |
-| [docs.kineticgain.com](https://docs.kineticgain.com) | **Quickstart hub** — per-role guides + canonical `/.well-known/` path map |
+| [docs.kineticgain.com](https://docs.kineticgain.com) | **Quickstart hub** — per-role guides + canonical `/.well-known/` path map. Confirmed stale as of this session: its spec count, tool count, and live-property count all lag the numbers in this README (63 tools vs. the current 75; the other two figures are also below current). No source repo found for this site; fix needs someone with access to whatever generates it. |
 | [directory.kineticgain.com](https://directory.kineticgain.com) | **Vendor directory** — curated list of domains publishing Kinetic Gain documents |
-| [examples.kineticgain.com](https://examples.kineticgain.com) | **Examples gallery** — sidebar of 11 specs, click for canonical example with JSON highlight |
-| [walker.kineticgain.com](https://walker.kineticgain.com) | **well-known-walker** — paste any domain, see every Kinetic Gain disclosure it publishes |
 | [bench.kineticgain.com](https://bench.kineticgain.com) | **prompt-injection-bench** — paste a JSONL transcript, see pass rates by category and severity |
 | [pulse.kineticgain.com](https://pulse.kineticgain.com) | **AI Procurement Pulse** — quarterly research index of vendor disclosure across the open internet. [Issue #1 "The Zero Baseline"](https://pulse.kineticgain.com/issue-1/) is live (powered by `procurement-pulse-engine` + `well-known-probe-js`) |
 | [console.kineticgain.com](https://console.kineticgain.com) | **Operator Console** — mission-control for the Suite: interactive topology mesh (*v0.2* — runtime-gate overlays, ed25519 signature posture, blast-radius tracing), configurable SRE operator dashboard, live audit-stream visualization, PDF export ([repo](https://github.com/mizcausevic-dev/kinetic-gain-operator-console)) |
+| [validator.kineticgain.com](https://validator.kineticgain.com) | **Kinetic Gain Suite Validator** — was referenced in `CROSS_MODEL_BRIEF.md`, missing from this table until now |
 
-### Per-spec landings (11)
+`examples.kineticgain.com` and `walker.kineticgain.com` were listed here before; both are currently down, see **Currently down** below.
+
+### Per-spec landings (10 live)
 | URL | Spec |
 |---|---|
 | [aeo.kineticgain.com](https://aeo.kineticgain.com) | AEO Protocol — interactive visualizer |
-| [prompts.kineticgain.com](https://prompts.kineticgain.com) | Prompt Provenance |
-| [agents.kineticgain.com](https://agents.kineticgain.com) | Agent Cards |
 | [evidence.kineticgain.com](https://evidence.kineticgain.com) | AI Evidence Format |
 | [toolcards.kineticgain.com](https://toolcards.kineticgain.com) | MCP Tool Cards |
 | [tutor.kineticgain.com](https://tutor.kineticgain.com) | AI Tutor Cards (EdTech) |
 | [student.kineticgain.com](https://student.kineticgain.com) | Student AI Disclosure (EdTech) |
-| [aup.kineticgain.com](https://aup.kineticgain.com) | Classroom AI AUP (EdTech) |
 | [clinical.kineticgain.com](https://clinical.kineticgain.com) | Clinical AI Disclosure (HealthTech) |
 | [incidents.kineticgain.com](https://incidents.kineticgain.com) | AI Incident Card (cross-cutting, vendor-side) |
 | [decisions.kineticgain.com](https://decisions.kineticgain.com) | AI Procurement Decision Card (cross-cutting, buyer-side) |
 
-### Earlier product surfaces (5)
+`prompts.kineticgain.com`, `agents.kineticgain.com`, and `aup.kineticgain.com` were listed here before; all three are currently down, see **Currently down** below. Classroom AI AUP and AI Claims Decision Card have no dedicated landing subdomain yet.
+
+### Earlier product surfaces (4 live)
 | URL | What it does |
 |---|---|
 | [gv.kineticgain.com](https://gv.kineticgain.com) | GitVisualizer — visual portfolio intelligence for any GitHub user |
-| [mcp.kineticgain.com](https://mcp.kineticgain.com) | MCP Sentinel — governance dashboard for MCP servers |
+| [mcp.kineticgain.com](https://mcp.kineticgain.com) | **mcp-kinetic-gain front door.** Previously described here as "MCP Sentinel" — that's a different, unlinked repo; the live page is the mcp-kinetic-gain server's own landing. |
 | [rag.kineticgain.com](https://rag.kineticgain.com) | RAG Sentinel — hallucination, drift, citation quality monitoring |
 | [observe.kineticgain.com](https://observe.kineticgain.com) | AgentObserve — operator console for AI agent fleets |
-| [mizcausevic-dev.github.io/kinetic-gain-visualizer](https://mizcausevic-dev.github.io/kinetic-gain-visualizer/) | Unified visualizer (GitHub Pages, all 11 specs) |
 
-### Cloud Identity, Platform, FinOps & Threat Detection Governance lane (8)
+`mizcausevic-dev.github.io/kinetic-gain-visualizer` is the unified visualizer (GitHub Pages); not re-verified against the 12th spec this session (see the visualizer section above).
+
+### Cloud Identity, Platform, FinOps & Threat Detection Governance lane (6 live, 1 down, 1 serving the wrong content)
 Production-hardened (v1.0-prod) synthetic-data operator consoles covering the multi-cloud admin stack — Microsoft, AWS, GCP, Azure. AGPL-3.0-or-later, dual-Node CI, dependabot, 95%+ statement coverage, each deployed on its own GitHub Pages subdomain.
 
 | URL | What it does | Repo |
 |---|---|---|
 | [entra.kineticgain.com](https://entra.kineticgain.com) | Microsoft Entra access reviews, privileged-role auto-approval drift, reviewer self-review detection, decision-overdue posture | [`entra-access-review-control-plane`](https://github.com/mizcausevic-dev/entra-access-review-control-plane) |
 | [intune.kineticgain.com](https://intune.kineticgain.com) | Microsoft Intune device compliance, jailbreak/root detection, encryption gaps, OS-drift, stale check-ins, BYOD scope | [`intune-device-compliance-ops`](https://github.com/mizcausevic-dev/intune-device-compliance-ops) |
-| [retention.kineticgain.com](https://retention.kineticgain.com) | Microsoft 365 Purview retention coverage and eDiscovery custodian / hold orchestration | [`m365-retention-case-orchestrator`](https://github.com/mizcausevic-dev/m365-retention-case-orchestrator) |
 | [aws.kineticgain.com](https://aws.kineticgain.com) | AWS IAM Access Analyzer posture, public-access bindings, cross-account trust, remediation sequencing | [`aws-iam-access-analyzer-console`](https://github.com/mizcausevic-dev/aws-iam-access-analyzer-console) |
 | [guardduty.kineticgain.com](https://guardduty.kineticgain.com) | AWS GuardDuty detector posture, threat-finding triage, credential exfiltration / crypto-mining / anomalous-API behavior, response sequencing | [`aws-guardduty-triage-board`](https://github.com/mizcausevic-dev/aws-guardduty-triage-board) |
-| [gcp.kineticgain.com](https://gcp.kineticgain.com) | GCP IAM snapshot drift, public `allUsers` bindings, `roles/editor` creep, service-account token-creator grants, org-policy mismatch | [`gcp-iam-policy-diff-lab`](https://github.com/mizcausevic-dev/gcp-iam-policy-diff-lab) |
 | [billing.kineticgain.com](https://billing.kineticgain.com) | GCP billing-anomaly routing, budget breaches, spend-spike escalation, idle commitments, unlabeled-cost drift, billing-export gaps | [`gcp-billing-anomaly-router`](https://github.com/mizcausevic-dev/gcp-billing-anomaly-router) |
 | [zone.kineticgain.com](https://zone.kineticgain.com) | Azure landing-zone baseline drift, owner-role drift, missing deny assignments, disabled Defender, diagnostics gaps, route bypass | [`azure-landing-zone-drift-radar`](https://github.com/mizcausevic-dev/azure-landing-zone-drift-radar) |
+| ⚠️ [gcp.kineticgain.com](https://gcp.kineticgain.com) | **Currently serves `billing.kineticgain.com`'s content, byte-identical, confirmed this session.** Intended content (GCP IAM snapshot drift, `allUsers` bindings, `roles/editor` creep) belongs to [`gcp-iam-policy-diff-lab`](https://github.com/mizcausevic-dev/gcp-iam-policy-diff-lab), which is not live anywhere right now. Both repos ship a CNAME for this host. Needs a Phase 2 ownership decision before it's fixed. | [`gcp-iam-policy-diff-lab`](https://github.com/mizcausevic-dev/gcp-iam-policy-diff-lab) (intended) |
+| ❌ retention.kineticgain.com | Down, see **Currently down** below. | [`m365-retention-case-orchestrator`](https://github.com/mizcausevic-dev/m365-retention-case-orchestrator) |
+
+### Currently down (6)
+None of these should be read as live until this table is empty. `82.25.87.13` is a stale, wrong deploy host documented elsewhere as a past misdirection incident, not the current web-estate host, these four were very likely provisioned while that host was still (wrongly) in use and never repointed.
+
+| URL | Status | Notes |
+|---|---|---|
+| examples.kineticgain.com | NXDOMAIN | No DNS record. No artifact located. |
+| retention.kineticgain.com | NXDOMAIN | Build artifact exists (`m365-retention-case-orchestrator` ships a GitHub Pages workflow + CNAME); DNS record was simply never created. |
+| walker.kineticgain.com | Resolves to `82.25.87.13`, no TLS | well-known-walker |
+| prompts.kineticgain.com | Resolves to `82.25.87.13`, no TLS | Prompt Provenance landing |
+| agents.kineticgain.com | Resolves to `82.25.87.13`, no TLS | Agent Cards landing |
+| aup.kineticgain.com | Resolves to `82.25.87.13`, no TLS | Classroom AI AUP landing |
+
+### Live but previously missing from this README (3, beyond validator above)
+| URL | What it serves |
+|---|---|
+| [governance.kineticgain.com](https://governance.kineticgain.com) | Kinetic Gain Governance Dashboard, referenced 22 times across other repos' READMEs, never listed here until now |
+| [portfolio.kineticgain.com](https://portfolio.kineticgain.com) | Portfolio Command Center — live map of the public GitHub portfolio. Was serving a different, frozen (since June) snapshot from a predecessor repo until fixed this session. |
+| [okta.kineticgain.com](https://okta.kineticgain.com) | Okta Governance. No public source repo confirmed as of this session; flag stands until one is found or the repo is made public. |
 
 ---
 
@@ -445,7 +477,7 @@ The AEO Protocol is the oldest spec in the suite and has the most complete tooli
 | **1. SDKs** | [`aeo-sdk-python`](https://github.com/mizcausevic-dev/aeo-sdk-python) (live on [PyPI](https://pypi.org/project/aeo-protocol/)) · [`aeo-sdk-typescript`](https://github.com/mizcausevic-dev/aeo-sdk-typescript) · [`aeo-sdk-rust`](https://github.com/mizcausevic-dev/aeo-sdk-rust) · [`aeo-sdk-go`](https://github.com/mizcausevic-dev/aeo-sdk-go) · [`aeo-sdk-swift`](https://github.com/mizcausevic-dev/aeo-sdk-swift) |
 | **2. CLI** | [`aeo-cli`](https://github.com/mizcausevic-dev/aeo-cli) — `aeo validate / fetch / inspect / claim` against a live well-known URL |
 | **3. Crawler** | [`aeo-crawler`](https://github.com/mizcausevic-dev/aeo-crawler) — BFS over AEO graphs, JSONL output |
-| **4. Validator service** | [`aeo-validator-service`](https://github.com/mizcausevic-dev/aeo-validator-service) — always-on HTTP validator for all 11 Suite docs; tracks drift via `POST /watches/{id}/recheck` |
+| **4. Validator service** | [`aeo-validator-service`](https://github.com/mizcausevic-dev/aeo-validator-service) — always-on HTTP validator for all Suite docs (11 at last independent check; 12th-spec support not reverified this session); tracks drift via `POST /watches/{id}/recheck` |
 | **5. Graph explorer** | [`aeo-graph-explorer-rs`](https://github.com/mizcausevic-dev/aeo-graph-explorer-rs) — Rust + axum + petgraph graph-query service over the crawler's JSONL output |
 | **MCP server (AEO-only)** | [`mcp-aeo-server`](https://github.com/mizcausevic-dev/mcp-aeo-server) — superseded by `mcp-kinetic-gain` but useful as a single-spec install |
 
@@ -455,14 +487,15 @@ The same five-layer pattern is now feasible for other specs: the Tutor Card and 
 
 ## 🤝 Status & contribution
 
-**v0.1 draft across all twelve specs · v0.1.0 across all fifteen implementation repos.** Stable enough to publish; designed to evolve. Issues and pull requests welcome on any repo. Discussion of cross-spec concerns happens here in this meta-repo.
+**v0.1 draft across all twelve specs · v0.1.0 across the 23-repo implementation stack (see the table above).** Stable enough to publish; designed to evolve. Issues and pull requests welcome on any repo. Discussion of cross-spec concerns happens here in this meta-repo.
 
 A future v0.2 sweep will probably add: detached cryptographic signing across the family (foundation already shipped in [`hash-attestation-rs`](https://github.com/mizcausevic-dev/hash-attestation-rs)), an automated `kinetic-gain-protocol-suite` validator that walks document references end-to-end, and a conformance suite for MCP servers claiming Kinetic Gain support.
 
 ## 📜 License
 
-Specifications, JSON Schemas, examples, and this meta-README: **AGPL-3.0**.
+Specifications, JSON Schemas, examples, and this meta-README: **MIT**.
 Implementation repos (procurement-decision-api, policy-as-code-engine, slo-budget-tracker, reliability-toolkit-rs, audit-stream-py, hash-attestation-rs, and the rest): **MIT**.
+The Cloud Identity, Platform, FinOps & Threat Detection Governance lane (entra-access-review-control-plane, intune-device-compliance-ops, aws-iam-access-analyzer-console, aws-guardduty-triage-board, gcp-billing-anomaly-router, azure-landing-zone-drift-radar, gcp-iam-policy-diff-lab, m365-retention-case-orchestrator): **AGPL-3.0-or-later** (see that section above), not MIT like the rest of the stack.
 Supporting sites are unrestricted under their own licenses.
 
 ## 👤 Author

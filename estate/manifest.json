@@ -1,0 +1,673 @@
+{
+  "$comment": "Estate source of truth for the Kinetic Gain Protocol Suite. One entry per host named in the 2026-09-12 estate audit, re-verified independently the same day via direct curl/DNS probes (not copied from the audit without re-checking). status values: live, dead-dns, dead-tls, wrong-content, unlisted, retired, planned. source_repo: null is allowed but is itself a finding (no public source for that host), not a state to leave unexamined. Update this file, not the numbers scattered across README.md, when any of these facts change.",
+  "generated_at": "2026-09-12",
+  "spec_count_decision": {
+    "value": 12,
+    "decided_by": "Miz",
+    "decided_at": "2026-09-12",
+    "note": "ai-claims-decision-card-spec brought to full template compliance the same day (PR merged) to make this count honest: root-level schema, examples/, docs/ORIGIN.md, validate.yml, single MIT license."
+  },
+  "mcp_kinetic_gain": {
+    "npm_published_version": "0.9.1",
+    "tagged_unpublished_version": "0.9.2",
+    "tools_observed": 75,
+    "tests_observed": 191,
+    "test_files_observed": 6,
+    "observed_via": "npm view (published), package.json + git tag (tagged), vitest run (tests), this session",
+    "note": "v0.9.2 has been tagged since 2026-08-25 but never successfully published (npm 2FA-bypass-token deprecation, fixed in mcp-kinetic-gain PR #37, still needs an npm Trusted Publisher registration before the next tag push succeeds). README should cite 0.9.1, the version anyone actually gets from npm install, not the unpublished tag."
+  },
+  "hosts": [
+    {
+      "host": "kineticgain.com",
+      "role": "apex",
+      "spec": null,
+      "source_repo": "kineticgain-com-apex",
+      "source_repo_visibility": "private-or-missing, not resolvable from this session",
+      "deploy": {
+        "target": "hostinger-ftp",
+        "path": "/",
+        "workflow": "unknown, source repo not accessible"
+      },
+      "status": "live",
+      "title_observed": "Kinetic Gain LLC | AI, WebOps, Cloud, an...",
+      "favicon": "/site/favicon.svg",
+      "listed_in_readme": true,
+      "notes": "Serves the /.well-known/* documents. See well_known_conformance below, 0 of 11 sampled pass their own spec schema."
+    },
+    {
+      "host": "suite.kineticgain.com",
+      "role": "spec-family-landing",
+      "spec": null,
+      "source_repo": "kinetic-gain-suite-landing",
+      "deploy": {
+        "target": "hostinger-ftp",
+        "path": "/",
+        "workflow": ".github/workflows/deploy.yml"
+      },
+      "status": "live",
+      "title_observed": "Kinetic Gain Protocol Suite - twelve JSO...",
+      "favicon": "/favicon.svg",
+      "listed_in_readme": true,
+      "notes": "Already reads twelve/75/v0.9.1 as of tonight's earlier reconciliation work, ahead of this hub's own README."
+    },
+    {
+      "host": "docs.kineticgain.com",
+      "role": "docs",
+      "spec": null,
+      "source_repo": null,
+      "deploy": {
+        "target": "hostinger-ftp",
+        "path": "/docs/",
+        "workflow": null
+      },
+      "status": "live",
+      "title_observed": "Kinetic Gain Docs \u00e2\u20ac\u201d quickstart guides",
+      "favicon": null,
+      "listed_in_readme": true,
+      "notes": "Confirmed stale, still says 11 specs / 63 tools / 101 live properties. No favicon. No public source repo found."
+    },
+    {
+      "host": "directory.kineticgain.com",
+      "role": "directory",
+      "spec": null,
+      "source_repo": null,
+      "deploy": {
+        "target": "hostinger-ftp",
+        "path": "/directory/",
+        "workflow": null
+      },
+      "status": "live",
+      "title_observed": "Kinetic Gain Directory \u00e2\u20ac\u201d vendors publi...",
+      "favicon": "/favicon.svg",
+      "listed_in_readme": true,
+      "notes": "No public source repo found."
+    },
+    {
+      "host": "examples.kineticgain.com",
+      "role": "spec-landing",
+      "spec": null,
+      "source_repo": null,
+      "deploy": {
+        "target": null,
+        "path": null,
+        "workflow": null
+      },
+      "status": "dead-dns",
+      "title_observed": null,
+      "favicon": null,
+      "listed_in_readme": true,
+      "notes": "NXDOMAIN, confirmed via nslookup this session. No artifact located."
+    },
+    {
+      "host": "walker.kineticgain.com",
+      "role": "unknown",
+      "spec": null,
+      "source_repo": "well-known-walker",
+      "source_repo_visibility": "missing or private per audit, not independently checked this session",
+      "deploy": {
+        "target": null,
+        "path": null,
+        "workflow": null
+      },
+      "status": "dead-tls",
+      "title_observed": null,
+      "favicon": null,
+      "listed_in_readme": true,
+      "notes": "Resolves to 82.25.87.13, confirmed via nslookup this session. This IP is documented elsewhere (~/.claude/CLAUDE.md identity block) as a stale, wrong deploy host from a past incident, a different account, not the current web-estate host (82.25.89.47). Likely provisioned during that same stale period and never repointed."
+    },
+    {
+      "host": "bench.kineticgain.com",
+      "role": "tool-landing",
+      "spec": null,
+      "source_repo": "prompt-injection-bench",
+      "deploy": {
+        "target": "hostinger-ftp",
+        "path": "/bench/",
+        "workflow": "unknown"
+      },
+      "status": "live",
+      "title_observed": "prompt-injection-bench \u00e2\u20ac\u201d visual harnes...",
+      "favicon": "/favicon.svg",
+      "listed_in_readme": true
+    },
+    {
+      "host": "pulse.kineticgain.com",
+      "role": "product-landing",
+      "spec": null,
+      "source_repo": "procurement-pulse-landing",
+      "deploy": {
+        "target": "hostinger-ftp",
+        "path": "/pulse/",
+        "workflow": "unknown"
+      },
+      "status": "live",
+      "title_observed": "AI Procurement Pulse \u00e2\u20ac\u201d a quarterly ind...",
+      "favicon": "/favicon.svg",
+      "listed_in_readme": true,
+      "notes": "well-known-probe-js (the scoring engine behind this product's receipt) scores presence, not schema validity. See well_known_conformance below."
+    },
+    {
+      "host": "console.kineticgain.com",
+      "role": "product-landing",
+      "spec": null,
+      "source_repo": "kinetic-gain-operator-console",
+      "deploy": {
+        "target": "hostinger-ftp",
+        "path": "/console/",
+        "workflow": "workflow_dispatch only"
+      },
+      "status": "live",
+      "title_observed": "Kinetic Gain Operator Console",
+      "favicon": "/favicon.svg",
+      "listed_in_readme": true,
+      "notes": "Repo license is Apache per audit; some estate copy says MIT. Reconcile in Phase 3."
+    },
+    {
+      "host": "aeo.kineticgain.com",
+      "role": "spec-visualizer",
+      "spec": "aeo-protocol-spec",
+      "source_repo": "aeo-visualizer",
+      "deploy": {
+        "target": "hostinger-ftp",
+        "path": "/aeo/",
+        "workflow": "unknown"
+      },
+      "status": "live",
+      "title_observed": "AEO Visualizer \u00e2\u20ac\u201d Kinetic Gain Protocol...",
+      "favicon": null,
+      "listed_in_readme": true,
+      "notes": "Demo entity is Miz's own personal AEO record, not a fictional vendor example. Flagged for Phase 5 redesign per the audit's design observations."
+    },
+    {
+      "host": "prompts.kineticgain.com",
+      "role": "spec-landing",
+      "spec": "prompt-provenance-spec",
+      "source_repo": null,
+      "deploy": {
+        "target": null,
+        "path": null,
+        "workflow": null
+      },
+      "status": "dead-tls",
+      "title_observed": null,
+      "favicon": null,
+      "listed_in_readme": true,
+      "notes": "Resolves to 82.25.87.13, same stale/wrong host as walker. See walker's notes."
+    },
+    {
+      "host": "agents.kineticgain.com",
+      "role": "spec-landing",
+      "spec": "agent-cards-spec",
+      "source_repo": null,
+      "deploy": {
+        "target": null,
+        "path": null,
+        "workflow": null
+      },
+      "status": "dead-tls",
+      "title_observed": null,
+      "favicon": null,
+      "listed_in_readme": true,
+      "notes": "Resolves to 82.25.87.13, same stale/wrong host as walker."
+    },
+    {
+      "host": "evidence.kineticgain.com",
+      "role": "spec-landing",
+      "spec": "ai-evidence-format-spec",
+      "source_repo": null,
+      "deploy": {
+        "target": "hostinger-ftp",
+        "path": "/evidence/",
+        "workflow": null
+      },
+      "status": "live",
+      "title_observed": "AI Evidence Format \u00e2\u20ac\u201d Kinetic Gain Prot...",
+      "favicon": null,
+      "listed_in_readme": true
+    },
+    {
+      "host": "toolcards.kineticgain.com",
+      "role": "spec-landing",
+      "spec": "mcp-tool-card-spec",
+      "source_repo": null,
+      "deploy": {
+        "target": "hostinger-ftp",
+        "path": "/toolcards/",
+        "workflow": null
+      },
+      "status": "live",
+      "title_observed": "MCP Tool Cards \u00e2\u20ac\u201d Kinetic Gain Protocol...",
+      "favicon": null,
+      "listed_in_readme": true,
+      "notes": "Spec path convention is mcp-tools/, this host is toolcards, and the apex serves the well-known doc at tool-cards/. Three different spellings, reconcile in Phase 4."
+    },
+    {
+      "host": "tutor.kineticgain.com",
+      "role": "spec-landing",
+      "spec": "ai-tutor-cards-spec",
+      "source_repo": null,
+      "deploy": {
+        "target": "hostinger-ftp",
+        "path": "/tutor/",
+        "workflow": null
+      },
+      "status": "live",
+      "title_observed": "AI Tutor Cards \u00e2\u20ac\u201d disclosure documents",
+      "favicon": null,
+      "listed_in_readme": true
+    },
+    {
+      "host": "student.kineticgain.com",
+      "role": "spec-landing",
+      "spec": "student-ai-disclosure-spec",
+      "source_repo": null,
+      "deploy": {
+        "target": "hostinger-ftp",
+        "path": "/student/",
+        "workflow": null
+      },
+      "status": "live",
+      "title_observed": "Student AI Disclosure \u00e2\u20ac\u201d Kinetic Gain P...",
+      "favicon": null,
+      "listed_in_readme": true,
+      "notes": "No well-known path defined in any spec for this document type per the audit."
+    },
+    {
+      "host": "aup.kineticgain.com",
+      "role": "spec-landing",
+      "spec": "classroom-ai-aup-spec",
+      "source_repo": null,
+      "deploy": {
+        "target": null,
+        "path": null,
+        "workflow": null
+      },
+      "status": "dead-tls",
+      "title_observed": null,
+      "favicon": null,
+      "listed_in_readme": true,
+      "notes": "Resolves to 82.25.87.13, same stale/wrong host as walker."
+    },
+    {
+      "host": "clinical.kineticgain.com",
+      "role": "spec-landing",
+      "spec": "clinical-ai-disclosure-spec",
+      "source_repo": null,
+      "deploy": {
+        "target": "hostinger-ftp",
+        "path": "/clinical/",
+        "workflow": null
+      },
+      "status": "live",
+      "title_observed": "Clinical AI Disclosure \u00c2\u00b7 Kinetic Gain ...",
+      "favicon": "/kg-favicon.svg",
+      "listed_in_readme": true,
+      "notes": "Only host using kg-favicon.svg instead of favicon.svg, inconsistent filename, fix in Phase 5."
+    },
+    {
+      "host": "incidents.kineticgain.com",
+      "role": "spec-landing",
+      "spec": "ai-incident-card-spec",
+      "source_repo": null,
+      "deploy": {
+        "target": "hostinger-ftp",
+        "path": "/incidents/",
+        "workflow": null
+      },
+      "status": "live",
+      "title_observed": "AI Incident Card \u00e2\u20ac\u201d Kinetic Gain Protoc...",
+      "favicon": null,
+      "listed_in_readme": true
+    },
+    {
+      "host": "decisions.kineticgain.com",
+      "role": "spec-landing",
+      "spec": "ai-procurement-decision-spec",
+      "source_repo": null,
+      "deploy": {
+        "target": "hostinger-ftp",
+        "path": "/decisions/",
+        "workflow": null
+      },
+      "status": "live",
+      "title_observed": "AI Procurement Decision Card \u00e2\u20ac\u201d what di...",
+      "favicon": null,
+      "listed_in_readme": true,
+      "notes": "README table says well-known path is /.well-known/procurement-decisions/<id>.json; spec repo and CROSS_MODEL_BRIEF say /.well-known/decisions/{decision_id}.json. Apex serves both paths currently."
+    },
+    {
+      "host": "gv.kineticgain.com",
+      "role": "product-landing",
+      "spec": null,
+      "source_repo": "gitvisualizer",
+      "deploy": {
+        "target": "hostinger-ftp",
+        "path": "/gv/",
+        "workflow": "unknown"
+      },
+      "status": "live",
+      "title_observed": "GitVisualizer \u00e2\u20ac\u201d Profile intelligence f...",
+      "favicon": "/favicon.svg",
+      "listed_in_readme": true
+    },
+    {
+      "host": "mcp.kineticgain.com",
+      "role": "product-landing",
+      "spec": null,
+      "source_repo": "mcp-kinetic-gain",
+      "deploy": {
+        "target": "hostinger-ftp",
+        "path": "/mcp/",
+        "workflow": "unknown"
+      },
+      "status": "live",
+      "title_observed": "mcp-kinetic-gain \u00e2\u20ac\u201d Agent-Side Front Do...",
+      "favicon": "/favicon.svg",
+      "listed_in_readme": true,
+      "notes": "README elsewhere calls this host 'MCP Sentinel'; live page is actually the mcp-kinetic-gain front door. mcp-sentinel appears to be a separate, unlinked repo. Reconcile naming in Phase 3."
+    },
+    {
+      "host": "rag.kineticgain.com",
+      "role": "product-landing",
+      "spec": null,
+      "source_repo": "rag-sentinel",
+      "deploy": {
+        "target": "hostinger-ftp",
+        "path": "/rag/",
+        "workflow": "unknown"
+      },
+      "status": "live",
+      "title_observed": "RAG Sentinel \u00e2\u20ac\u201d governance dashboard fo...",
+      "favicon": "/favicon.svg",
+      "listed_in_readme": true
+    },
+    {
+      "host": "observe.kineticgain.com",
+      "role": "product-landing",
+      "spec": null,
+      "source_repo": "agentobserve",
+      "deploy": {
+        "target": "hostinger-ftp",
+        "path": "/observe/",
+        "workflow": "unknown"
+      },
+      "status": "live",
+      "title_observed": "AgentObserve \u00e2\u20ac\u201d operator console for AI...",
+      "favicon": "/favicon.svg",
+      "listed_in_readme": true
+    },
+    {
+      "host": "entra.kineticgain.com",
+      "role": "cloud-console",
+      "spec": null,
+      "source_repo": "entra-access-review",
+      "deploy": {
+        "target": "hostinger-ftp",
+        "path": "/entra/",
+        "workflow": "workflow_dispatch only"
+      },
+      "status": "live",
+      "title_observed": "Entra Access Review Control Plane \u00c2\u00b7 Kin...",
+      "favicon": "/favicon.svg",
+      "listed_in_readme": true
+    },
+    {
+      "host": "intune.kineticgain.com",
+      "role": "cloud-console",
+      "spec": null,
+      "source_repo": "intune-device-compliance-ops",
+      "deploy": {
+        "target": "github-pages",
+        "path": null,
+        "workflow": "pages.yml"
+      },
+      "status": "live",
+      "title_observed": "Intune Device Compliance Ops",
+      "favicon": null,
+      "listed_in_readme": true,
+      "notes": "Only Pages-hosted console among the cloud-identity family, everything else in that family is Hostinger FTP workflow_dispatch."
+    },
+    {
+      "host": "retention.kineticgain.com",
+      "role": "cloud-console",
+      "spec": null,
+      "source_repo": "unknown, repo has CNAME + pages.yml per audit but DNS was never created",
+      "deploy": {
+        "target": "github-pages",
+        "path": null,
+        "workflow": "pages.yml"
+      },
+      "status": "dead-dns",
+      "title_observed": null,
+      "favicon": null,
+      "listed_in_readme": true,
+      "notes": "NXDOMAIN, confirmed via nslookup this session. Build artifact exists (Pages workflow), DNS record simply never created."
+    },
+    {
+      "host": "aws.kineticgain.com",
+      "role": "cloud-console",
+      "spec": null,
+      "source_repo": "aws-iam-access-analyzer-console",
+      "deploy": {
+        "target": "hostinger-ftp",
+        "path": "/aws/",
+        "workflow": "workflow_dispatch only"
+      },
+      "status": "live",
+      "title_observed": "AWS IAM Access Analyzer Console",
+      "favicon": "/favicon.svg",
+      "listed_in_readme": true
+    },
+    {
+      "host": "guardduty.kineticgain.com",
+      "role": "cloud-console",
+      "spec": null,
+      "source_repo": "aws-guardduty-triage-board",
+      "deploy": {
+        "target": "hostinger-ftp",
+        "path": "/guardduty/",
+        "workflow": "workflow_dispatch only"
+      },
+      "status": "live",
+      "title_observed": "AWS GuardDuty Triage Board",
+      "favicon": null,
+      "listed_in_readme": true
+    },
+    {
+      "host": "gcp.kineticgain.com",
+      "role": "cloud-console",
+      "spec": null,
+      "source_repo": "gcp-iam-policy-diff-lab",
+      "deploy": {
+        "target": "github-pages",
+        "path": null,
+        "workflow": "pages.yml, but CNAME conflict, see notes"
+      },
+      "status": "wrong-content",
+      "title_observed": "GCP Billing Anomaly Router",
+      "favicon": null,
+      "listed_in_readme": true,
+      "notes": "CONFIRMED this session: byte-identical body (same md5) to billing.kineticgain.com. Both gcp-iam-policy-diff-lab and gcp-billing-anomaly-router ship a CNAME file for gcp.kineticgain.com. Needs Miz decision (Phase 2) on which repo owns this host; gcp-iam-policy-diff-lab is not live anywhere right now."
+    },
+    {
+      "host": "billing.kineticgain.com",
+      "role": "cloud-console",
+      "spec": null,
+      "source_repo": "gcp-billing-anomaly-router",
+      "deploy": {
+        "target": "hostinger-ftp",
+        "path": "/billing/",
+        "workflow": "workflow_dispatch only"
+      },
+      "status": "live",
+      "title_observed": "GCP Billing Anomaly Router",
+      "favicon": null,
+      "listed_in_readme": true
+    },
+    {
+      "host": "zone.kineticgain.com",
+      "role": "cloud-console",
+      "spec": null,
+      "source_repo": "azure-landing-zone-drift-radar",
+      "deploy": {
+        "target": "hostinger-ftp",
+        "path": "/zone/",
+        "workflow": "workflow_dispatch only"
+      },
+      "status": "live",
+      "title_observed": "Azure Landing Zone Drift Radar",
+      "favicon": null,
+      "listed_in_readme": true
+    },
+    {
+      "host": "validator.kineticgain.com",
+      "role": "tool",
+      "spec": null,
+      "source_repo": null,
+      "deploy": {
+        "target": "hostinger-ftp",
+        "path": "/validator/",
+        "workflow": null
+      },
+      "status": "unlisted",
+      "title_observed": "Kinetic Gain Suite Validator \u00e2\u20ac\u201d verify...",
+      "favicon": "/favicon.svg",
+      "listed_in_readme": false,
+      "notes": "Named in CROSS_MODEL_BRIEF, absent from README's live-properties table. Add in Phase 3."
+    },
+    {
+      "host": "governance.kineticgain.com",
+      "role": "product-landing",
+      "spec": null,
+      "source_repo": null,
+      "deploy": {
+        "target": "hostinger-ftp",
+        "path": "/governance/",
+        "workflow": null
+      },
+      "status": "unlisted",
+      "title_observed": "Kinetic Gain Governance Dashboard \u00e2\u20ac\u201d li...",
+      "favicon": "/favicon.svg",
+      "listed_in_readme": false,
+      "notes": "Referenced 22 times across other repos' READMEs, absent from this hub's own README. Add in Phase 3."
+    },
+    {
+      "host": "portfolio.kineticgain.com",
+      "role": "portfolio",
+      "spec": null,
+      "source_repo": "portfolio-command-center",
+      "deploy": {
+        "target": "hostinger-ftp-via-apex-workflow_dispatch",
+        "path": "/portfolio/",
+        "workflow": "kineticgain-com-apex deploy.yml, deploy_portfolio job"
+      },
+      "status": "unlisted",
+      "title_observed": "Portfolio Command Center \u00c2\u00b7 Kinetic Gain operator portfolio and live system map",
+      "favicon": "/favicon.svg",
+      "listed_in_readme": false,
+      "notes": "Changed since the 2026-09-12 audit ran: was serving stale portfolio-constellation content (frozen since June 14), now serves portfolio-command-center, fixed this session. Absent from this hub's README; add in Phase 3."
+    },
+    {
+      "host": "okta.kineticgain.com",
+      "role": "cloud-console",
+      "spec": null,
+      "source_repo": "okta-governance",
+      "source_repo_visibility": "missing or private per audit, not independently checked this session",
+      "deploy": {
+        "target": "hostinger-ftp",
+        "path": "/okta/",
+        "workflow": "unknown"
+      },
+      "status": "unlisted",
+      "title_observed": "Okta Governance \u00e2\u20ac\u201d Kinetic Gain",
+      "favicon": null,
+      "listed_in_readme": false,
+      "notes": "Absent from README; no public repo confirmed. Add in Phase 3 with a 'no public source' flag if the repo stays private."
+    }
+  ],
+  "referenced_but_no_route": [
+    {
+      "path_fragment": "edu",
+      "reference_count": 36,
+      "status": "retired-or-planned"
+    },
+    {
+      "path_fragment": "eval",
+      "reference_count": 17,
+      "status": "retired-or-planned"
+    },
+    {
+      "path_fragment": "health",
+      "reference_count": 15,
+      "status": "retired-or-planned"
+    },
+    {
+      "path_fragment": "research",
+      "reference_count": 6,
+      "status": "retired-or-planned"
+    },
+    {
+      "path_fragment": "triage",
+      "reference_count": 7,
+      "status": "retired-or-planned"
+    },
+    {
+      "path_fragment": "audit",
+      "reference_count": 5,
+      "status": "retired-or-planned"
+    },
+    {
+      "path_fragment": "support",
+      "reference_count": 2,
+      "status": "retired-or-planned"
+    },
+    {
+      "path_fragment": "admin",
+      "reference_count": 2,
+      "status": "retired-or-planned"
+    }
+  ],
+  "well_known_conformance": {
+    "method": "GET each apex /.well-known/* document, compare *_version field to the spec's expected value",
+    "verified_this_session": [
+      {
+        "path": "/.well-known/aeo.json",
+        "version_field": "aeo_version",
+        "observed": "1.0",
+        "spec_expects": "0.1",
+        "conforms": false
+      },
+      {
+        "path": "/.well-known/tool-cards/index.json",
+        "version_field": "tool_card_version",
+        "observed": "1.0",
+        "spec_expects": "0.1",
+        "conforms": false
+      },
+      {
+        "path": "/.well-known/decisions/index.json",
+        "version_field": "decision_card_version",
+        "observed": "1.0",
+        "spec_expects": "0.1 / 0.2 / 0.3",
+        "conforms": false
+      },
+      {
+        "path": "/.well-known/ai-incidents.json",
+        "version_field": "incident_card_version",
+        "observed": "1.0",
+        "spec_expects": "0.1",
+        "conforms": false
+      }
+    ],
+    "not_reverified_this_session_but_unchanged_per_audit": [
+      "/.well-known/agents/kinetic-gain-suite-mcp.json",
+      "/.well-known/prompts/index.json",
+      "/.well-known/evidence/index.json",
+      "/.well-known/tutor-cards/index.json",
+      "/.well-known/student-ai/index.json",
+      "/.well-known/ai-aup.json",
+      "/.well-known/clinical-ai/index.json"
+    ],
+    "root_cause": "The apex publishes registry-index objects (organization, url, description, decisions/incidents array, signature) at ad hoc paths, while each spec defines a single-document shape with a required id and the spec's own *_version. Full rewrite is Phase 4, requires Miz sign-off before touching signed documents."
+  }
+}
