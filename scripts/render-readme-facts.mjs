@@ -41,11 +41,20 @@ const liveHosts = manifest.hosts.filter((h) => h.status === "live");
 const deadHosts = manifest.hosts.filter((h) => h.status.startsWith("dead"));
 const unlistedLiveHosts = manifest.hosts.filter((h) => h.status === "unlisted");
 const wrongContentHosts = manifest.hosts.filter((h) => h.status === "wrong-content");
+// DNS points at the right host now, but the TLS cert on that host (Hostinger
+// AutoSSL or GitHub Pages ACME, depending on the host) hasn't caught up yet,
+// so the site isn't actually visitable over HTTPS. A real, distinct state
+// from "dead" (nothing resolves) and "live" (fully working) -- tracked
+// separately so these don't silently fall out of every count below.
+const dnsFixedTlsPendingHosts = manifest.hosts.filter((h) => h.status === "dns-fixed-tls-pending");
 
 console.log("=== Canonical facts (from estate/manifest.json) ===");
 console.log(`spec_count: ${specCount} (decided ${manifest.spec_count_decision.decided_at})`);
 console.log(`live_hosts: ${liveHosts.length}`);
 console.log(`dead_hosts: ${deadHosts.length} (${deadHosts.map((h) => h.host).join(", ")})`);
+console.log(
+  `dns_fixed_tls_pending_hosts: ${dnsFixedTlsPendingHosts.length} (${dnsFixedTlsPendingHosts.map((h) => h.host).join(", ")})`
+);
 console.log(
   `live_but_unlisted_in_readme: ${unlistedLiveHosts.length} (${unlistedLiveHosts.map((h) => h.host).join(", ")})`
 );

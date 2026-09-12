@@ -1,7 +1,7 @@
 # Kinetic Gain Protocol Suite
 
 > **A family of twelve open JSON specifications for the answer-engine and agent era — plus a 23-repo implementation stack that consumes them.**
-> Five core specs · three EdTech extensions · one HealthTech extension · one cross-cutting incident-disclosure spec · one buyer-side procurement Decision Card (v0.3 — adds `data_vault_targets` + `retention_envelope`) · one InsurTech Claims Decision Card · one unified visualizer · one operator console · one unified MCP server · **25 live properties on kineticgain.com** (see [Live properties](#-live-properties) for the current count, including which are down) · all MIT.
+> Five core specs · three EdTech extensions · one HealthTech extension · one cross-cutting incident-disclosure spec · one buyer-side procurement Decision Card (v0.3 — adds `data_vault_targets` + `retention_envelope`) · one InsurTech Claims Decision Card · one unified visualizer · one operator console · one unified MCP server · **30 live properties on kineticgain.com** (see [Live properties](#-live-properties) for the current count, including which are down or pending) · all MIT.
 >
 > Public front door: **[suite.kineticgain.com](https://suite.kineticgain.com)**.
 
@@ -355,7 +355,7 @@ The bench is **not a twelfth spec** — it's the *testing-counterpart* to the di
 
 ## 🌐 Live properties
 
-Source of truth: [`estate/manifest.json`](estate/manifest.json), independently curl/DNS-checked 2026-09-12, not copied from any prior claim without re-verifying. Of 34 tracked subdomains: **27 live and correct, 6 down, 1 serving another property's content.** `scripts/render-readme-facts.mjs` / `facts-check.yml` fail the build if these numbers drift from the manifest without this section being updated too.
+Source of truth: [`estate/manifest.json`](estate/manifest.json), independently curl/DNS-checked 2026-09-12, not copied from any prior claim without re-verifying. Of 36 tracked subdomains: **30 live and correct** (26 in the tables below + 4 in "Live but previously missing"), **4 DNS-fixed but not yet visitable over HTTPS (TLS cert pending), 2 still down.** `scripts/render-readme-facts.mjs` / `facts-check.yml` fail the build if these numbers drift from the manifest without this section being updated too.
 
 ### Hubs + tools (7 live)
 | URL | What it serves |
@@ -368,7 +368,7 @@ Source of truth: [`estate/manifest.json`](estate/manifest.json), independently c
 | [console.kineticgain.com](https://console.kineticgain.com) | **Operator Console** — mission-control for the Suite: interactive topology mesh (*v0.2* — runtime-gate overlays, ed25519 signature posture, blast-radius tracing), configurable SRE operator dashboard, live audit-stream visualization, PDF export ([repo](https://github.com/mizcausevic-dev/kinetic-gain-operator-console)) |
 | [validator.kineticgain.com](https://validator.kineticgain.com) | **Kinetic Gain Suite Validator** — was referenced in `CROSS_MODEL_BRIEF.md`, missing from this table until now |
 
-`examples.kineticgain.com` and `walker.kineticgain.com` were listed here before; both are currently down, see **Currently down** below.
+`examples.kineticgain.com` and `walker.kineticgain.com` were listed here before; both are still down, see **Currently down** below.
 
 ### Per-spec landings (10 live)
 | URL | Spec |
@@ -382,7 +382,7 @@ Source of truth: [`estate/manifest.json`](estate/manifest.json), independently c
 | [incidents.kineticgain.com](https://incidents.kineticgain.com) | AI Incident Card (cross-cutting, vendor-side) |
 | [decisions.kineticgain.com](https://decisions.kineticgain.com) | AI Procurement Decision Card (cross-cutting, buyer-side) |
 
-`prompts.kineticgain.com`, `agents.kineticgain.com`, and `aup.kineticgain.com` were listed here before; all three are currently down, see **Currently down** below. Classroom AI AUP and AI Claims Decision Card have no dedicated landing subdomain yet.
+`prompts.kineticgain.com`, `agents.kineticgain.com`, and `aup.kineticgain.com` were listed here before; DNS was fixed this session but each is still waiting on a TLS cert renewal, see **DNS fixed, TLS pending** below. Classroom AI AUP and AI Claims Decision Card have no dedicated landing subdomain yet.
 
 ### Earlier product surfaces (4 live)
 | URL | What it does |
@@ -394,8 +394,8 @@ Source of truth: [`estate/manifest.json`](estate/manifest.json), independently c
 
 `mizcausevic-dev.github.io/kinetic-gain-visualizer` is the unified visualizer (GitHub Pages); not re-verified against the 12th spec this session (see the visualizer section above).
 
-### Cloud Identity, Platform, FinOps & Threat Detection Governance lane (6 live, 1 down, 1 serving the wrong content)
-Production-hardened (v1.0-prod) synthetic-data operator consoles covering the multi-cloud admin stack — Microsoft, AWS, GCP, Azure. AGPL-3.0-or-later, dual-Node CI, dependabot, 95%+ statement coverage, each deployed on its own GitHub Pages subdomain.
+### Cloud Identity, Platform, FinOps & Threat Detection Governance lane (7 live)
+Production-hardened (v1.0-prod) synthetic-data operator consoles covering the multi-cloud admin stack — Microsoft, AWS, GCP, Azure. AGPL-3.0-or-later, dual-Node CI, dependabot, 95%+ statement coverage. Each repo ships a GitHub Pages workflow, but per-host DNS actually routes to Hostinger for all of these except `intune`, so Hostinger is what's really live; the Pages config sits configured-but-dormant on the rest. Not worth reconciling: both paths produce the same static output, and repointing DNS away from a working host for the sake of matching the repo's own CI would be churn with no user-facing benefit.
 
 | URL | What it does | Repo |
 |---|---|---|
@@ -405,20 +405,27 @@ Production-hardened (v1.0-prod) synthetic-data operator consoles covering the mu
 | [guardduty.kineticgain.com](https://guardduty.kineticgain.com) | AWS GuardDuty detector posture, threat-finding triage, credential exfiltration / crypto-mining / anomalous-API behavior, response sequencing | [`aws-guardduty-triage-board`](https://github.com/mizcausevic-dev/aws-guardduty-triage-board) |
 | [billing.kineticgain.com](https://billing.kineticgain.com) | GCP billing-anomaly routing, budget breaches, spend-spike escalation, idle commitments, unlabeled-cost drift, billing-export gaps | [`gcp-billing-anomaly-router`](https://github.com/mizcausevic-dev/gcp-billing-anomaly-router) |
 | [zone.kineticgain.com](https://zone.kineticgain.com) | Azure landing-zone baseline drift, owner-role drift, missing deny assignments, disabled Defender, diagnostics gaps, route bypass | [`azure-landing-zone-drift-radar`](https://github.com/mizcausevic-dev/azure-landing-zone-drift-radar) |
-| ⚠️ [gcp.kineticgain.com](https://gcp.kineticgain.com) | **Currently serves `billing.kineticgain.com`'s content, byte-identical, confirmed this session.** Intended content (GCP IAM snapshot drift, `allUsers` bindings, `roles/editor` creep) belongs to [`gcp-iam-policy-diff-lab`](https://github.com/mizcausevic-dev/gcp-iam-policy-diff-lab), which is not live anywhere right now. Both repos ship a CNAME for this host. Needs a Phase 2 ownership decision before it's fixed. | [`gcp-iam-policy-diff-lab`](https://github.com/mizcausevic-dev/gcp-iam-policy-diff-lab) (intended) |
-| ❌ retention.kineticgain.com | Down, see **Currently down** below. | [`m365-retention-case-orchestrator`](https://github.com/mizcausevic-dev/m365-retention-case-orchestrator) |
+| [gcp.kineticgain.com](https://gcp.kineticgain.com) | GCP IAM policy snapshot drift, public `allUsers` bindings, `roles/editor` creep, service-account token-creator grants, org-policy mismatch. Fixed this session: was serving `billing.kineticgain.com`'s content byte-for-byte (a mis-deployed doc root on Hostinger, not a DNS or CNAME conflict as previously recorded here). Redeployed the correct build; verified live with the right content and the old wrong routes now 404. | [`gcp-iam-policy-diff-lab`](https://github.com/mizcausevic-dev/gcp-iam-policy-diff-lab) |
 
-### Currently down (6)
-None of these should be read as live until this table is empty. `82.25.87.13` is a stale, wrong deploy host documented elsewhere as a past misdirection incident, not the current web-estate host, these four were very likely provisioned while that host was still (wrongly) in use and never repointed.
+`retention.kineticgain.com` was listed here before; DNS was added this session but it's waiting on a TLS cert, see **DNS fixed, TLS pending** below.
+
+### DNS fixed, TLS pending (4)
+These now resolve to the correct host, and the content behind them is already fully built and deployed. They are **not yet visitable over HTTPS** — each hits `SEC_E_CERT_EXPIRED`, confirmed via curl this session, because DNS pointed at the wrong (or no) host for long enough that the TLS cert never issued or renewed. `prompts`/`agents`/`aup` are Hostinger AutoSSL; `retention` is GitHub Pages' own ACME. Both should self-resolve once each provider's next renewal cycle notices the now-correct DNS; if not resolved within a day, `retention` can be forced by toggling "Enforce HTTPS" off/on in the repo's GitHub Pages settings, and `prompts`/`agents`/`aup` need a manual SSL re-issue in hPanel.
+
+| URL | What it serves once the cert catches up |
+|---|---|
+| prompts.kineticgain.com | Prompt Provenance landing (content already deployed) |
+| agents.kineticgain.com | Agent Cards landing (content already deployed) |
+| aup.kineticgain.com | Classroom AI AUP landing (content already deployed) |
+| retention.kineticgain.com | `m365-retention-case-orchestrator`, GitHub Pages |
+
+### Currently down (2)
+None of these should be read as live until this table is empty.
 
 | URL | Status | Notes |
 |---|---|---|
-| examples.kineticgain.com | NXDOMAIN | No DNS record. No artifact located. |
-| retention.kineticgain.com | NXDOMAIN | Build artifact exists (`m365-retention-case-orchestrator` ships a GitHub Pages workflow + CNAME); DNS record was simply never created. |
-| walker.kineticgain.com | Resolves to `82.25.87.13`, no TLS | well-known-walker |
-| prompts.kineticgain.com | Resolves to `82.25.87.13`, no TLS | Prompt Provenance landing |
-| agents.kineticgain.com | Resolves to `82.25.87.13`, no TLS | Agent Cards landing |
-| aup.kineticgain.com | Resolves to `82.25.87.13`, no TLS | Classroom AI AUP landing |
+| examples.kineticgain.com | NXDOMAIN | No DNS record. No artifact located anywhere to point it at. |
+| walker.kineticgain.com | Resolves to `82.25.87.13` (the stale/wrong host documented elsewhere) | Has both a correct ALIAS record and a conflicting stale A record; Hostinger's DNS API refuses to let the two coexist, and removing just the stale one needs a scoped delete tool this session doesn't have safe access to. A human deleting the single A record in hPanel (a few seconds) fixes it; the correct ALIAS is already in place. |
 
 ### Live but previously missing from this README (3, beyond validator above)
 | URL | What it serves |
