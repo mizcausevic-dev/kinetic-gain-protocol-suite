@@ -1,7 +1,7 @@
 # Kinetic Gain Protocol Suite
 
-> **A family of twelve open JSON specifications for the answer-engine and agent era — plus a 23-repo implementation stack that consumes them.**
-> Five core specs · three EdTech extensions · one HealthTech extension · one cross-cutting incident-disclosure spec · one buyer-side procurement Decision Card (v0.3 — adds `data_vault_targets` + `retention_envelope`) · one InsurTech Claims Decision Card · one unified visualizer · one operator console · one unified MCP server · **30 live properties on kineticgain.com** (see [Live properties](#-live-properties) for the current count, including which are down or pending) · all MIT.
+> **A family of twelve open JSON specifications for the answer-engine and agent era — plus a 65-repo implementation stack that consumes them.**
+> Five core specs · three EdTech extensions · one HealthTech extension · one cross-cutting incident-disclosure spec · one buyer-side procurement Decision Card (v0.3 — adds `data_vault_targets` + `retention_envelope`) · one InsurTech Claims Decision Card · one unified visualizer · one operator console · one unified MCP server · **30 live properties on kineticgain.com** (see [Live properties](#-live-properties) for the current count, including which are down or pending) · specs MIT, implementation stack split by tier — see [License](#-license).
 >
 > Public front door: **[suite.kineticgain.com](https://suite.kineticgain.com)**.
 
@@ -125,7 +125,7 @@ The Suite now has real implementation tooling attached to several of its disclos
 ---
 
 ## 🛠️ Suite × Implementations
-The Suite is a set of specs. **This section is the software that consumes them** — 23 repos across the sections below, semver-tagged, MIT-licensed, with **five cross-ecosystem hooks** tying them together. Grouped by the buyer most likely to land on the repo first. ("CI-green" is this repo's own claim about itself, not independently re-run across all 23 this session, see the manifest for what has been re-verified.)
+The Suite is a set of specs. **This section is the software that consumes them** — 65 repos across the sections below, semver-tagged, with **five cross-ecosystem hooks** tying them together. Grouped by the buyer most likely to land on the repo first. License varies by tier, not uniformly MIT — see [License](#-license) for the exact split, independently checked against every repo's live LICENSE file. ("CI-green" is this repo's own claim about itself, not independently re-run across all 65 this session, see the manifest for what has been re-verified.)
 
 ### 🕸️ How it composes
 
@@ -500,9 +500,16 @@ A future v0.2 sweep will probably add: detached cryptographic signing across the
 
 ## 📜 License
 
-Specifications, JSON Schemas, examples, and this meta-README: **MIT**.
-Implementation repos (procurement-decision-api, policy-as-code-engine, slo-budget-tracker, reliability-toolkit-rs, audit-stream-py, hash-attestation-rs, and the rest): **MIT**.
-The Cloud Identity, Platform, FinOps & Threat Detection Governance lane (entra-access-review-control-plane, intune-device-compliance-ops, aws-iam-access-analyzer-console, aws-guardduty-triage-board, gcp-billing-anomaly-router, azure-landing-zone-drift-radar, gcp-iam-policy-diff-lab, m365-retention-case-orchestrator): **AGPL-3.0-or-later** (see that section above), not MIT like the rest of the stack.
+License is **not uniform** across the stack. This table is built from a live check of every linked repo's actual LICENSE file on GitHub (`estate/manifest.json` → `repos_license_audit`, checked 2026-09-13), not an assumption — a prior version of this README claimed a single license covered the whole stack, which a follow-up audit caught and this corrects.
+
+| Tier | License | Count | Examples |
+|---|---|---|---|
+| Specs, JSON Schemas, examples, this meta-README | **MIT** | 12 | every `*-spec` repo |
+| Python services, Rust crates, per-language SDKs, and the narrower MCP servers (`mcp-decision-intelligence`, `mcp-permission-broker`, `mcp-reliability-toolkit`) | **MIT** | 23 | `procurement-decision-api`, `policy-as-code-engine`, `slo-budget-tracker`, `reliability-toolkit-rs`, `audit-stream-py`, `hash-attestation-rs` |
+| GitHub Actions, CLI/crawler tooling, `mcp-kinetic-gain` and its sibling AGPL MCP tools, and the Cloud Identity/Platform/FinOps/Threat-Detection governance lane | **AGPL-3.0** | 29 | `mcp-kinetic-gain`, `aeo-cli`, `aeo-crawler`, `prompt-injection-bench`, all 9 GitHub Actions, `entra-access-review-control-plane`, `gcp-iam-policy-diff-lab` |
+| Operator Console | **Apache-2.0** | 1 | `kinetic-gain-operator-console` |
+
+Full per-repo list: `estate/manifest.json` → `repos_license_audit.repos` (65 entries, one license each, independently checked, not carried over from any prior claim). `facts-check.yml` fails the build if this table's counts drift from that data.
 Supporting sites are unrestricted under their own licenses.
 
 ## 👤 Author

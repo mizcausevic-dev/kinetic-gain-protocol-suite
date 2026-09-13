@@ -121,10 +121,48 @@ if (staleVersions.length) {
   );
 }
 
+// License claims: catches the 2026-09-12 regression where the README said
+// "all MIT" for the whole stack after only the 12 spec repos were actually
+// re-verified. estate/manifest.json's repos_license_audit is the one place
+// per-repo license is allowed to be typed; the README's license table
+// (specs / MIT-tier / AGPL-tier / Apache count) must match it exactly.
+if (manifest.repos_license_audit) {
+  const audit = manifest.repos_license_audit.by_license;
+  const mitCount = audit["MIT"] ?? 0;
+  const agplCount = audit["AGPL-3.0"] ?? 0;
+  const apacheCount = audit["Apache-2.0"] ?? 0;
+
+  if (/\ball MIT\b/i.test(readme)) {
+    failures.push(
+      `README.md still claims "all MIT" for the whole stack, but repos_license_audit records ${agplCount} AGPL-3.0 and ${apacheCount} Apache-2.0 repos among the ${mitCount + agplCount + apacheCount} checked.`
+    );
+  }
+  const licenseTableCounts = [...readme.matchAll(/\*\*(MIT|AGPL-3\.0|Apache-2\.0)\*\*\s*\|\s*(\d+)\s*\|/g)].map((m) => [
+    m[1],
+    Number(m[2]),
+  ]);
+  if (licenseTableCounts.length) {
+    const readmeMit = licenseTableCounts.filter(([l]) => l === "MIT").reduce((a, [, n]) => a + n, 0);
+    const readmeAgpl = licenseTableCounts.filter(([l]) => l === "AGPL-3.0").reduce((a, [, n]) => a + n, 0);
+    const readmeApache = licenseTableCounts.filter(([l]) => l === "Apache-2.0").reduce((a, [, n]) => a + n, 0);
+    if (readmeMit !== mitCount) {
+      failures.push(`README.md's License table sums to ${readmeMit} MIT repos, but repos_license_audit records ${mitCount}.`);
+    }
+    if (readmeAgpl !== agplCount) {
+      failures.push(`README.md's License table sums to ${readmeAgpl} AGPL-3.0 repos, but repos_license_audit records ${agplCount}.`);
+    }
+    if (readmeApache !== apacheCount) {
+      failures.push(
+        `README.md's License table sums to ${readmeApache} Apache-2.0 repos, but repos_license_audit records ${apacheCount}.`
+      );
+    }
+  }
+}
+
 if (failures.length) {
   console.log(`FAIL: ${failures.length} mismatch(es)`);
   failures.forEach((f) => console.log(`  - ${f}`));
   process.exitCode = 1;
 } else {
-  console.log("PASS: no stale spec-count or version strings detected in README.md");
+  console.log("PASS: no stale spec-count, version, or license-claim mismatches detected in README.md");
 }
