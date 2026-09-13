@@ -627,6 +627,273 @@
       "status": "retired-or-planned"
     }
   ],
+  "repos_license_audit": {
+    "method": "GET https://api.github.com/repos/mizcausevic-dev/<repo>/license for every repo linked from README.md, 2026-09-13",
+    "checked": 65,
+    "by_license": { "MIT": 35, "AGPL-3.0": 29, "Apache-2.0": 1 },
+    "repos": [
+      {
+        "repo": "aeo-cli",
+        "license": "AGPL-3.0"
+      },
+      {
+        "repo": "aeo-crawler",
+        "license": "AGPL-3.0"
+      },
+      {
+        "repo": "aeo-graph-explorer-rs",
+        "license": "MIT"
+      },
+      {
+        "repo": "aeo-protocol-spec",
+        "license": "MIT"
+      },
+      {
+        "repo": "aeo-sdk-go",
+        "license": "MIT"
+      },
+      {
+        "repo": "aeo-sdk-python",
+        "license": "MIT"
+      },
+      {
+        "repo": "aeo-sdk-rust",
+        "license": "MIT"
+      },
+      {
+        "repo": "aeo-sdk-swift",
+        "license": "MIT"
+      },
+      {
+        "repo": "aeo-sdk-typescript",
+        "license": "MIT"
+      },
+      {
+        "repo": "aeo-validator-service",
+        "license": "MIT"
+      },
+      {
+        "repo": "agent-card-fleet-summary-action",
+        "license": "AGPL-3.0"
+      },
+      {
+        "repo": "agent-card-runtime-adapters",
+        "license": "AGPL-3.0"
+      },
+      {
+        "repo": "agent-cards-spec",
+        "license": "MIT"
+      },
+      {
+        "repo": "ai-claims-decision-card-spec",
+        "license": "MIT"
+      },
+      {
+        "repo": "ai-evidence-format-spec",
+        "license": "MIT"
+      },
+      {
+        "repo": "ai-incident-card-spec",
+        "license": "MIT"
+      },
+      {
+        "repo": "ai-procurement-decision-spec",
+        "license": "MIT"
+      },
+      {
+        "repo": "ai-tutor-card-spec",
+        "license": "MIT"
+      },
+      {
+        "repo": "audit-stream-py",
+        "license": "MIT"
+      },
+      {
+        "repo": "aws-guardduty-triage-board",
+        "license": "AGPL-3.0"
+      },
+      {
+        "repo": "aws-iam-access-analyzer-console",
+        "license": "AGPL-3.0"
+      },
+      {
+        "repo": "azure-landing-zone-drift-radar",
+        "license": "AGPL-3.0"
+      },
+      {
+        "repo": "azure-openai-governance-bridge",
+        "license": "MIT"
+      },
+      {
+        "repo": "classroom-ai-aup-spec",
+        "license": "MIT"
+      },
+      {
+        "repo": "clinical-ai-disclosure-spec",
+        "license": "MIT"
+      },
+      {
+        "repo": "csv-data-quality-rs",
+        "license": "MIT"
+      },
+      {
+        "repo": "data-contract-registry",
+        "license": "MIT"
+      },
+      {
+        "repo": "entra-access-review-control-plane",
+        "license": "AGPL-3.0"
+      },
+      {
+        "repo": "evidence-bundle-fleet-summary-action",
+        "license": "AGPL-3.0"
+      },
+      {
+        "repo": "feature-flag-rs",
+        "license": "MIT"
+      },
+      {
+        "repo": "gcp-billing-anomaly-router",
+        "license": "AGPL-3.0"
+      },
+      {
+        "repo": "gcp-iam-policy-diff-lab",
+        "license": "AGPL-3.0"
+      },
+      {
+        "repo": "governance-disclosure-operator",
+        "license": "AGPL-3.0"
+      },
+      {
+        "repo": "hash-attestation-rs",
+        "license": "MIT"
+      },
+      {
+        "repo": "incident-correlation-rs",
+        "license": "MIT"
+      },
+      {
+        "repo": "intune-device-compliance-ops",
+        "license": "AGPL-3.0"
+      },
+      {
+        "repo": "k8s-pre-merge-action",
+        "license": "AGPL-3.0"
+      },
+      {
+        "repo": "kg-suite-canonicalize-action",
+        "license": "AGPL-3.0"
+      },
+      {
+        "repo": "kg-suite-conformance-runner-action",
+        "license": "AGPL-3.0"
+      },
+      {
+        "repo": "kg-suite-spec-version-tracker-action",
+        "license": "AGPL-3.0"
+      },
+      {
+        "repo": "kinetic-gain-operator-console",
+        "license": "Apache-2.0"
+      },
+      {
+        "repo": "llm-cost-rollup-action",
+        "license": "AGPL-3.0"
+      },
+      {
+        "repo": "mcp-aeo-server",
+        "license": "AGPL-3.0"
+      },
+      {
+        "repo": "mcp-decision-intelligence",
+        "license": "MIT"
+      },
+      {
+        "repo": "mcp-kinetic-gain",
+        "license": "AGPL-3.0"
+      },
+      {
+        "repo": "mcp-permission-broker",
+        "license": "MIT"
+      },
+      {
+        "repo": "mcp-registry-risk-scanner",
+        "license": "AGPL-3.0"
+      },
+      {
+        "repo": "mcp-reliability-toolkit",
+        "license": "MIT"
+      },
+      {
+        "repo": "mcp-tool-card-fleet-summary-action",
+        "license": "AGPL-3.0"
+      },
+      {
+        "repo": "mcp-tool-card-generator",
+        "license": "AGPL-3.0"
+      },
+      {
+        "repo": "mcp-tool-card-spec",
+        "license": "MIT"
+      },
+      {
+        "repo": "mcp-tools-diff",
+        "license": "AGPL-3.0"
+      },
+      {
+        "repo": "policy-as-code-engine",
+        "license": "MIT"
+      },
+      {
+        "repo": "procurement-decision-api",
+        "license": "MIT"
+      },
+      {
+        "repo": "prompt-injection-bench",
+        "license": "AGPL-3.0"
+      },
+      {
+        "repo": "prompt-provenance-fleet-summary-action",
+        "license": "AGPL-3.0"
+      },
+      {
+        "repo": "prompt-provenance-spec",
+        "license": "MIT"
+      },
+      {
+        "repo": "rag-evidence-graph",
+        "license": "AGPL-3.0"
+      },
+      {
+        "repo": "rag-evidence-trace-linker",
+        "license": "AGPL-3.0"
+      },
+      {
+        "repo": "reliability-toolkit-rs",
+        "license": "MIT"
+      },
+      {
+        "repo": "request-shadow-rs",
+        "license": "MIT"
+      },
+      {
+        "repo": "slo-budget-tracker",
+        "license": "MIT"
+      },
+      {
+        "repo": "sql-contract-enforcer",
+        "license": "MIT"
+      },
+      {
+        "repo": "student-ai-disclosure-spec",
+        "license": "MIT"
+      },
+      {
+        "repo": "wellknown-index-aggregator",
+        "license": "AGPL-3.0"
+      }
+    ]
+  },
   "well_known_conformance": {
     "method": "GET each apex /.well-known/* document, compare *_version field to the spec's expected value",
     "verified_this_session": [
