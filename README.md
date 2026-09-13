@@ -355,7 +355,7 @@ The bench is **not a twelfth spec** — it's the *testing-counterpart* to the di
 
 ## 🌐 Live properties
 
-Source of truth: [`estate/manifest.json`](estate/manifest.json), independently curl/DNS-checked 2026-09-12, not copied from any prior claim without re-verifying. Of 36 tracked subdomains: **30 live and correct** (26 in the tables below + 4 in "Live but previously missing"), **4 DNS-fixed but not yet visitable over HTTPS (TLS cert pending), 2 still down.** `scripts/render-readme-facts.mjs` / `facts-check.yml` fail the build if these numbers drift from the manifest without this section being updated too.
+Source of truth: [`estate/manifest.json`](estate/manifest.json), independently curl/DNS-checked 2026-09-12, not copied from any prior claim without re-verifying. Of 36 tracked subdomains: **30 live and correct** (26 in the tables below + 4 in "Live but previously missing"), **5 DNS-fixed but not yet visitable over HTTPS (TLS cert pending), 1 still down.** `scripts/render-readme-facts.mjs` / `facts-check.yml` fail the build if these numbers drift from the manifest without this section being updated too.
 
 ### Hubs + tools (7 live)
 | URL | What it serves |
@@ -368,7 +368,7 @@ Source of truth: [`estate/manifest.json`](estate/manifest.json), independently c
 | [console.kineticgain.com](https://console.kineticgain.com) | **Operator Console** — mission-control for the Suite: interactive topology mesh (*v0.2* — runtime-gate overlays, ed25519 signature posture, blast-radius tracing), configurable SRE operator dashboard, live audit-stream visualization, PDF export ([repo](https://github.com/mizcausevic-dev/kinetic-gain-operator-console)) |
 | [validator.kineticgain.com](https://validator.kineticgain.com) | **Kinetic Gain Suite Validator** — was referenced in `CROSS_MODEL_BRIEF.md`, missing from this table until now |
 
-`examples.kineticgain.com` and `walker.kineticgain.com` were listed here before; both are still down, see **Currently down** below.
+`examples.kineticgain.com` was listed here before; it's still down, see **Currently down** below. `walker.kineticgain.com` was listed here too; its DNS conflict was fixed this session, see **DNS fixed, TLS pending** below.
 
 ### Per-spec landings (10 live)
 | URL | Spec |
@@ -409,23 +409,23 @@ Production-hardened (v1.0-prod) synthetic-data operator consoles covering the mu
 
 `retention.kineticgain.com` was listed here before; DNS was added this session but it's waiting on a TLS cert, see **DNS fixed, TLS pending** below.
 
-### DNS fixed, TLS pending (4)
-These now resolve to the correct host, and the content behind them is already fully built and deployed. They are **not yet visitable over HTTPS** — each hits `SEC_E_CERT_EXPIRED`, confirmed via curl this session, because DNS pointed at the wrong (or no) host for long enough that the TLS cert never issued or renewed. `prompts`/`agents`/`aup` are Hostinger AutoSSL; `retention` is GitHub Pages' own ACME. Both should self-resolve once each provider's next renewal cycle notices the now-correct DNS; if not resolved within a day, `retention` can be forced by toggling "Enforce HTTPS" off/on in the repo's GitHub Pages settings, and `prompts`/`agents`/`aup` need a manual SSL re-issue in hPanel.
+### DNS fixed, TLS pending (5)
+These now resolve to the correct host, and the content behind them is already fully built and deployed (or, for `walker`, was never actually missing). They are **not yet confirmed visitable over HTTPS** — `prompts`/`agents`/`aup` hit `SEC_E_CERT_EXPIRED` via curl this session (Hostinger AutoSSL never issued/renewed while DNS pointed at the wrong host); `retention` hits the same via GitHub Pages' own ACME, stuck since DNS was absent. `walker`'s fix (deleting its stale conflicting A record, done via hPanel) landed after those checks and hasn't been independently re-curled yet, but is DNS-correct in the authoritative zone. Both providers should self-resolve on their next renewal cycle now that DNS is right; if not resolved within a day, `retention` can be forced by toggling "Enforce HTTPS" off/on in the repo's GitHub Pages settings, and `prompts`/`agents`/`aup` need a manual SSL re-issue in hPanel.
 
-| URL | What it serves once the cert catches up |
+| URL | What it serves once confirmed |
 |---|---|
+| walker.kineticgain.com | well-known-walker (content already deployed) |
 | prompts.kineticgain.com | Prompt Provenance landing (content already deployed) |
 | agents.kineticgain.com | Agent Cards landing (content already deployed) |
 | aup.kineticgain.com | Classroom AI AUP landing (content already deployed) |
 | retention.kineticgain.com | `m365-retention-case-orchestrator`, GitHub Pages |
 
-### Currently down (2)
+### Currently down (1)
 None of these should be read as live until this table is empty.
 
 | URL | Status | Notes |
 |---|---|---|
 | examples.kineticgain.com | NXDOMAIN | No DNS record. No artifact located anywhere to point it at. |
-| walker.kineticgain.com | Resolves to `82.25.87.13` (the stale/wrong host documented elsewhere) | Has both a correct ALIAS record and a conflicting stale A record; Hostinger's DNS API refuses to let the two coexist, and removing just the stale one needs a scoped delete tool this session doesn't have safe access to. A human deleting the single A record in hPanel (a few seconds) fixes it; the correct ALIAS is already in place. |
 
 ### Live but previously missing from this README (3, beyond validator above)
 | URL | What it serves |
