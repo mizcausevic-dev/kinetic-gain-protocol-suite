@@ -355,7 +355,7 @@ The bench is **not a twelfth spec** — it's the *testing-counterpart* to the di
 
 ## 🌐 Live properties
 
-Source of truth: [`estate/manifest.json`](estate/manifest.json), independently curl/DNS-checked 2026-09-12, not copied from any prior claim without re-verifying. Of 36 tracked subdomains: **30 live and correct** (26 in the tables below + 4 in "Live but previously missing"), **5 DNS-fixed but not yet visitable over HTTPS (TLS cert pending), 1 still down.** `scripts/render-readme-facts.mjs` / `facts-check.yml` fail the build if these numbers drift from the manifest without this section being updated too.
+Source of truth: [`estate/manifest.json`](estate/manifest.json), independently curl/DNS-checked 2026-09-12/13, not copied from any prior claim without re-verifying. Of 35 tracked subdomains (`examples.kineticgain.com` retired 2026-09-13, no DNS record or build artifact ever existed for it): **30 live and correct** (26 in the tables below + 4 in "Live but previously missing"), **5 DNS-fixed but not yet visitable over HTTPS (TLS cert pending).** `scripts/render-readme-facts.mjs` / `facts-check.yml` fail the build if these numbers drift from the manifest without this section being updated too.
 
 ### Hubs + tools (7 live)
 | URL | What it serves |
@@ -368,7 +368,7 @@ Source of truth: [`estate/manifest.json`](estate/manifest.json), independently c
 | [console.kineticgain.com](https://console.kineticgain.com) | **Operator Console** — mission-control for the Suite: interactive topology mesh (*v0.2* — runtime-gate overlays, ed25519 signature posture, blast-radius tracing), configurable SRE operator dashboard, live audit-stream visualization, PDF export ([repo](https://github.com/mizcausevic-dev/kinetic-gain-operator-console)) |
 | [validator.kineticgain.com](https://validator.kineticgain.com) | **Kinetic Gain Suite Validator** — was referenced in `CROSS_MODEL_BRIEF.md`, missing from this table until now |
 
-`examples.kineticgain.com` was listed here before; it's still down, see **Currently down** below. `walker.kineticgain.com` was listed here too; its DNS conflict was fixed this session, see **DNS fixed, TLS pending** below.
+`walker.kineticgain.com` was listed here before; its DNS conflict was fixed this session, see **DNS fixed, TLS pending** below. `examples.kineticgain.com` was listed here too; it never had a DNS record or any build artifact, and is retired rather than built — no longer referenced anywhere in this README.
 
 ### Per-spec landings (10 live)
 | URL | Spec |
@@ -419,13 +419,6 @@ These now resolve to the correct host, and the content behind them is already fu
 | agents.kineticgain.com | Agent Cards landing (content already deployed) |
 | aup.kineticgain.com | Classroom AI AUP landing (content already deployed) |
 | retention.kineticgain.com | `m365-retention-case-orchestrator`, GitHub Pages |
-
-### Currently down (1)
-None of these should be read as live until this table is empty.
-
-| URL | Status | Notes |
-|---|---|---|
-| examples.kineticgain.com | NXDOMAIN | No DNS record. No artifact located anywhere to point it at. |
 
 ### Live but previously missing from this README (3, beyond validator above)
 | URL | What it serves |

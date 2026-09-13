@@ -92,11 +92,11 @@
         "path": null,
         "workflow": null
       },
-      "status": "dead-dns",
+      "status": "retired",
       "title_observed": null,
       "favicon": null,
-      "listed_in_readme": true,
-      "notes": "NXDOMAIN, confirmed via nslookup this session. No artifact located."
+      "listed_in_readme": false,
+      "notes": "Retired 2026-09-13 per Miz decision (asked directly: build it, or delete every reference). Never had a DNS record or a build artifact anywhere. Removed from README; this entry stays as the record of the decision, not a live or pending host."
     },
     {
       "host": "walker.kineticgain.com",
