@@ -658,16 +658,58 @@
         "spec_expects": "0.1",
         "conforms": false
       }
+,
+      {
+        "path": "/.well-known/agents/kinetic-gain-suite-mcp.json",
+        "version_field": "agent_card_version",
+        "observed": "1.0",
+        "spec_expects": "0.1",
+        "conforms": false
+      },
+      {
+        "path": "/.well-known/prompts/index.json",
+        "version_field": "provenance_version",
+        "observed": "1.0",
+        "spec_expects": "0.1",
+        "conforms": false
+      },
+      {
+        "path": "/.well-known/evidence/index.json",
+        "version_field": "evidence_version",
+        "observed": "1.0",
+        "spec_expects": "0.1",
+        "conforms": false
+      },
+      {
+        "path": "/.well-known/tutor-cards/index.json",
+        "version_field": "tutor_card_version",
+        "observed": "1.0",
+        "spec_expects": "0.1",
+        "conforms": false
+      },
+      {
+        "path": "/.well-known/student-ai/index.json",
+        "version_field": "disclosure_version",
+        "observed": "1.0",
+        "spec_expects": "0.1",
+        "conforms": false
+      },
+      {
+        "path": "/.well-known/ai-aup.json",
+        "version_field": "aup_version",
+        "observed": "1.0",
+        "spec_expects": "0.1",
+        "conforms": false
+      },
+      {
+        "path": "/.well-known/clinical-ai/index.json",
+        "version_field": "clinical_ai_card_version",
+        "observed": "1.0",
+        "spec_expects": "0.1",
+        "conforms": false
+      }
     ],
-    "not_reverified_this_session_but_unchanged_per_audit": [
-      "/.well-known/agents/kinetic-gain-suite-mcp.json",
-      "/.well-known/prompts/index.json",
-      "/.well-known/evidence/index.json",
-      "/.well-known/tutor-cards/index.json",
-      "/.well-known/student-ai/index.json",
-      "/.well-known/ai-aup.json",
-      "/.well-known/clinical-ai/index.json"
-    ],
-    "root_cause": "The apex publishes registry-index objects (organization, url, description, decisions/incidents array, signature) at ad hoc paths, while each spec defines a single-document shape with a required id and the spec's own *_version. Full rewrite is Phase 4, requires Miz sign-off before touching signed documents."
+    "not_reverified_this_session_but_unchanged_per_audit": [],
+    "root_cause": "The apex publishes registry-index objects (organization, url, description, a records/decisions/incidents/tutors/etc array, signature) at ad hoc paths, while each spec defines a single-document-per-entity shape with a required id and the spec's own *_version. Confirmed uniform across all 11 sampled documents as of 2026-09-12 (Phase 4 pre-check) -- 0 of 11 conform, same root cause each time, not a partial issue. Full rewrite is Phase 4 proper, requires Miz sign-off on the exact new document shape and re-signing plan before touching any signed document."
   }
 }
