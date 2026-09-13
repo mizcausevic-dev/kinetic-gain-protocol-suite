@@ -109,11 +109,11 @@
         "path": null,
         "workflow": null
       },
-      "status": "dead-dns-conflict",
+      "status": "dns-fixed-tls-pending",
       "title_observed": null,
       "favicon": null,
       "listed_in_readme": true,
-      "notes": "Has BOTH a correct ALIAS record (walker.kineticgain.com.cdn.hstgr.net.) and a stale A record (82.25.87.13, the wrong host documented in ~/.claude/CLAUDE.md). The stale A record wins. Confirmed this session that Hostinger's DNS API refuses to let an A and ALIAS coexist on the same name at all (rejects any A-record update with 'RRset ... IN ALIAS must not be used with A on the same name'), and the only delete tool available this session is scoped to the whole domain with no way to target a single record, too risky to use blind on a 300+ record zone. Needs a human to delete just the stale A record via hPanel's DNS editor (a few seconds); the ALIAS is already correct and does not need to change."
+      "notes": "Fixed via hPanel: the stale A record (82.25.87.13) was deleted, leaving only the correct ALIAS record (walker.kineticgain.com.cdn.hstgr.net.), confirmed against the authoritative zone this session. Not yet independently curled live (local DNS cache still serving the old answer at the time of the fix) -- treat as DNS-correct until a fresh HTTPS check confirms content, consistent with the other four dns-fixed-tls-pending hosts."
     },
     {
       "host": "bench.kineticgain.com",
