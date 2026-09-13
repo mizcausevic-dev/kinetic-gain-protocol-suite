@@ -109,11 +109,11 @@
         "path": null,
         "workflow": null
       },
-      "status": "dns-fixed-tls-pending",
-      "title_observed": null,
+      "status": "live",
+      "title_observed": "well-known-walker — Kinetic Gain disclosure discovery",
       "favicon": null,
       "listed_in_readme": true,
-      "notes": "Fixed via hPanel: the stale A record (82.25.87.13) was deleted, leaving only the correct ALIAS record (walker.kineticgain.com.cdn.hstgr.net.), confirmed against the authoritative zone this session. Not yet independently curled live (local DNS cache still serving the old answer at the time of the fix) -- treat as DNS-correct until a fresh HTTPS check confirms content, consistent with the other four dns-fixed-tls-pending hosts."
+      "notes": "Fully fixed 2026-09-13. DNS conflict resolved via hPanel (stale A record deleted, correct ALIAS kept). Then hit a separate CDN-edge TLS handshake failure (SEC_E_ILLEGAL_MESSAGE) even with correct DNS, fixed via a Hostinger SSL reissue for this hostname's CDN routing. Independently curled after the fix: HTTP 200, correct title."
     },
     {
       "host": "bench.kineticgain.com",
@@ -192,7 +192,7 @@
       "title_observed": null,
       "favicon": null,
       "listed_in_readme": true,
-      "notes": "DNS A record corrected this session from 82.25.87.13 (stale/wrong host) to 82.25.89.47 (the real web-estate host). Content was already fully deployed here the whole time (index.html, fonts, assets, ORIGIN.md all present in Hostinger before the fix). Not yet visitable over HTTPS: the Hostinger AutoSSL cert for this subdomain is expired (SEC_E_CERT_EXPIRED, confirmed via curl this session), because AutoSSL never issued/renewed a valid cert while DNS pointed at the wrong host. Should self-resolve once Hostinger's next AutoSSL cycle notices the now-correct DNS; if not, needs a manual SSL re-issue for this subdomain in hPanel."
+      "notes": "DNS A record corrected 2026-09-12 from 82.25.87.13 (stale/wrong host) to 82.25.89.47 (the real web-estate host). Content was already fully deployed here the whole time. Still not visitable over HTTPS as of 2026-09-13: agents.kineticgain.com and aup.kineticgain.com had the identical DNS problem and both got a successful Hostinger AutoSSL reissue in one pass; this host was not offered a reissue on that same pass, cause not yet identified. Needs a separate, closer look in hPanel."
     },
     {
       "host": "agents.kineticgain.com",
@@ -204,11 +204,11 @@
         "path": null,
         "workflow": null
       },
-      "status": "dns-fixed-tls-pending",
-      "title_observed": null,
+      "status": "live",
+      "title_observed": "Agent Cards — Kinetic Gain Protocol Suite",
       "favicon": null,
       "listed_in_readme": true,
-      "notes": "Same fix and same remaining TLS issue as prompts.kineticgain.com: DNS A record corrected to 82.25.89.47 this session, content already fully deployed, cert expired pending Hostinger AutoSSL renewal."
+      "notes": "Fully fixed 2026-09-13. DNS A record corrected to 82.25.89.47, then Hostinger AutoSSL reissued the certificate for this subdomain (unlike prompts.kineticgain.com, which needed the same DNS fix but did not get offered a reissue on the same pass). Independently curled after the fix: HTTP 200, correct title."
     },
     {
       "host": "evidence.kineticgain.com",
@@ -282,11 +282,11 @@
         "path": null,
         "workflow": null
       },
-      "status": "dns-fixed-tls-pending",
-      "title_observed": null,
+      "status": "live",
+      "title_observed": "Classroom AI AUP — Kinetic Gain Protocol Suite",
       "favicon": null,
       "listed_in_readme": true,
-      "notes": "Same fix and same remaining TLS issue as prompts.kineticgain.com and agents.kineticgain.com: DNS A record corrected to 82.25.89.47 this session, content already fully deployed, cert expired pending Hostinger AutoSSL renewal."
+      "notes": "Fully fixed 2026-09-13. DNS A record corrected to 82.25.89.47, then Hostinger AutoSSL reissued the certificate for this subdomain (unlike prompts.kineticgain.com, which needed the same DNS fix but did not get offered a reissue on the same pass). Independently curled after the fix: HTTP 200, correct title."
     },
     {
       "host": "clinical.kineticgain.com",
@@ -441,7 +441,7 @@
       "title_observed": null,
       "favicon": null,
       "listed_in_readme": true,
-      "notes": "CNAME record added this session (-> mizcausevic-dev.github.io.); repo's GitHub Pages config confirmed verified (protected_domain_state: verified) with a successful prior build. Not yet visitable over HTTPS: GitHub's ACME cert was stuck in bad_authz (expired 2026-08-24) because it could never complete domain validation while DNS was absent. Confirmed via curl this session still SEC_E_CERT_EXPIRED even after the DNS fix; GitHub's ACME re-check can take time. If it hasn't self-resolved in 24h, toggling 'Enforce HTTPS' off/on (or removing and re-adding the custom domain) in the repo's Pages settings forces an immediate re-check."
+      "notes": "CNAME record added 2026-09-12 (-> mizcausevic-dev.github.io.); repo's GitHub Pages config verified (protected_domain_state: verified). Still not visitable over HTTPS as of 2026-09-13: GitHub's ACME cert stuck in bad_authz (expired 2026-08-24), unchanged after >13 hours. Tried removing and re-adding the custom domain via the GitHub REST API (PUT .../pages with cname) -- confirmed this does NOT reset the ACME state (same bad_authz, same expiry date after) and additionally resets https_enforced to false, which the API then refuses to re-enable until a valid cert exists (\"The certificate has not finished being issued\", 404). The actual GitHub web UI action (Settings > Pages, clear + save + re-add + save) is not equivalent to the API call and is the one path not yet tried."
     },
     {
       "host": "aws.kineticgain.com",
@@ -529,10 +529,10 @@
         "path": "/validator/",
         "workflow": null
       },
-      "status": "unlisted",
+      "status": "live",
       "title_observed": "Kinetic Gain Suite Validator \u00e2\u20ac\u201d verify...",
       "favicon": "/favicon.svg",
-      "listed_in_readme": false,
+      "listed_in_readme": true,
       "notes": "Named in CROSS_MODEL_BRIEF, absent from README's live-properties table. Add in Phase 3."
     },
     {
