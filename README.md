@@ -1,7 +1,7 @@
 # Kinetic Gain Protocol Suite
 
 > **A family of twelve open JSON specifications for the answer-engine and agent era — plus a 65-repo implementation stack that consumes them.**
-> Five core specs · three EdTech extensions · one HealthTech extension · one cross-cutting incident-disclosure spec · one buyer-side procurement Decision Card (v0.3 — adds `data_vault_targets` + `retention_envelope`) · one InsurTech Claims Decision Card · one unified visualizer · one operator console · one unified MCP server · **30 live properties on kineticgain.com** (see [Live properties](#-live-properties) for the current count, including which are down or pending) · specs MIT, implementation stack split by tier — see [License](#-license).
+> Five core specs · three EdTech extensions · one HealthTech extension · one cross-cutting incident-disclosure spec · one buyer-side procurement Decision Card (v0.3 — adds `data_vault_targets` + `retention_envelope`) · one InsurTech Claims Decision Card · one unified visualizer · one operator console · one unified MCP server · **33 live properties on kineticgain.com** (see [Live properties](#-live-properties) for the current count, including which are down or pending) · specs MIT, implementation stack split by tier — see [License](#-license).
 >
 > Public front door: **[suite.kineticgain.com](https://suite.kineticgain.com)**.
 
@@ -355,34 +355,37 @@ The bench is **not a twelfth spec** — it's the *testing-counterpart* to the di
 
 ## 🌐 Live properties
 
-Source of truth: [`estate/manifest.json`](estate/manifest.json), independently curl/DNS-checked 2026-09-12/13, not copied from any prior claim without re-verifying. Of 35 tracked subdomains (`examples.kineticgain.com` retired 2026-09-13, no DNS record or build artifact ever existed for it): **30 live and correct** (26 in the tables below + 4 in "Live but previously missing"), **5 DNS-fixed but not yet visitable over HTTPS (TLS cert pending).** `scripts/render-readme-facts.mjs` / `facts-check.yml` fail the build if these numbers drift from the manifest without this section being updated too.
+Source of truth: [`estate/manifest.json`](estate/manifest.json), independently curl/DNS-checked 2026-09-12/13, not copied from any prior claim without re-verifying. Of 35 tracked subdomains (`examples.kineticgain.com` retired 2026-09-13, no DNS record or build artifact ever existed for it): **33 live and correct** (29 in the tables below + 3 in "Live but previously missing", + the apex `kineticgain.com` itself), **2 DNS-fixed but not yet visitable over HTTPS (TLS cert pending).** `scripts/render-readme-facts.mjs` / `facts-check.yml` fail the build if these numbers drift from the manifest without this section being updated too.
 
-### Hubs + tools (7 live)
+### Hubs + tools (8 live)
 | URL | What it serves |
 |---|---|
 | **[suite.kineticgain.com](https://suite.kineticgain.com)** | **Canonical front door** for the entire Suite — 12-spec map, full spec table, two-front-doors section, NIST RMF crosswalk |
 | [docs.kineticgain.com](https://docs.kineticgain.com) | **Quickstart hub** — per-role guides + canonical `/.well-known/` path map. Confirmed stale as of this session: its spec count, tool count, and live-property count all lag the numbers in this README (63 tools vs. the current 75; the other two figures are also below current). No source repo found for this site; fix needs someone with access to whatever generates it. |
 | [directory.kineticgain.com](https://directory.kineticgain.com) | **Vendor directory** — curated list of domains publishing Kinetic Gain documents |
+| [walker.kineticgain.com](https://walker.kineticgain.com) | **well-known-walker** — paste any domain, see every Kinetic Gain disclosure it publishes. Was down most of 2026-09-12/13 (a DNS record conflict, then a stuck TLS cert); both fixed 2026-09-13, confirmed live with a fresh curl. |
 | [bench.kineticgain.com](https://bench.kineticgain.com) | **prompt-injection-bench** — paste a JSONL transcript, see pass rates by category and severity |
 | [pulse.kineticgain.com](https://pulse.kineticgain.com) | **AI Procurement Pulse** — quarterly research index of vendor disclosure across the open internet. [Issue #1 "The Zero Baseline"](https://pulse.kineticgain.com/issue-1/) is live (powered by `procurement-pulse-engine` + `well-known-probe-js`) |
 | [console.kineticgain.com](https://console.kineticgain.com) | **Operator Console** — mission-control for the Suite: interactive topology mesh (*v0.2* — runtime-gate overlays, ed25519 signature posture, blast-radius tracing), configurable SRE operator dashboard, live audit-stream visualization, PDF export ([repo](https://github.com/mizcausevic-dev/kinetic-gain-operator-console)) |
 | [validator.kineticgain.com](https://validator.kineticgain.com) | **Kinetic Gain Suite Validator** — was referenced in `CROSS_MODEL_BRIEF.md`, missing from this table until now |
 
-`walker.kineticgain.com` was listed here before; its DNS conflict was fixed this session, see **DNS fixed, TLS pending** below. `examples.kineticgain.com` was listed here too; it never had a DNS record or any build artifact, and is retired rather than built — no longer referenced anywhere in this README.
+`examples.kineticgain.com` was listed here before; it never had a DNS record or any build artifact, and is retired rather than built — no longer referenced anywhere in this README.
 
 ### Per-spec landings (10 live)
 | URL | Spec |
 |---|---|
 | [aeo.kineticgain.com](https://aeo.kineticgain.com) | AEO Protocol — interactive visualizer |
+| [agents.kineticgain.com](https://agents.kineticgain.com) | Agent Cards. TLS cert reissued 2026-09-13, confirmed live. |
 | [evidence.kineticgain.com](https://evidence.kineticgain.com) | AI Evidence Format |
 | [toolcards.kineticgain.com](https://toolcards.kineticgain.com) | MCP Tool Cards |
 | [tutor.kineticgain.com](https://tutor.kineticgain.com) | AI Tutor Cards (EdTech) |
 | [student.kineticgain.com](https://student.kineticgain.com) | Student AI Disclosure (EdTech) |
+| [aup.kineticgain.com](https://aup.kineticgain.com) | Classroom AI AUP (EdTech). TLS cert reissued 2026-09-13, confirmed live. |
 | [clinical.kineticgain.com](https://clinical.kineticgain.com) | Clinical AI Disclosure (HealthTech) |
 | [incidents.kineticgain.com](https://incidents.kineticgain.com) | AI Incident Card (cross-cutting, vendor-side) |
 | [decisions.kineticgain.com](https://decisions.kineticgain.com) | AI Procurement Decision Card (cross-cutting, buyer-side) |
 
-`prompts.kineticgain.com`, `agents.kineticgain.com`, and `aup.kineticgain.com` were listed here before; DNS was fixed this session but each is still waiting on a TLS cert renewal, see **DNS fixed, TLS pending** below. Classroom AI AUP and AI Claims Decision Card have no dedicated landing subdomain yet.
+`prompts.kineticgain.com` was listed here before; DNS was fixed this session but it's still waiting on a TLS cert reissue (Hostinger did not offer one for this specific host the way it did for `agents`/`aup`, needs another look), see **DNS fixed, TLS pending** below. AI Claims Decision Card has no dedicated landing subdomain yet.
 
 ### Earlier product surfaces (4 live)
 | URL | What it does |
@@ -409,16 +412,11 @@ Production-hardened (v1.0-prod) synthetic-data operator consoles covering the mu
 
 `retention.kineticgain.com` was listed here before; DNS was added this session but it's waiting on a TLS cert, see **DNS fixed, TLS pending** below.
 
-### DNS fixed, TLS pending (5)
-These now resolve to the correct host, and the content behind them is already fully built and deployed (or, for `walker`, was never actually missing). They are **not yet confirmed visitable over HTTPS** — `prompts`/`agents`/`aup` hit `SEC_E_CERT_EXPIRED` via curl this session (Hostinger AutoSSL never issued/renewed while DNS pointed at the wrong host); `retention` hits the same via GitHub Pages' own ACME, stuck since DNS was absent. `walker`'s fix (deleting its stale conflicting A record, done via hPanel) landed after those checks and hasn't been independently re-curled yet, but is DNS-correct in the authoritative zone. Both providers should self-resolve on their next renewal cycle now that DNS is right; if not resolved within a day, `retention` can be forced by toggling "Enforce HTTPS" off/on in the repo's GitHub Pages settings, and `prompts`/`agents`/`aup` need a manual SSL re-issue in hPanel.
+### DNS fixed, TLS pending (2)
+DNS is correct on both, and the content is already built and deployed. Not yet visitable over HTTPS. `agents`, `aup`, and `walker` were in this same state as of the 2026-09-12 audit; all three had their certs reissued 2026-09-13 and are now confirmed live above.
 
-| URL | What it serves once confirmed |
-|---|---|
-| walker.kineticgain.com | well-known-walker (content already deployed) |
-| prompts.kineticgain.com | Prompt Provenance landing (content already deployed) |
-| agents.kineticgain.com | Agent Cards landing (content already deployed) |
-| aup.kineticgain.com | Classroom AI AUP landing (content already deployed) |
-| retention.kineticgain.com | `m365-retention-case-orchestrator`, GitHub Pages |
+- **prompts.kineticgain.com** — Prompt Provenance landing, content already deployed. Hostinger's AutoSSL did not offer a reissue for this host on the same pass that fixed `agents`/`aup` (same account, same DNS target, unclear why it's different) — needs another look in hPanel.
+- **retention.kineticgain.com** — `m365-retention-case-orchestrator`, GitHub Pages. Custom domain is correctly configured and ownership-verified; the certificate is stuck in a `bad_authz` ACME state. Removing and re-adding the custom domain via the GitHub API does *not* reset this (confirmed 2026-09-13 — the config updates but the cert state and expiry date don't change), so it needs the actual GitHub web UI action (Settings → Pages → clear the custom domain, save, wait, re-add, save) rather than an API-driven fix. That UI action also resets "Enforce HTTPS" to off, which needs re-checking once the cert issues.
 
 ### Live but previously missing from this README (3, beyond validator above)
 | URL | What it serves |
