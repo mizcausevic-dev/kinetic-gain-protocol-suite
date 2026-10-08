@@ -224,7 +224,7 @@ Adding a producer takes more than setting `AUDIT_STREAM_URL`: the current sink r
 
 | Repo | Lang | What it does |
 |---|---|---|
-| [`aeo-validator-service`](https://github.com/mizcausevic-dev/aeo-validator-service) | Python · FastAPI | Always-on HTTP validator for AEO + all Suite docs (11 at last independent check; 12th-spec support not reverified this session). Auto-detects the spec via `*_version` sniffing, hashes canonically, tracks **drift** across re-checks (`POST /watches/{id}/recheck` returns a structured `DriftReport`). Layer 4 of the AEO Reference Stack. |
+| [`aeo-validator-service`](https://github.com/mizcausevic-dev/aeo-validator-service) | Python · FastAPI | Reference HTTP validator for AEO and Suite docs (11 supported at the last independent check; 12th-spec support and current hosted availability have not been reverified). Auto-detects the spec via `*_version` sniffing, hashes canonically, and tracks **drift** across re-checks (`POST /watches/{id}/recheck` returns a structured `DriftReport`). Layer 4 of the AEO Reference Stack. |
 | [`aeo-graph-explorer-rs`](https://github.com/mizcausevic-dev/aeo-graph-explorer-rs) | Rust · axum · petgraph | HTTP graph-query service over `aeo-crawler` JSONL output. `GET /neighbors`, `GET /shortest-path`, `GET /find-by-claim`, atomic `POST /ingest`. Layer 5 of the AEO Reference Stack. |
 | [`incident-correlation-rs`](https://github.com/mizcausevic-dev/incident-correlation-rs) | Rust · petgraph | Walks the Suite graph from an `IncidentCard` and emits a structured remediation plan: `DecisionCard → RecheckPolicy`, `Vendor → RequestReview`, AEO/agent/tool → `Revalidate`. |
 
@@ -449,7 +449,7 @@ Read the [Classroom AI AUP spec](https://github.com/mizcausevic-dev/classroom-ai
 Publish a [Tutor Card](https://github.com/mizcausevic-dev/ai-tutor-card-spec) at `/.well-known/tutors/<id>.json`. A district AUP can then validate your card against its `vendor_requirements` in milliseconds.
 
 **I'm a healthcare AI vendor selling into hospitals.**
-Publish a [Clinical AI Disclosure](https://github.com/mizcausevic-dev/clinical-ai-disclosure-spec) at `/.well-known/clinical-ai/<system_id>.json` with your FDA / SaMD / HIPAA / EHR-integration posture. A CMIO can read it in seconds; the bias-audit URI is procurement-blocking for SaMD class II+.
+Publish a [Clinical AI Disclosure](https://github.com/mizcausevic-dev/clinical-ai-disclosure-spec) at `/.well-known/clinical-ai/<system_id>.json` with your stated FDA / SaMD / HIPAA / EHR-integration posture and evidence links. A CMIO can review the disclosure; each buyer decides which evidence gaps block procurement.
 
 **I'm a procurement reviewer evaluating an AI vendor.**
 Use [`procurement-decision-api`](https://github.com/mizcausevic-dev/procurement-decision-api) to draft a Decision Card from vendor Suite documents and your rubric, then complete buyer review and signing. [`policy-as-code-engine`](https://github.com/mizcausevic-dev/policy-as-code-engine)'s `POST /bundles/from-decision-card` can create a scoped candidate policy. To deny real requests, integrate that policy at an authenticated request boundary with trusted condition facts and revocation; conversion alone does not enforce it.
@@ -477,7 +477,7 @@ The AEO Protocol is the oldest spec in the suite and has the most complete tooli
 | **1. SDKs** | [`aeo-sdk-python`](https://github.com/mizcausevic-dev/aeo-sdk-python) (live on [PyPI](https://pypi.org/project/aeo-protocol/)) · [`aeo-sdk-typescript`](https://github.com/mizcausevic-dev/aeo-sdk-typescript) · [`aeo-sdk-rust`](https://github.com/mizcausevic-dev/aeo-sdk-rust) · [`aeo-sdk-go`](https://github.com/mizcausevic-dev/aeo-sdk-go) · [`aeo-sdk-swift`](https://github.com/mizcausevic-dev/aeo-sdk-swift) |
 | **2. CLI** | [`aeo-cli`](https://github.com/mizcausevic-dev/aeo-cli) — `aeo validate / fetch / inspect / claim` against a live well-known URL |
 | **3. Crawler** | [`aeo-crawler`](https://github.com/mizcausevic-dev/aeo-crawler) — BFS over AEO graphs, JSONL output |
-| **4. Validator service** | [`aeo-validator-service`](https://github.com/mizcausevic-dev/aeo-validator-service) — always-on HTTP validator for all Suite docs (11 at last independent check; 12th-spec support not reverified this session); tracks drift via `POST /watches/{id}/recheck` |
+| **4. Validator service** | [`aeo-validator-service`](https://github.com/mizcausevic-dev/aeo-validator-service) — reference HTTP validator for Suite docs (11 supported at the last independent check; 12th-spec support and current hosted availability have not been reverified); tracks drift via `POST /watches/{id}/recheck` |
 | **5. Graph explorer** | [`aeo-graph-explorer-rs`](https://github.com/mizcausevic-dev/aeo-graph-explorer-rs) — Rust + axum + petgraph graph-query service over the crawler's JSONL output |
 | **MCP server (AEO-only)** | [`mcp-aeo-server`](https://github.com/mizcausevic-dev/mcp-aeo-server) — superseded by `mcp-kinetic-gain` but useful as a single-spec install |
 
