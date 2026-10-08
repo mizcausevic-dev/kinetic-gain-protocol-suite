@@ -8,13 +8,13 @@
     "note": "ai-claims-decision-card-spec brought to full template compliance the same day (PR merged) to make this count honest: root-level schema, examples/, docs/ORIGIN.md, validate.yml, single MIT license."
   },
   "mcp_kinetic_gain": {
-    "npm_published_version": "0.9.1",
+    "npm_published_version": "0.10.0",
     "tagged_unpublished_version": "0.9.2",
     "tools_observed": 75,
-    "tests_observed": 191,
-    "test_files_observed": 6,
-    "observed_via": "npm view (published), package.json + git tag (tagged), vitest run (tests), this session",
-    "note": "v0.9.2 has been tagged since 2026-08-25 but never successfully published (npm 2FA-bypass-token deprecation, fixed in mcp-kinetic-gain PR #37, still needs an npm Trusted Publisher registration before the next tag push succeeds). README should cite 0.9.1, the version anyone actually gets from npm install, not the unpublished tag."
+    "tests_observed": 222,
+    "test_files_observed": 8,
+    "observed_via": "npm 0.10.0 package metadata, integrity and provenance, tagged release workflow 37852645551, published-package stdio MCP tools/list smoke, and official MCP Registry latest endpoint (checked 2026-10-08); test count is from the tagged release workflow",
+    "note": "v0.10.0 is published on npm and the official MCP Registry; the published package returned 75 tools. The npm tag is the reviewed package commit; a later Registry-only main commit shortened server.json description without changing package bytes. The v0.9.2 Git tag exists but npm's version list does not include it."
   },
   "hosts": [
     {
@@ -48,7 +48,7 @@
       "title_observed": "Kinetic Gain Protocol Suite - twelve JSO...",
       "favicon": "/favicon.svg",
       "listed_in_readme": true,
-      "notes": "Already reads twelve/75/v0.9.1 as of tonight's earlier reconciliation work, ahead of this hub's own README."
+      "notes": "At the 2026-09-12 audit, this landing had already been reconciled for the then-current spec, tool, and package counts. Current content has not been rechecked for this manifest update."
     },
     {
       "host": "docs.kineticgain.com",

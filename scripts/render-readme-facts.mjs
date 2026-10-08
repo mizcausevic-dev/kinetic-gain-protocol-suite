@@ -6,8 +6,8 @@
 // package.json of its own.
 //
 // Usage: node scripts/render-readme-facts.mjs
-// Exit 0 always; this script reports facts, it does not judge the README.
-// facts-check.yml (CI) is what fails the build when README.md disagrees.
+// Exit nonzero when README/manifest claims disagree or the published npm
+// version cannot be confirmed. facts-check.yml runs this script in CI.
 
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
@@ -20,19 +20,27 @@ const manifest = JSON.parse(readFileSync(manifestPath, "utf8"));
 
 function fetchJson(url) {
   return new Promise((resolve, reject) => {
-    https
-      .get(url, { headers: { "User-Agent": "kg-facts-check" } }, (res) => {
-        let data = "";
-        res.on("data", (c) => (data += c));
-        res.on("end", () => {
-          try {
-            resolve(JSON.parse(data));
-          } catch (e) {
-            reject(e);
-          }
-        });
-      })
-      .on("error", reject);
+    const request = https.get(url, { headers: { "User-Agent": "kg-facts-check" } }, (res) => {
+      if (res.statusCode !== 200) {
+        res.resume();
+        reject(new Error(`HTTP ${res.statusCode}`));
+        return;
+      }
+      let data = "";
+      res.on("data", (c) => {
+        data += c;
+        if (data.length > 512_000) request.destroy(new Error("npm response too large"));
+      });
+      res.on("end", () => {
+        try {
+          resolve(JSON.parse(data));
+        } catch (e) {
+          reject(e);
+        }
+      });
+    });
+    request.setTimeout(10_000, () => request.destroy(new Error("npm request timed out")));
+    request.on("error", reject);
   });
 }
 
@@ -67,14 +75,19 @@ console.log(
 
 console.log("");
 console.log("=== mcp-kinetic-gain (fetched live from npm) ===");
+let npmVersion;
+let npmLookupError;
 try {
   const pkg = await fetchJson("https://registry.npmjs.org/mcp-kinetic-gain/latest");
-  console.log(`npm_version: ${pkg.version}`);
+  if (typeof pkg.version !== "string") throw new Error("npm response has no version");
+  npmVersion = pkg.version;
+  console.log(`npm_version: ${npmVersion}`);
   console.log(
-    `NOTE: tool/test counts are not in package.json; use the values already recorded under manifest.mcp_kinetic_gain, refreshed by hand against 'npm run test' output, not derived here.`
+    `NOTE: tool/test counts are not in package.json; the manifest records their separate observation methods and dates, not values derived by this script.`
   );
 } catch (e) {
-  console.log(`BLOCKED: could not fetch npm registry (${e.message}). Falling back to manifest.mcp_kinetic_gain.`);
+  npmLookupError = e;
+  console.log(`BLOCKED: could not fetch npm registry (${e.message}).`);
 }
 console.log(
   `manifest_recorded_npm_published_version: ${manifest.mcp_kinetic_gain.npm_published_version} (this is what README should cite)`
@@ -100,6 +113,13 @@ for (const p of patterns) {
 console.log("");
 console.log("=== Enforcement ===");
 const failures = [];
+if (npmLookupError) {
+  failures.push(`Could not verify the current npm package version: ${npmLookupError.message}`);
+} else if (npmVersion !== manifest.mcp_kinetic_gain.npm_published_version) {
+  failures.push(
+    `npm publishes mcp-kinetic-gain ${npmVersion}, but estate/manifest.json records ${manifest.mcp_kinetic_gain.npm_published_version}.`
+  );
+}
 
 const staleSpecWord = specCount === 12 ? /\beleven\b.{0,15}specs?/i : /\btwelve\b.{0,15}specs?/i;
 const staleSpecDigit = specCount === 12 ? /\b11\s+specs?\b/i : /\b12\s+specs?\b/i;
