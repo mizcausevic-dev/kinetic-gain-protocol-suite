@@ -67,7 +67,7 @@ These already exist. If you find yourself reimplementing one, stop and integrate
 | HTTP validator (check supported spec set and deployment status) | [`aeo-validator-service`](https://github.com/mizcausevic-dev/aeo-validator-service) |
 | BFS crawler over AEO graphs | [`aeo-crawler`](https://github.com/mizcausevic-dev/aeo-crawler) |
 | Graph-query layer over crawled AEO output | [`aeo-graph-explorer-rs`](https://github.com/mizcausevic-dev/aeo-graph-explorer-rs) |
-| MCP tool surface exposing every Suite spec | [`mcp-kinetic-gain`](https://github.com/mizcausevic-dev/mcp-kinetic-gain) — 75 tools (npm and MCP Registry v0.9.3, checked 2026-10-08), one MCP client config entry |
+| MCP tool surface exposing every Suite spec | [`mcp-kinetic-gain`](https://github.com/mizcausevic-dev/mcp-kinetic-gain) — 75 tools (npm and MCP Registry v0.10.0, checked 2026-10-08), one MCP client config entry |
 | Unified visualizer that auto-detects which spec via discriminator | [`kinetic-gain-visualizer`](https://github.com/mizcausevic-dev/kinetic-gain-visualizer) |
 | Reusable async reliability primitives (Tokio Rust) | [`reliability-toolkit-rs`](https://github.com/mizcausevic-dev/reliability-toolkit-rs) |
 | Async server-side feature flags (Rust) | [`feature-flag-rs`](https://github.com/mizcausevic-dev/feature-flag-rs) |

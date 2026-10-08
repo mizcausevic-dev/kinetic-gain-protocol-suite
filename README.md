@@ -163,7 +163,7 @@ flowchart TB
     PDA ==>|preview tools| MCP
     AS ==>|event tools| MCP
     HA ==>|verify tools| MCP
-    MCP["🤖 mcp-kinetic-gain v0.9.3<br/>75 tools · one Claude Desktop config entry"]:::mcp
+    MCP["🤖 mcp-kinetic-gain v0.10.0<br/>75 tools · one Claude Desktop config entry"]:::mcp
 ```
 
 **Green** = the spec foundation. **Blue** = implementation components and proposed cross-repo hooks; an arrow is not proof of an integrated deployment. **Grey** = supporting tools. **Amber** = an optional, best-effort audit-stream path. **Purple** = the unified MCP tool surface.
@@ -217,7 +217,7 @@ Adding a producer takes more than setting `AUDIT_STREAM_URL`: the current sink r
 | Repo | Lang | What it does |
 |---|---|---|
 | [`procurement-decision-api`](https://github.com/mizcausevic-dev/procurement-decision-api) | Python · FastAPI | Drafts AI Procurement Decision Cards from a buyer rubric and a set of vendor Suite documents (AEO + agent-card + tool-card + ai-evidence + …). **The first cross-ecosystem bridge** in the portfolio — Suite × Decision Intelligence. |
-| [`policy-as-code-engine`](https://github.com/mizcausevic-dev/policy-as-code-engine) | Python · FastAPI | Declarative policy evaluator. `POST /bundles/from-decision-card` can produce a candidate `PolicyBundle` from a reviewed, signed v0.1 Procurement Decision Card with a pinned buyer key. Runtime enforcement still requires an integrated, authenticated request path. **Cross-ecosystem hook #2.** |
+| [`policy-as-code-engine`](https://github.com/mizcausevic-dev/policy-as-code-engine) | Python · FastAPI | [PyPI 0.2.1](https://pypi.org/project/policy-as-code-engine/0.2.1/) reference evaluator. `POST /bundles/from-decision-card` can produce a candidate `PolicyBundle` from a reviewed, signed v0.1 Procurement Decision Card with a pinned buyer key. Runtime enforcement still requires an integrated, authenticated request path. **Cross-ecosystem hook #2.** |
 | [`hash-attestation-rs`](https://github.com/mizcausevic-dev/hash-attestation-rs) | Rust · ed25519 | Sign and verify Suite documents with ed25519 over the canonical-hash convention every other Suite repo already uses. **The missing "this AEO actually came from the vendor" layer.** |
 
 ### 🌐 AEO consumer / spec implementer
@@ -232,7 +232,7 @@ Adding a producer takes more than setting `AUDIT_STREAM_URL`: the current sink r
 
 | Repo | Lang | What it does |
 |---|---|---|
-| [`data-contract-registry`](https://github.com/mizcausevic-dev/data-contract-registry) | Python · FastAPI | Schema registry with semver versioning, compatibility checks (backward / forward / full), declared owners, and freshness SLAs. `POST /contracts/owners/from-decision-card` suggests Owner records from a Procurement Decision Card; a steward must verify the contact and authority before registration. **Cross-ecosystem hook #3.** |
+| [`data-contract-registry`](https://github.com/mizcausevic-dev/data-contract-registry) | Python · FastAPI | [PyPI 0.2.0](https://pypi.org/project/data-contract-registry/0.2.0/) in-memory reference registry with semver versioning, compatibility checks (backward / forward / full), declared owners, and freshness SLAs. `POST /contracts/owners/from-decision-card` suggests Owner records from a Procurement Decision Card; a steward must verify the contact and authority before registration. **Cross-ecosystem hook #3.** |
 | [`csv-data-quality-rs`](https://github.com/mizcausevic-dev/csv-data-quality-rs) | Rust · tokio · csv | Streaming CSV validator against a `data-contract-registry` contract. Async, row-by-row, structured violation report (`required` / `bad_type` / `enum_mismatch` / `column_count_mismatch` / `invalid_json`). **Cross-ecosystem hook #4.** |
 | [`sql-contract-enforcer`](https://github.com/mizcausevic-dev/sql-contract-enforcer) | Python · SQL | Generates dialect-specific DDL proposals from its own contract model. [Review PR #6](https://github.com/mizcausevic-dev/sql-contract-enforcer/pull/6) adds a strict registry v0.2 proposal adapter and reports semantic gaps. Generated DDL has not been executed or rolled back on a target database; Snowflake and BigQuery constraints also differ in enforcement. **Candidate cross-ecosystem hook #5.** |
 
@@ -253,7 +253,7 @@ Nine repos that compose into a single layered reliability story: identity → ra
 
 | Repo | Lang | What it does |
 |---|---|---|
-| [`mcp-kinetic-gain`](https://github.com/mizcausevic-dev/mcp-kinetic-gain) | TypeScript | **Unified Suite MCP server** — 75 tools across 12 specs plus DefenseTech tooling. Version 0.9.3 is published on [npm](https://www.npmjs.com/package/mcp-kinetic-gain) and the [official MCP Registry](https://registry.modelcontextprotocol.io/v0.1/servers/io.github.mizcausevic-dev%2Fmcp-kinetic-gain/versions/latest) (checked 2026-10-08). One MCP client config entry. Its validation and policy-preview tools do not themselves enforce a buyer decision on downstream services. |
+| [`mcp-kinetic-gain`](https://github.com/mizcausevic-dev/mcp-kinetic-gain) | TypeScript | **Unified Suite MCP server** — 75 tools across 12 specs plus DefenseTech tooling. Version 0.10.0 is published on [npm](https://www.npmjs.com/package/mcp-kinetic-gain/v/0.10.0) and the [official MCP Registry](https://registry.modelcontextprotocol.io/v0.1/servers/io.github.mizcausevic-dev%2Fmcp-kinetic-gain/versions/latest) (checked 2026-10-08). One MCP client config entry. Its validation and policy-preview tools do not themselves enforce a buyer decision on downstream services. |
 | [`mcp-reliability-toolkit`](https://github.com/mizcausevic-dev/mcp-reliability-toolkit) | TypeScript | Source-available reference MCP server for SLO calculations and reliability-pattern recipes. Emitted configurations require review against the target library. No public npm package was found under this name on 2026-10-08. |
 | [`mcp-decision-intelligence`](https://github.com/mizcausevic-dev/mcp-decision-intelligence) | TypeScript | Source-available MCP server for read-only Decision Intelligence previews. It does not invoke or prove the behavior of live Python/Rust services. No public npm package was found under this name on 2026-10-08. |
 
@@ -284,7 +284,7 @@ The components are usable as reference implementations. Three-layer Decision Car
 
 ## 🔌 One MCP server. 75 tools. Twelve specs + DefenseTech.
 
-[`mcp-kinetic-gain`](https://github.com/mizcausevic-dev/mcp-kinetic-gain) v0.9.3 is published on npm and the official MCP Registry (verified 2026-10-08). The npm-installed 0.9.3 package answered MCP `tools/list` with 75 tools in a local stdio smoke check on that date. Those tools cover the twelve specs, implementation previews, and DefenseTech semantics through one MCP client config entry.
+[`mcp-kinetic-gain`](https://github.com/mizcausevic-dev/mcp-kinetic-gain) v0.10.0 is published on npm and the official MCP Registry (verified 2026-10-08). The npm-installed 0.10.0 package answered MCP `tools/list` with 75 tools in a local stdio smoke check on that date. Those tools cover the twelve specs, implementation previews, and DefenseTech semantics through one MCP client config entry.
 
 | Spec | Tools |
 |---|---|
