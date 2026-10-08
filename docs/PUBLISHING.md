@@ -1,22 +1,23 @@
 # Publishing the Kinetic Gain Implementation Stack
 
-All thirteen implementation repos have a `publish.yml` GitHub Actions workflow
-that fires on any tag matching `v*`. This document is the **one-time setup**
-each repo needs before the workflow can actually push to a public registry.
+This guide records the publishing pattern for six Python and seven Rust
+implementation repositories. It is not a current readiness or workflow
+inventory. Inspect each repository's actual `publish.yml` and registry state
+before creating a release tag.
 
 | Registry | Repos | One-time setup |
 | --- | --- | --- |
 | **PyPI** | 6 Python repos (see list below) | Trusted Publisher / OIDC — **no secret to manage** |
 | **crates.io** | 7 Rust repos | One `CARGO_REGISTRY_TOKEN` repo secret each |
 
-Once the setup is done, releasing is a single command:
+This is setup guidance, not evidence that every repo is ready to publish. Review the exact candidate commit, its CI and dependency checks, registry permissions, artifact contents, and rollback plan before creating a new version tag. Once those gates pass, the tag step is:
 
 ```bash
 git tag -a v0.1.2 -m "release"
 git push origin v0.1.2
 ```
 
-The workflow then runs:
+The intended workflow runs these steps; confirm them in the repository being released:
 
 1. Verify `Cargo.toml` / `pyproject.toml` version matches the tag.
 2. Build the artifact (`python -m build` / `cargo publish --dry-run`).
@@ -81,12 +82,14 @@ upload credential at publish time. Nothing long-lived is stored.
 
 ## crates.io (7 repos, API token)
 
-crates.io doesn't have an OIDC publisher yet, so each repo needs the same
-`CARGO_REGISTRY_TOKEN` secret. (You can use **one** token across all seven repos.)
+The Rust publish workflows described here expect a `CARGO_REGISTRY_TOKEN` secret.
+Use a separate, least-privilege credential for each publishing repo rather than
+sharing one token across the stack. Confirm the current registry options and
+each workflow before provisioning credentials.
 
 ### One-time setup
 
-1. **Generate the token**: [crates.io/settings/tokens](https://crates.io/settings/tokens) — click "New Token", give it a name like "github-actions-publisher", scope to `publish-update` (covers new versions of existing crates) and `publish-new` (covers first publish). Click create. **Copy the token immediately** — crates.io shows it once.
+1. **Generate a repo-specific token**: [crates.io/settings/tokens](https://crates.io/settings/tokens) — grant only the publish permissions needed for that crate and release. **Copy the token immediately**; the registry shows it once.
 
 2. **Add it as a secret to each of the seven Rust repos**:
    ```bash
@@ -153,16 +156,16 @@ Returns the registered crate with the latest version.
 
 ## What's the failure mode if the workflow fires before setup is done?
 
-- **PyPI**: the `pypa/gh-action-pypi-publish` step fails with `403 Forbidden`. Workflow turns red. **No partial state on PyPI**. Fix the publisher config and re-tag.
-- **crates.io**: `cargo publish` fails with `error: no token found`. Workflow turns red. **No partial state on crates.io**. Add the secret and re-tag.
+- **PyPI**: the `pypa/gh-action-pypi-publish` step may fail with `403 Forbidden` when publisher setup is missing. Inspect the actual registry and workflow state; do not assume no artifact was published.
+- **crates.io**: `cargo publish` may fail with `error: no token found` when its credential is missing. Inspect the actual registry and workflow state before retrying.
 
-Both failure modes are idempotent — the same tag can be re-pushed after a force-delete-and-recreate, and the workflow re-runs cleanly.
+Do not force-delete or recreate a release tag. Repair the cause, bump to a new version and tag, and run the release gates again. Registry versions and downstream consumers may already have observed the first attempt.
 
 ---
 
 ## Maintenance
 
-After both registries are set up, the release ceremony for any repo is:
+After registry setup and exact-commit review, the typical release sequence is:
 
 1. Bump version in `pyproject.toml` or `Cargo.toml`.
 2. Update CHANGELOG (recommended).
@@ -171,4 +174,4 @@ After both registries are set up, the release ceremony for any repo is:
 5. Push tag: `git push origin vX.Y.Z`.
 6. Open the GitHub Actions tab and watch the workflow turn green.
 
-The CI matrix and tests already run on every push to `main`. The publish workflow only fires on tags, so there's no risk of accidentally publishing untested code.
+Verify the required CI and security checks on the exact commit to be tagged. Tag-triggered publishing can release an untested or unreviewed commit if those checks are not enforced for that commit.

@@ -1,13 +1,13 @@
 # Kinetic Gain Protocol Suite
 
-> **A family of twelve open JSON specifications for the answer-engine and agent era — plus a 65-repo implementation stack that consumes them.**
-> Five core specs · three EdTech extensions · one HealthTech extension · one cross-cutting incident-disclosure spec · one buyer-side procurement Decision Card (v0.3 — adds `data_vault_targets` + `retention_envelope`) · one InsurTech Claims Decision Card · one unified visualizer · one operator console · one unified MCP server · **33 live properties on kineticgain.com** (see [Live properties](#-live-properties) for the current count, including which are down or pending) · specs MIT, implementation stack split by tier — see [License](#-license).
+> **A family of twelve open JSON specifications for the answer-engine and agent era, with 65 related repositories in the dated [estate inventory](estate/manifest.json).**
+> Five core specs · three EdTech extensions · one HealthTech extension · one cross-cutting incident-disclosure spec · one buyer-side procurement Decision Card (v0.3 — adds `data_vault_targets` + `retention_envelope`) · one InsurTech Claims Decision Card · one unified visualizer · one operator console · one unified MCP server · a [dated property-availability snapshot](#-live-properties) · specs MIT, implementation stack split by tier — see [License](#-license).
 >
 > Public front door: **[suite.kineticgain.com](https://suite.kineticgain.com)**.
 
 [![Kinetic Gain Operator Console](https://raw.githubusercontent.com/mizcausevic-dev/kinetic-gain-operator-console/main/screenshots/operator-dashboard.png)](https://console.kineticgain.com)
 
-> **[Kinetic Gain Operator Console](https://console.kineticgain.com)** — mission-control for the whole Suite: an interactive topology mesh (*v0.2* — runtime-gate overlays for the MCP Permission Broker / Azure Governance Bridge / SQL Contract Enforcer, ed25519 signature posture, and blast-radius tracing across the hash-chained spine), a configurable SRE operator dashboard (savable layouts, simulation throttle, per-channel latency sliders, PDF export), and live audit-stream visualization. ([repo](https://github.com/mizcausevic-dev/kinetic-gain-operator-console))
+> **[Kinetic Gain Operator Console](https://console.kineticgain.com)** — a Suite topology and operator visualization with runtime-gate overlays, signature posture, and audit-stream views. An overlay is not evidence that a gate is deployed or on an application's request path. ([repo](https://github.com/mizcausevic-dev/kinetic-gain-operator-console))
 
 <!-- Pulse self-score badge removed 2026-09-12: kineticgain-com-apex (source
      of both the badge SVG and the linked receipt) is private or unreachable
@@ -125,7 +125,7 @@ The Suite now has real implementation tooling attached to several of its disclos
 ---
 
 ## 🛠️ Suite × Implementations
-The Suite is a set of specs. **This section is the software that consumes them** — 65 repos across the sections below, semver-tagged, with **five cross-ecosystem hooks** tying them together. Grouped by the buyer most likely to land on the repo first. License varies by tier, not uniformly MIT — see [License](#-license) for the exact split, independently checked against every repo's live LICENSE file. ("CI-green" is this repo's own claim about itself, not independently re-run across all 65 this session, see the manifest for what has been re-verified.)
+The Suite is a set of specs. **This section maps related implementations** recorded in the September 2026 estate inventory, including five proposed cross-ecosystem hooks. Grouped by the buyer most likely to land on the repo first. License varies by tier; see the [dated license audit](#-license). CI, availability, and integration have not been re-run across the full inventory for this review.
 
 ### 🕸️ How it composes
 
@@ -140,10 +140,10 @@ flowchart TB
     SPECS["📐 12 Suite specs<br/>AEO · Agent · Tool · Tutor · AUP · Disclosure<br/>Evidence · Provenance · Clinical · Incident · Decision · Claims"]:::spec
 
     SPECS -->|"#1 ingest Suite docs"| PDA["procurement-decision-api<br/>drafts Decision Cards"]:::hook
-    PDA -->|"#2 conditions → runtime gates"| PAC["policy-as-code-engine<br/>PolicyBundle enforcement"]:::hook
+    PDA -->|"#2 reviewed card → candidate bundle"| PAC["policy-as-code-engine<br/>policy evaluation"]:::hook
     PDA -->|"#3 extract owners"| DCR["data-contract-registry<br/>schema + SLAs"]:::hook
     DCR -->|"#4 streaming CSV check"| CDQ["csv-data-quality-rs<br/>row-by-row validation"]:::hook
-    DCR -->|"#5 contract → DDL"| SCE["sql-contract-enforcer<br/>cross-dialect table constraints"]:::hook
+    DCR -.->|"#5 adapter required"| SCE["sql-contract-enforcer<br/>cross-dialect DDL generator"]:::hook
 
     SPECS -.->|sign + verify| HA["hash-attestation-rs<br/>ed25519 over canonical hash"]:::sup
     SPECS -.->|drift detection| AVS["aeo-validator-service<br/>always-on validation"]:::sup
@@ -163,14 +163,14 @@ flowchart TB
     PDA ==>|preview tools| MCP
     AS ==>|event tools| MCP
     HA ==>|verify tools| MCP
-    MCP["🤖 mcp-kinetic-gain v0.9.1<br/>75 tools · one Claude Desktop config entry"]:::mcp
+    MCP["🤖 mcp-kinetic-gain v0.9.3<br/>75 tools · one Claude Desktop config entry"]:::mcp
 ```
 
-**Green** = the spec foundation. **Blue** = the five cross-ecosystem hooks that make this a stack rather than a pile of repos. **Grey** = supporting tools that feed either side. **Amber** = the tamper-evident audit-stream spine every governance moment writes to. **Purple** = the unified MCP surface that exposes the whole thing to Claude.
+**Green** = the spec foundation. **Blue** = implementation components and proposed cross-repo hooks; an arrow is not proof of an integrated deployment. **Grey** = supporting tools. **Amber** = an optional, best-effort audit-stream path. **Purple** = the unified MCP tool surface.
 
 ### 📋 The audit-stream spine — eleven producers, five runtimes
 
-Zoom in on the amber spine: every governance moment in the stack writes to **one hash-chained, tamper-evident log** via `audit-stream-py`. Same opt-in env-var contract (`AUDIT_STREAM_URL`) across every producer; same best-effort semantics (a failed POST is logged, never raised). The original seven (four FastAPI services + three Rust crates) are now joined by four runtime + data-tier producers — **`mcp-permission-broker`** and **`azure-openai-governance-bridge`** (tool-invocation gates), **`pg-audit-stream-extension`** (Postgres CRUD via `pg_notify`), and **`wp-kinetic-gain-audit`** (WordPress/MySQL) — so the spine now spans **Python, Rust, PL/pgSQL, PHP, and Azure Functions**. One verifiable narrative an auditor can replay end-to-end, no matter which tier emitted the event.
+These components can emit events to `audit-stream-py` when their optional audit integration is configured. Delivery is best-effort: a failed POST does not block the governed action, and missing events are possible. The diagram maps event-producing code in Python, Rust, PL/pgSQL, PHP, and Azure Functions; it does not establish that the components share a deployed log or that an auditor can reconstruct every governance action end to end.
 
 ```mermaid
 flowchart LR
@@ -217,7 +217,7 @@ Adding the next producer is a ~60-line module: copy the `audit_stream` shape (Py
 | Repo | Lang | What it does |
 |---|---|---|
 | [`procurement-decision-api`](https://github.com/mizcausevic-dev/procurement-decision-api) | Python · FastAPI | Drafts AI Procurement Decision Cards from a buyer rubric and a set of vendor Suite documents (AEO + agent-card + tool-card + ai-evidence + …). **The first cross-ecosystem bridge** in the portfolio — Suite × Decision Intelligence. |
-| [`policy-as-code-engine`](https://github.com/mizcausevic-dev/policy-as-code-engine) | Python · FastAPI | Declarative policy evaluator. Headline: `POST /bundles/from-decision-card` turns a Decision Card's `conditions[]` into a runtime-enforceable PolicyBundle. Closes the loop from "buyer signed off" to "request gated." **Cross-ecosystem hook #2.** |
+| [`policy-as-code-engine`](https://github.com/mizcausevic-dev/policy-as-code-engine) | Python · FastAPI | Declarative policy evaluator. `POST /bundles/from-decision-card` can produce a candidate `PolicyBundle` from a reviewed, signed v0.1 Procurement Decision Card with a pinned buyer key. Runtime enforcement still requires an integrated, authenticated request path. **Cross-ecosystem hook #2.** |
 | [`hash-attestation-rs`](https://github.com/mizcausevic-dev/hash-attestation-rs) | Rust · ed25519 | Sign and verify Suite documents with ed25519 over the canonical-hash convention every other Suite repo already uses. **The missing "this AEO actually came from the vendor" layer.** |
 
 ### 🌐 AEO consumer / spec implementer
@@ -253,36 +253,38 @@ Nine repos that compose into a single layered reliability story: identity → ra
 
 | Repo | Lang | What it does |
 |---|---|---|
-| [`mcp-kinetic-gain`](https://github.com/mizcausevic-dev/mcp-kinetic-gain) | TypeScript | **Unified Suite MCP server** — 75 tools across 12 specs + DefenseTech 6-pack (v0.9.1, on the official MCP Registry). One Claude Desktop config entry. Headline tools: `aup_check_compliance` (joins AUP + Disclosure into one allow/deny call); `decision_card_validate` (enforces the full Decision Card conditional rule set); `defensetech_vault_resolve_3axis` (resolves CUI × export-control × foreign-person to the most-restrictive vault policy). |
-| [`mcp-reliability-toolkit`](https://github.com/mizcausevic-dev/mcp-reliability-toolkit) | TypeScript | Reliability MCP server — `compute_slo_burn`, `design_rate_limiter`, `design_circuit_breaker`, `compose_reliability_pattern`. Same math as `slo-budget-tracker`; emits Python + Rust configs. |
-| [`mcp-decision-intelligence`](https://github.com/mizcausevic-dev/mcp-decision-intelligence) | TypeScript | Decision Intelligence MCP server — `validate_decision_card`, `preview_policy_bundle`, `plan_incident_remediation`, `check_contract_compatibility`. Read-only preview of what the live Python/Rust services would compute. |
+| [`mcp-kinetic-gain`](https://github.com/mizcausevic-dev/mcp-kinetic-gain) | TypeScript | **Unified Suite MCP server** — 75 tools across 12 specs plus DefenseTech tooling. Version 0.9.3 is published on [npm](https://www.npmjs.com/package/mcp-kinetic-gain) and the [official MCP Registry](https://registry.modelcontextprotocol.io/v0.1/servers/io.github.mizcausevic-dev%2Fmcp-kinetic-gain/versions/latest) (checked 2026-10-08). One MCP client config entry. Its validation and policy-preview tools do not themselves enforce a buyer decision on downstream services. |
+| [`mcp-reliability-toolkit`](https://github.com/mizcausevic-dev/mcp-reliability-toolkit) | TypeScript | Source-available reference MCP server for SLO calculations and reliability-pattern recipes. Emitted configurations require review against the target library. No public npm package was found under this name on 2026-10-08. |
+| [`mcp-decision-intelligence`](https://github.com/mizcausevic-dev/mcp-decision-intelligence) | TypeScript | Source-available MCP server for read-only Decision Intelligence previews. It does not invoke or prove the behavior of live Python/Rust services. No public npm package was found under this name on 2026-10-08. |
 
-### 🚦 Runtime enforcement — turning "buyer signed off" into "request denied"
+### 🚦 Reference policy gates — integration still required
 
-The Decision Card layer decides; these gates enforce, at the moment a tool is invoked, and write every verdict to the spine:
+These components evaluate local rules. A production request path must authenticate the caller, verify the buyer's authority and card scope, load a trusted policy, block disallowed operations before execution, and make audit delivery and rollback behavior explicit.
 
 | Repo | Lang | What it does |
 |---|---|---|
-| [`mcp-permission-broker`](https://github.com/mizcausevic-dev/mcp-permission-broker) | Python | Runtime gate between a Decision Card and an MCP tool call. Composes Decision Card conditions into deny-trumps-allow PolicyBundles; emits `tool_invocation_*` to the spine. |
-| [`azure-openai-governance-bridge`](https://github.com/mizcausevic-dev/azure-openai-governance-bridge) | Python · Azure Functions · Bicep | The Azure-native sibling — an Azure Function in front of Azure OpenAI enforcing the same PolicyBundle contract on every chat-completion call (deployment + each declared tool). Puts the Suite's governance on the data path enterprises actually run AI on. |
+| [`mcp-permission-broker`](https://github.com/mizcausevic-dev/mcp-permission-broker) | Python | In-process `rules[]` evaluator for MCP tool requests. An MCP host must call it before each tool runs. It does not intercept MCP traffic or load and verify Decision Cards; audit POSTs are optional and best-effort. |
+| [`azure-openai-governance-bridge`](https://github.com/mizcausevic-dev/azure-openai-governance-bridge) | Python · Azure Functions · Bicep | Reference Azure Function that checks its local `rules[]` before forwarding an Azure OpenAI call. Its caller identity, policy provenance, upstream bypass, audit durability, private deployment, and rollback boundary are not production-verified. |
+
+`policy-as-code-engine` emits `PolicyBundle.policies[]`, while these two evaluators consume separate `PolicyBundle.rules[]` formats. There is no verified adapter or shared runtime policy contract between them.
 
 ### The five cross-ecosystem hooks
 
 What makes the stack *a stack* rather than a list of repos:
 
 1. **`procurement-decision-api` → Suite documents.** Ingests AEO / agent-card / tool-card / ai-evidence by URL; emits a Decision Card. (Suite × Decision Intelligence.)
-2. **`policy-as-code-engine` → `procurement-decision-api`.** `POST /bundles/from-decision-card` turns approve / reject / approve-with-conditions into runtime-enforceable allow / deny / per-condition gates.
-3. **`data-contract-registry` → `procurement-decision-api`.** `POST /contracts/owners/from-decision-card` extracts buyer + decision_maker into Owner records so freshly registered contracts carry paging info nobody re-types.
-4. **`csv-data-quality-rs` → `data-contract-registry`.** Streaming CSV validator against a registered contract — producers prove their output matches, row by row.
-5. **`sql-contract-enforcer` → `data-contract-registry`.** Compiles the same contract into cross-dialect DDL (CHECK / NOT NULL / UNIQUE / PK / FK across Postgres, MySQL, Snowflake, BigQuery) — enforcing at the table boundary what hook #4 validates row-wise.
+2. **`policy-as-code-engine` → `procurement-decision-api`.** `POST /bundles/from-decision-card` converts an eligible, reviewed Procurement Decision Card into a candidate bundle. Its own evaluator can apply the bundle; the broker and Azure bridge cannot consume it without a reviewed adapter.
+3. **`data-contract-registry` → `procurement-decision-api`.** `POST /contracts/owners/from-decision-card` suggests owner records from buyer and decision-maker fields. A data steward must verify the contact and on-call authority before registration; the endpoint does not verify the card or approve an owner.
+4. **`csv-data-quality-rs` → `data-contract-registry`.** Streaming CSV validator that accepts the registry's JSON contract shape. The caller fetches and pins a contract version, then rejects output when the validation report is invalid. The crate does not prove freshness, primary-key uniqueness, or downstream compatibility.
+5. **`sql-contract-enforcer` → `data-contract-registry`.** Generates cross-dialect DDL from its own contract model. Registry contracts require a reviewed adapter; generated DDL has not been proved to enforce the same rules in a deployed database.
 
-The implementation stack is **independently usable** — any repo composes with the rest, none requires it — and the Decision Card now enforces at three layers: the MCP tool call (`mcp-permission-broker`), the Azure OpenAI call (`azure-openai-governance-bridge`), and the database table (`sql-contract-enforcer`).
+The components are individually usable as reference implementations. The three-layer Decision Card enforcement claim is **not established**: the policy formats differ, the MCP library needs host integration, and SQL contracts are not Procurement Decision Cards.
 
 ---
 
 ## 🔌 One MCP server. 75 tools. Twelve specs + DefenseTech.
 
-[`mcp-kinetic-gain`](https://github.com/mizcausevic-dev/mcp-kinetic-gain) (v0.9.1, on the official MCP Registry) is the unified [Model Context Protocol](https://modelcontextprotocol.io) server exposing every runtime Kinetic Gain spec as callable tools. One Claude Desktop / Cursor / MCP-client config entry; 75 tools across all twelve specs plus the DefenseTech 6-pack (3-axis vault resolver + CUI/ITAR/DFARS invariants + CMMC evidence summarizer + Incident Card event classifier).
+[`mcp-kinetic-gain`](https://github.com/mizcausevic-dev/mcp-kinetic-gain) v0.9.3 is published on npm and the official MCP Registry (verified 2026-10-08). The published package answered MCP `tools/list` with 75 tools in a local stdio smoke check on that date. Those tools cover the twelve specs, implementation previews, and DefenseTech semantics through one MCP client config entry.
 
 | Spec | Tools |
 |---|---|
@@ -298,7 +300,7 @@ The implementation stack is **independently usable** — any repo composes with 
 | AI Incident Card | `incident_validate` · `incident_inspect` · `incident_index_fetch` · `incident_affected_walk` |
 | AI Procurement Decision Card | **`decision_card_validate`** · `decision_card_inspect` · `decision_card_conditions` · `decision_card_signature_check` |
 
-191 tests pass · typecheck clean · stdio MCP server, drops into any MCP-compatible client. Sibling MCP servers for the Reliability Stack (`mcp-reliability-toolkit`) and Decision Intelligence (`mcp-decision-intelligence`) exist for narrower use cases.
+The published package exposes a stdio MCP server. Check the [MCP repository's CI](https://github.com/mizcausevic-dev/mcp-kinetic-gain/actions) for results tied to the exact commit under review. Sibling MCP servers for the Reliability Stack (`mcp-reliability-toolkit`) and Decision Intelligence (`mcp-decision-intelligence`) exist for narrower use cases.
 
 ---
 
@@ -347,17 +349,17 @@ All nine are composite Node 20 actions with `dist/` committed for SHA/tag pinnin
 
 | Repo | What it does |
 |---|---|
-| [`prompt-injection-bench`](https://github.com/mizcausevic-dev/prompt-injection-bench) | Open 30-attack prompt-injection corpus + Python harness. Every record carries an `agent_card_refusal_categories` back-ref to the [Agent Card](https://github.com/mizcausevic-dev/agent-cards-spec) `refusal_taxonomy[].category` it tests. A vendor can grep their declared categories against the corpus to verify their stated commitments hold under attack — and failed runs become natural inputs for [AI Incident Cards](https://github.com/mizcausevic-dev/ai-incident-card-spec). **Visual harness live at [bench.kineticgain.com](https://bench.kineticgain.com).** |
+| [`prompt-injection-bench`](https://github.com/mizcausevic-dev/prompt-injection-bench) | Open 30-attack prompt-injection corpus and Python harness. Its category references can map an Agent Card's declared refusals to test cases; only a run against the actual agent can provide behavior evidence. The visual transcript harness was recorded at [bench.kineticgain.com](https://bench.kineticgain.com) in the September 2026 estate audit. |
 
-The bench is **not a twelfth spec** — it's the *testing-counterpart* to the disclosure layer. The Suite tells you what an agent should refuse; the bench tells you whether it actually does.
+The bench is **not a twelfth spec**. It provides test inputs and a way to inspect run results; an Agent Card remains a declaration until behavior is tested against the agent.
 
 ---
 
 ## 🌐 Live properties
 
-Source of truth: [`estate/manifest.json`](estate/manifest.json), independently curl/DNS-checked 2026-09-12/13, not copied from any prior claim without re-verifying. Of 35 tracked subdomains (`examples.kineticgain.com` retired 2026-09-13, no DNS record or build artifact ever existed for it): **33 live and correct** (29 in the tables below + 3 in "Live but previously missing", + the apex `kineticgain.com` itself), **2 DNS-fixed but not yet visitable over HTTPS (TLS cert pending).** `scripts/render-readme-facts.mjs` / `facts-check.yml` fail the build if these numbers drift from the manifest without this section being updated too.
+[`estate/manifest.json`](estate/manifest.json) records a curl/DNS audit from 2026-09-12/13. At that time it classified 33 properties as reachable and two as DNS-fixed but awaiting TLS. This is a historical snapshot, not a current uptime or correct-content guarantee. The tables below retain that audit's classifications until each host is rechecked. `facts-check.yml` checks selected README/manifest counts; it does not probe host health.
 
-### Hubs + tools (8 live)
+### Hubs + tools (8 recorded live)
 | URL | What it serves |
 |---|---|
 | **[suite.kineticgain.com](https://suite.kineticgain.com)** | **Canonical front door** for the entire Suite — 12-spec map, full spec table, two-front-doors section, NIST RMF crosswalk |
@@ -371,7 +373,7 @@ Source of truth: [`estate/manifest.json`](estate/manifest.json), independently c
 
 `examples.kineticgain.com` was listed here before; it never had a DNS record or any build artifact, and is retired rather than built — no longer referenced anywhere in this README.
 
-### Per-spec landings (10 live)
+### Per-spec landings (10 recorded live)
 | URL | Spec |
 |---|---|
 | [aeo.kineticgain.com](https://aeo.kineticgain.com) | AEO Protocol — interactive visualizer |
@@ -387,7 +389,7 @@ Source of truth: [`estate/manifest.json`](estate/manifest.json), independently c
 
 `prompts.kineticgain.com` was listed here before; DNS was fixed this session but it's still waiting on a TLS cert reissue (Hostinger did not offer one for this specific host the way it did for `agents`/`aup`, needs another look), see **DNS fixed, TLS pending** below. AI Claims Decision Card has no dedicated landing subdomain yet.
 
-### Earlier product surfaces (4 live)
+### Earlier product surfaces (4 recorded live)
 | URL | What it does |
 |---|---|
 | [gv.kineticgain.com](https://gv.kineticgain.com) | GitVisualizer — visual portfolio intelligence for any GitHub user |
@@ -397,8 +399,8 @@ Source of truth: [`estate/manifest.json`](estate/manifest.json), independently c
 
 `mizcausevic-dev.github.io/kinetic-gain-visualizer` is the unified visualizer (GitHub Pages); not re-verified against the 12th spec this session (see the visualizer section above).
 
-### Cloud Identity, Platform, FinOps & Threat Detection Governance lane (7 live)
-Production-hardened (v1.0-prod) synthetic-data operator consoles covering the multi-cloud admin stack — Microsoft, AWS, GCP, Azure. AGPL-3.0-or-later, dual-Node CI, dependabot, 95%+ statement coverage. Each repo ships a GitHub Pages workflow, but per-host DNS actually routes to Hostinger for all of these except `intune`, so Hostinger is what's really live; the Pages config sits configured-but-dormant on the rest. Not worth reconciling: both paths produce the same static output, and repointing DNS away from a working host for the sake of matching the repo's own CI would be churn with no user-facing benefit.
+### Cloud Identity, Platform, FinOps & Threat Detection Governance lane (7 recorded live)
+Synthetic-data operator consoles covering multi-cloud administration scenarios. The September 2026 audit recorded Hostinger delivery for most listed hosts and GitHub Pages for `intune`; this routing and the current hosted content need fresh verification before a deployment claim. Static demonstrations do not establish live cloud authorization or production data boundaries.
 
 | URL | What it does | Repo |
 |---|---|---|
@@ -418,7 +420,7 @@ DNS is correct on both, and the content is already built and deployed. Not yet v
 - **prompts.kineticgain.com** — Prompt Provenance landing, content already deployed. Hostinger's AutoSSL did not offer a reissue for this host on the same pass that fixed `agents`/`aup` (same account, same DNS target, unclear why it's different) — needs another look in hPanel.
 - **retention.kineticgain.com** — `m365-retention-case-orchestrator`, GitHub Pages. Custom domain is correctly configured and ownership-verified; the certificate is stuck in a `bad_authz` ACME state. Removing and re-adding the custom domain via the GitHub API does *not* reset this (confirmed 2026-09-13 — the config updates but the cert state and expiry date don't change), so it needs the actual GitHub web UI action (Settings → Pages → clear the custom domain, save, wait, re-add, save) rather than an API-driven fix. That UI action also resets "Enforce HTTPS" to off, which needs re-checking once the cert issues.
 
-### Live but previously missing from this README (3, beyond validator above)
+### Recorded live but previously missing from this README (3, beyond validator above)
 | URL | What it serves |
 |---|---|
 | [governance.kineticgain.com](https://governance.kineticgain.com) | Kinetic Gain Governance Dashboard, referenced 22 times across other repos' READMEs, never listed here until now |
@@ -485,7 +487,7 @@ The same five-layer pattern is now feasible for other specs: the Tutor Card and 
 
 ## 🤝 Status & contribution
 
-**v0.1 draft across all twelve specs · v0.1.0 across the 23-repo implementation stack (see the table above).** Stable enough to publish; designed to evolve. Issues and pull requests welcome on any repo. Discussion of cross-spec concerns happens here in this meta-repo.
+The twelve specs are drafts with independently versioned implementations. Individual packages may be published, but the cross-repo runtime and data-contract paths above have not passed an integrated production release gate. Issues and pull requests are welcome on the respective repos; cross-spec discussions belong here.
 
 A future v0.2 sweep will probably add: detached cryptographic signing across the family (foundation already shipped in [`hash-attestation-rs`](https://github.com/mizcausevic-dev/hash-attestation-rs)), an automated `kinetic-gain-protocol-suite` validator that walks document references end-to-end, and a conformance suite for MCP servers claiming Kinetic Gain support.
 
