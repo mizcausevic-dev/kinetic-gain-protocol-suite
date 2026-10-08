@@ -203,7 +203,7 @@ flowchart LR
 
     AS{{"📋 audit-stream-py<br/>hash chain over accepted events<br/>SSE tail · REST query · GET /verify"}}:::spine
 
-    AS -->|GET /events/stream| LT["governance dashboards<br/>(live tail)"]:::sink
+    AS -->|GET /stream| LT["governance dashboards<br/>(live tail)"]:::sink
     AS -->|GET /events| Q["accepted event query<br/>(REST)"]:::sink
     AS -->|GET /verify| V["chain verification<br/>(accepted events only)"]:::sink
 ```
@@ -284,7 +284,7 @@ The components are usable as reference implementations. Three-layer Decision Car
 
 ## 🔌 One MCP server. 75 tools. Twelve specs + DefenseTech.
 
-[`mcp-kinetic-gain`](https://github.com/mizcausevic-dev/mcp-kinetic-gain) v0.9.3 is published on npm and the official MCP Registry (verified 2026-10-08). The published package answered MCP `tools/list` with 75 tools in a local stdio smoke check on that date. Those tools cover the twelve specs, implementation previews, and DefenseTech semantics through one MCP client config entry.
+[`mcp-kinetic-gain`](https://github.com/mizcausevic-dev/mcp-kinetic-gain) v0.9.3 is published on npm and the official MCP Registry (verified 2026-10-08). The npm-installed 0.9.3 package answered MCP `tools/list` with 75 tools in a local stdio smoke check on that date. Those tools cover the twelve specs, implementation previews, and DefenseTech semantics through one MCP client config entry.
 
 | Spec | Tools |
 |---|---|
