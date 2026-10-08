@@ -143,7 +143,7 @@ flowchart TB
     PDA -->|"#2 reviewed card → candidate bundle"| PAC["policy-as-code-engine<br/>policy evaluation"]:::hook
     PDA -->|"#3 extract owners"| DCR["data-contract-registry<br/>schema + SLAs"]:::hook
     DCR -->|"#4 streaming CSV check"| CDQ["csv-data-quality-rs<br/>row-by-row validation"]:::hook
-    DCR -.->|"#5 adapter required"| SCE["sql-contract-enforcer<br/>cross-dialect DDL generator"]:::hook
+    DCR -.->|"#5 review-branch proposal adapter"| SCE["sql-contract-enforcer<br/>cross-dialect DDL generator"]:::hook
 
     SPECS -.->|sign + verify| HA["hash-attestation-rs<br/>ed25519 over canonical hash"]:::sup
     SPECS -.->|drift detection| AVS["aeo-validator-service<br/>always-on validation"]:::sup
@@ -157,7 +157,7 @@ flowchart TB
     AVS --> AS
     ICR --> AS
     HA --> AS
-    AS["📋 audit-stream-py<br/>hash-chained tamper-evident spine"]:::stream
+    AS["📋 audit-stream-py<br/>optional hash-chained event store"]:::stream
 
     SPECS ==>|spec tools| MCP
     PDA ==>|preview tools| MCP
@@ -168,9 +168,9 @@ flowchart TB
 
 **Green** = the spec foundation. **Blue** = implementation components and proposed cross-repo hooks; an arrow is not proof of an integrated deployment. **Grey** = supporting tools. **Amber** = an optional, best-effort audit-stream path. **Purple** = the unified MCP tool surface.
 
-### 📋 The audit-stream spine — eleven producers, five runtimes
+### 📋 Optional audit event path — eleven source integrations, five runtimes
 
-These components can emit events to `audit-stream-py` when their optional audit integration is configured. Delivery is best-effort: a failed POST does not block the governed action, and missing events are possible. The diagram maps event-producing code in Python, Rust, PL/pgSQL, PHP, and Azure Functions; it does not establish that the components share a deployed log or that an auditor can reconstruct every governance action end to end.
+These components contain optional event-emission paths. Delivery is best-effort: a failed POST does not block the governed action, and missing events are possible. The diagram maps source code in Python, Rust, PL/pgSQL, PHP, and Azure Functions; it does not establish compatibility with the current authenticated sink, a shared deployed log, or an auditor's ability to reconstruct every governance action end to end.
 
 ```mermaid
 flowchart LR
@@ -201,16 +201,16 @@ flowchart LR
     PGX -->|"&lt;configured kind&gt; on table CRUD"| AS
     WPA -->|"content_published<br/>plugin_activated<br/>user_role_changed"| AS
 
-    AS{{"📋 audit-stream-py<br/>hash-chained · tamper-evident<br/>SSE live tail · REST query · GET /verify"}}:::spine
+    AS{{"📋 audit-stream-py<br/>hash chain over accepted events<br/>SSE tail · REST query · GET /verify"}}:::spine
 
     AS -->|GET /events/stream| LT["governance dashboards<br/>(live tail)"]:::sink
-    AS -->|GET /events| Q["compliance evidence<br/>(REST query)"]:::sink
-    AS -->|GET /verify| V["auditor replay<br/>(walk the chain)"]:::sink
+    AS -->|GET /events| Q["accepted event query<br/>(REST)"]:::sink
+    AS -->|GET /verify| V["chain verification<br/>(accepted events only)"]:::sink
 ```
 
-**Blue** = Python FastAPI producers. **Tan** = Rust producers (two libraries gated behind `--features audit-stream` so library consumers can strip out the HTTP dep, one axum service with the feature on by default). **Amber** = the spine itself. **Grey** = the three downstream surfaces auditors and operators consume.
+**Blue** = Python producers. **Tan** = Rust producers (two libraries gated behind `--features audit-stream` so library consumers can strip out the HTTP dep, one axum service with the feature on by default). **Amber** = the sink. **Grey** = query and visualization surfaces. The arrows describe source integrations, not verified delivery from every producer.
 
-Adding the next producer is a ~60-line module: copy the `audit_stream` shape (Python, Rust, PL/pgSQL, or PHP), pick your event kinds, point at `AUDIT_STREAM_URL`. The data-tier producers prove the point — `pg-audit-stream-extension` catches direct DML the application path would miss, and `wp-kinetic-gain-audit` brings the same tamper-evident chain to any WordPress estate. Next natural candidates: `slo-budget-tracker` (`slo_burn_started` / `slo_recovered`) or `reliability-toolkit-rs` (`breaker_opened` / `breaker_recovered`).
+Adding a producer takes more than setting `AUDIT_STREAM_URL`: the current sink requires a server-held `AUDIT_STREAM_TOKEN` in a Bearer header, an accepted event envelope, and a checked response. Each producer, including the MCP event tools, needs an integration test against the authenticated sink; the arrows above do not establish one. A valid chain over accepted events cannot reveal events that were never delivered; a complete audit claim also needs durable receipts and an independently held checkpoint.
 
 ### 🛒 Procurement reviewer / buyer-side governance
 
@@ -232,9 +232,9 @@ Adding the next producer is a ~60-line module: copy the `audit_stream` shape (Py
 
 | Repo | Lang | What it does |
 |---|---|---|
-| [`data-contract-registry`](https://github.com/mizcausevic-dev/data-contract-registry) | Python · FastAPI | Schema registry with semver versioning, compatibility checks (backward / forward / full), declared owners, freshness SLAs. **`POST /contracts/owners/from-decision-card` pulls Owner records out of a Procurement Decision Card. Cross-ecosystem hook #3.** |
+| [`data-contract-registry`](https://github.com/mizcausevic-dev/data-contract-registry) | Python · FastAPI | Schema registry with semver versioning, compatibility checks (backward / forward / full), declared owners, and freshness SLAs. `POST /contracts/owners/from-decision-card` suggests Owner records from a Procurement Decision Card; a steward must verify the contact and authority before registration. **Cross-ecosystem hook #3.** |
 | [`csv-data-quality-rs`](https://github.com/mizcausevic-dev/csv-data-quality-rs) | Rust · tokio · csv | Streaming CSV validator against a `data-contract-registry` contract. Async, row-by-row, structured violation report (`required` / `bad_type` / `enum_mismatch` / `column_count_mismatch` / `invalid_json`). **Cross-ecosystem hook #4.** |
-| [`sql-contract-enforcer`](https://github.com/mizcausevic-dev/sql-contract-enforcer) | Python · SQL | Turns a `data-contract-registry` contract into enforceable cross-dialect DDL (CHECK / NOT NULL / UNIQUE / PK / FK) for Postgres, MySQL, Snowflake, BigQuery, plus a contract-vs-schema checker for CI. Dialect-aware (BigQuery demotes CHECK/UNIQUE to comments + PK/FK to NOT ENFORCED). **Cross-ecosystem hook #5.** |
+| [`sql-contract-enforcer`](https://github.com/mizcausevic-dev/sql-contract-enforcer) | Python · SQL | Generates dialect-specific DDL proposals from its own contract model. [Review PR #6](https://github.com/mizcausevic-dev/sql-contract-enforcer/pull/6) adds a strict registry v0.2 proposal adapter and reports semantic gaps. Generated DDL has not been executed or rolled back on a target database; Snowflake and BigQuery constraints also differ in enforcement. **Candidate cross-ecosystem hook #5.** |
 
 ### 🛡️ SRE / Platform reliability stack
 
@@ -246,7 +246,7 @@ Nine repos that compose into a single layered reliability story: identity → ra
 | [`reliability-toolkit-rs`](https://github.com/mizcausevic-dev/reliability-toolkit-rs) | Rust · Tokio | Token-bucket rate limiter · 3-state circuit breaker · exponential-backoff retry with jitter · bulkhead. |
 | [`feature-flag-rs`](https://github.com/mizcausevic-dev/feature-flag-rs) | Rust · Tokio | Server-side flag eval — targeting rules, sticky percentage rollouts (SHA-256 bucketing, no RNG), hot reload. |
 | [`request-shadow-rs`](https://github.com/mizcausevic-dev/request-shadow-rs) | Rust · Tokio | Async request mirroring with sampling + divergence detection. The SRE primitive for safe migrations. |
-| [`audit-stream-py`](https://github.com/mizcausevic-dev/audit-stream-py) | Python · FastAPI · SSE | Append-only governance event stream, hash-chained for tamper-evidence. Every portfolio repo can produce events here. |
+| [`audit-stream-py`](https://github.com/mizcausevic-dev/audit-stream-py) | Python · FastAPI · SSE | Optional event sink with a hash chain over accepted events. Protected event routes require a Bearer token; producer compatibility and record completeness require separate verification. |
 | _(Plus 4 earlier reliability repos)_ | Python | `rate-limit-shield` · `identity-mesh` · `agent-canary` · `model-registry-pro` — defense-in-depth predecessors. |
 
 ### 🤖 MCP / Claude integrator
@@ -259,26 +259,26 @@ Nine repos that compose into a single layered reliability story: identity → ra
 
 ### 🚦 Reference policy gates — integration still required
 
-These components evaluate local rules. A production request path must authenticate the caller, verify the buyer's authority and card scope, load a trusted policy, block disallowed operations before execution, and make audit delivery and rollback behavior explicit.
+The default branches expose local rules evaluators; open review branches add signed-card gates. None is a verified production authorization boundary. A production request path must authenticate the caller, verify the buyer's authority and card scope, supply trusted condition facts, handle revocation, block disallowed operations before execution, and prove audit and rollback behavior.
 
 | Repo | Lang | What it does |
 |---|---|---|
-| [`mcp-permission-broker`](https://github.com/mizcausevic-dev/mcp-permission-broker) | Python | In-process `rules[]` evaluator for MCP tool requests. An MCP host must call it before each tool runs. It does not intercept MCP traffic or load and verify Decision Cards; audit POSTs are optional and best-effort. |
-| [`azure-openai-governance-bridge`](https://github.com/mizcausevic-dev/azure-openai-governance-bridge) | Python · Azure Functions · Bicep | Reference Azure Function that checks its local `rules[]` before forwarding an Azure OpenAI call. Its caller identity, policy provenance, upstream bypass, audit durability, private deployment, and rollback boundary are not production-verified. |
+| [`mcp-permission-broker`](https://github.com/mizcausevic-dev/mcp-permission-broker) | Python | Default branch: in-process `rules[]` evaluator. [Review PR #6](https://github.com/mizcausevic-dev/mcp-permission-broker/pull/6) adds an optional gate that verifies an operator-pinned raw signed Decision Card and evaluates the derived engine policy alongside local rules. An MCP host still must authenticate and intercept every call, supply trusted facts, and block non-allow outcomes. Card withdrawal is not discovered without a host reload; audit POSTs remain optional and best-effort. |
+| [`azure-openai-governance-bridge`](https://github.com/mizcausevic-dev/azure-openai-governance-bridge) | Python · Azure Functions · Bicep | Default branch: local `rules[]` before an Azure OpenAI call. [Review PR #6](https://github.com/mizcausevic-dev/azure-openai-governance-bridge/pull/6) also verifies an operator-pinned raw signed Decision Card and evaluates its derived engine policy. The bridge has no trusted conditional-approval channel or live revocation feed; caller identity, upstream bypass, private routing, audit durability, and hosted rollback remain unverified. |
 
-`policy-as-code-engine` emits `PolicyBundle.policies[]`, while these two evaluators consume separate `PolicyBundle.rules[]` formats. There is no verified adapter or shared runtime policy contract between them.
+`policy-as-code-engine` emits `PolicyBundle.policies[]`, while the broker and bridge have separate local `rules[]` formats. Their review branches derive an engine policy directly from a verified raw card; neither treats a bare serialized `policies[]` bundle as proof of signing. No shared hosted authorization contract has been verified.
 
 ### The five cross-ecosystem hooks
 
 What makes the stack *a stack* rather than a list of repos:
 
 1. **`procurement-decision-api` → Suite documents.** Ingests AEO / agent-card / tool-card / ai-evidence by URL; emits a Decision Card. (Suite × Decision Intelligence.)
-2. **`policy-as-code-engine` → `procurement-decision-api`.** `POST /bundles/from-decision-card` converts an eligible, reviewed Procurement Decision Card into a candidate bundle. Its own evaluator can apply the bundle; the broker and Azure bridge cannot consume it without a reviewed adapter.
+2. **`policy-as-code-engine` → `procurement-decision-api`.** `POST /bundles/from-decision-card` converts an eligible, reviewed Procurement Decision Card into a candidate bundle. The broker and Azure review branches instead take a raw, operator-pinned signed card and derive an engine policy locally. Those paths still need trusted caller facts, revocation, and hosted request-path proof.
 3. **`data-contract-registry` → `procurement-decision-api`.** `POST /contracts/owners/from-decision-card` suggests owner records from buyer and decision-maker fields. A data steward must verify the contact and on-call authority before registration; the endpoint does not verify the card or approve an owner.
 4. **`csv-data-quality-rs` → `data-contract-registry`.** Streaming CSV validator that accepts the registry's JSON contract shape. The caller fetches and pins a contract version, then rejects output when the validation report is invalid. The crate does not prove freshness, primary-key uniqueness, or downstream compatibility.
-5. **`sql-contract-enforcer` → `data-contract-registry`.** Generates cross-dialect DDL from its own contract model. Registry contracts require a reviewed adapter; generated DDL has not been proved to enforce the same rules in a deployed database.
+5. **`sql-contract-enforcer` → `data-contract-registry`.** Review PR #6 adds a strict registry v0.2-to-SQL proposal adapter and lists semantic gaps. It does not apply DDL, inspect a live database, or prove target-engine enforcement and rollback.
 
-The components are individually usable as reference implementations. The three-layer Decision Card enforcement claim is **not established**: the policy formats differ, the MCP library needs host integration, and SQL contracts are not Procurement Decision Cards.
+The components are usable as reference implementations. Three-layer Decision Card enforcement is **not established**: the MCP library needs host integration and revocation, the Azure path needs private routing and trusted identity, and SQL contracts are not Procurement Decision Cards.
 
 ---
 
@@ -443,7 +443,7 @@ Install [`mcp-kinetic-gain`](https://github.com/mizcausevic-dev/mcp-kinetic-gain
 Open the [unified visualizer](https://mizcausevic-dev.github.io/kinetic-gain-visualizer/), pick an example from the Editor view.
 
 **I'm a school district choosing AI vendors.**
-Read the [Classroom AI AUP spec](https://github.com/mizcausevic-dev/classroom-ai-aup-spec). Author your AUP. Require [Tutor Cards](https://github.com/mizcausevic-dev/ai-tutor-card-spec) from vendors. Require [Student AI Disclosures](https://github.com/mizcausevic-dev/student-ai-disclosure-spec) from learners. Three JSON documents, two joins, one allow/deny answer per submission.
+Read the [Classroom AI AUP spec](https://github.com/mizcausevic-dev/classroom-ai-aup-spec). Author your AUP. Require [Tutor Cards](https://github.com/mizcausevic-dev/ai-tutor-card-spec) from vendors and [Student AI Disclosures](https://github.com/mizcausevic-dev/student-ai-disclosure-spec) from learners. The document join can produce a policy preview; enforcing it for submissions requires an integrated, authenticated application path.
 
 **I'm a vendor trying to sell into K-12.**
 Publish a [Tutor Card](https://github.com/mizcausevic-dev/ai-tutor-card-spec) at `/.well-known/tutors/<id>.json`. A district AUP can then validate your card against its `vendor_requirements` in milliseconds.
@@ -452,10 +452,10 @@ Publish a [Tutor Card](https://github.com/mizcausevic-dev/ai-tutor-card-spec) at
 Publish a [Clinical AI Disclosure](https://github.com/mizcausevic-dev/clinical-ai-disclosure-spec) at `/.well-known/clinical-ai/<system_id>.json` with your FDA / SaMD / HIPAA / EHR-integration posture. A CMIO can read it in seconds; the bias-audit URI is procurement-blocking for SaMD class II+.
 
 **I'm a procurement reviewer evaluating an AI vendor.**
-Stand up [`procurement-decision-api`](https://github.com/mizcausevic-dev/procurement-decision-api), feed it the vendor's Suite docs + your rubric, get back a Draft Decision Card. Sign it. Want runtime enforcement? Send the signed card to [`policy-as-code-engine`](https://github.com/mizcausevic-dev/policy-as-code-engine)'s `POST /bundles/from-decision-card` — every condition becomes a deny-by-default gate.
+Use [`procurement-decision-api`](https://github.com/mizcausevic-dev/procurement-decision-api) to draft a Decision Card from vendor Suite documents and your rubric, then complete buyer review and signing. [`policy-as-code-engine`](https://github.com/mizcausevic-dev/policy-as-code-engine)'s `POST /bundles/from-decision-card` can create a scoped candidate policy. To deny real requests, integrate that policy at an authenticated request boundary with trusted condition facts and revocation; conversion alone does not enforce it.
 
 **I'm an SRE adopting the reliability stack.**
-[`slo-budget-tracker`](https://github.com/mizcausevic-dev/slo-budget-tracker) for the SLO math, [`reliability-toolkit-rs`](https://github.com/mizcausevic-dev/reliability-toolkit-rs) for rate-limiter + breaker + retry + bulkhead, [`request-shadow-rs`](https://github.com/mizcausevic-dev/request-shadow-rs) for migrations, [`audit-stream-py`](https://github.com/mizcausevic-dev/audit-stream-py) as the tamper-evident spine.
+[`slo-budget-tracker`](https://github.com/mizcausevic-dev/slo-budget-tracker) for the SLO math, [`reliability-toolkit-rs`](https://github.com/mizcausevic-dev/reliability-toolkit-rs) for rate-limiter + breaker + retry + bulkhead, [`request-shadow-rs`](https://github.com/mizcausevic-dev/request-shadow-rs) for migrations, and [`audit-stream-py`](https://github.com/mizcausevic-dev/audit-stream-py) for optional hash-chained events. Verify sink acceptance and retention before using those events as operational evidence.
 
 **I'm a data team enforcing contracts.**
 [`data-contract-registry`](https://github.com/mizcausevic-dev/data-contract-registry) to manage contracts (semver + compatibility checks). [`csv-data-quality-rs`](https://github.com/mizcausevic-dev/csv-data-quality-rs) in CI: load the contract, validate the produced CSV, fail the build on violations.
