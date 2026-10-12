@@ -1,17 +1,16 @@
 # Aerospace proof index
 
-**Checked 2026-10-12.** This index describes local draft source and public primary sources. It is **not** a live product-status certificate. New repository remote URLs, final commit SHAs, CI, live pages, public MCP availability, and customer evidence are pending separate verification.
+**Checked 2026-10-12.** Five public aerospace draft repositories and their GitHub Actions results were read back at the exact `main` commits below. This is source and CI evidence, not proof of a hosted aviation service, regulatory acceptance, customer use, or release of the optional MCP tools.
 
-| Claim supported | Source inspected | Limit |
-| --- | --- | --- |
-| Vendor card's draft wire shape and conservative override rule | `aviation-ml-assurance-card-spec/SPEC.md`, `aviation-ml-card.schema.json` | Local draft; 2B/3A override is a Suite profile, not a universal EASA mandate |
-| MRO card's embedded signature and finding decision | `mro-ai-signoff-card-spec/SPEC.md`, `mro-ai-signoff-card.schema.json` | Key binding, staff authorisation, and maintenance release are external |
-| Dataset CLI checks and report format | `aero-dataset-provenance-rs/README.md`, `docs/MANIFEST.md`, `src/` | Counts and supplied group IDs do not establish representative coverage or origin |
-| Structural PR checks | `aviation-ml-card-fleet-summary-action/README.md`, `dist/index.cjs` | No evidence fetching, full-schema check, or signature/authority verification |
-| Informative mapping with source status | `aero-assurance-crosswalk/data/crosswalk.json` | Mapping is an editorial aid, not a conformance decision |
-| Planned unified MCP integration | local `mcp-kinetic-gain` aviation review branch | Do not infer availability from the current public package or Glama listing |
+| Public draft | `main` commit checked | Hosted check at that commit | Scope and limit |
+| --- | --- | --- | --- |
+| [Aviation ML Assurance Card](https://github.com/mizcausevic-dev/aviation-ml-assurance-card-spec) | [`6995c12`](https://github.com/mizcausevic-dev/aviation-ml-assurance-card-spec/commit/6995c12453a5ac588b7d9c1de5d285fed7fe2fe1) | [CI success](https://github.com/mizcausevic-dev/aviation-ml-assurance-card-spec/actions/runs/38275270323) | Draft wire shape and conservative 2B/3A override rule; the rule is a Suite profile, not a universal EASA mandate. |
+| [MRO AI Sign-off Card](https://github.com/mizcausevic-dev/mro-ai-signoff-card-spec) | [`c3cf35b`](https://github.com/mizcausevic-dev/mro-ai-signoff-card-spec/commit/c3cf35b8955194266d70eb855b307ddb6c1bd1dd) | [CI success](https://github.com/mizcausevic-dev/mro-ai-signoff-card-spec/actions/runs/38275303866) | Embedded signature and per-finding human decision; key binding, staff authorisation, and maintenance release are external. |
+| [Dataset provenance CLI](https://github.com/mizcausevic-dev/aero-dataset-provenance-rs) | [`d708239`](https://github.com/mizcausevic-dev/aero-dataset-provenance-rs/commit/d7082399ea431d327e4c4ac729be8ce840b0a240) | [CI success](https://github.com/mizcausevic-dev/aero-dataset-provenance-rs/actions/runs/38275330570) | Observed file hashes, split leakage, declared ODD-bin counts, and a signable report; counts and supplied group IDs do not establish representative coverage or origin. |
+| [Source crosswalk](https://github.com/mizcausevic-dev/aero-assurance-crosswalk) | [`6fb159e`](https://github.com/mizcausevic-dev/aero-assurance-crosswalk/commit/6fb159e16ebc6dd7e3bea9422e85c52069c02320) | [CI success](https://github.com/mizcausevic-dev/aero-assurance-crosswalk/actions/runs/38275830323) | Informative source mapping with status and limitations, not a conformance decision. A live crosswalk page requires separate readback. |
+| [Fleet summary Action](https://github.com/mizcausevic-dev/aviation-ml-card-fleet-summary-action) | [`90bad4f`](https://github.com/mizcausevic-dev/aviation-ml-card-fleet-summary-action/commit/90bad4f77c11689e6674f234a1f14c0d79eb6966) | [CI success](https://github.com/mizcausevic-dev/aviation-ml-card-fleet-summary-action/actions/runs/38275397056) | Structural PR checks; no evidence fetching, full-schema check, cryptographic verification, or signer-authority verification. |
 
-These source paths are **repository-name/file** references for the draft package. Public GitHub links belong here only after the new repositories and reviewed branches have been created and read back from the remote.
+The optional [aviation incident profile](https://github.com/mizcausevic-dev/ai-incident-card-spec) is under review in the existing Incident Card repository. The five aviation tools are on a review branch of the existing [MCP server](https://github.com/mizcausevic-dev/mcp-kinetic-gain). Neither should be inferred from the current public package or Glama listing. The twelve established Suite specs and published MCP version remain separately counted in the [manifest](../../../estate/manifest.json).
 
 ## Primary sources checked
 
@@ -28,4 +27,4 @@ These source paths are **repository-name/file** references for the draft package
 
 ## Evidence still missing
 
-Remote repository publication and CI; a hosted `.well-known` aviation card; a private MCP initialize/list/call/auth/privacy drill; real dataset permission and representativeness review; key registry and revocation; operator staff-authority verification; counsel review for any defense-adjacent use; buyer workflow evidence; measured Ahrefs data. Do not substitute a local test, signature, or source citation for those checks.
+A supplier-hosted `.well-known` aviation card; a private MCP initialize/list/call/auth/privacy drill; real dataset permission and representativeness review; key registry and revocation; operator staff-authority verification; counsel review for any defense-adjacent use; buyer workflow evidence; measured Ahrefs data. Do not substitute public CI, a local test, signature, or source citation for those checks.

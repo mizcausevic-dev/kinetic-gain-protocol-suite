@@ -1,6 +1,6 @@
 # Aerospace Suite extension | product summary
 
-**Dated status:** 2026-10-12 local draft. This is an extension of the Kinetic Gain Protocol Suite, not a new product line. Publication, adoption, regulatory acceptance, and hosted operation are unverified.
+**Dated status:** 2026-10-12 public draft sources. Five aerospace repositories were read back with exact-commit CI results in the [proof index](PROOF_INDEX.md). This is an extension of the Kinetic Gain Protocol Suite, not a new product line. Adoption, regulatory acceptance, and hosted aviation operation are unverified.
 
 ## Scope
 
@@ -8,7 +8,7 @@
 - **Artifact record:** MRO AI Sign-off Card v0.1 for one AI-assisted maintenance finding, exact-byte artifact digest, human finding decision, and embedded signature.
 - **Engineering aid:** Offline Rust dataset tool with file hashes, exact/group split leakage checks, optional UTC time boundary, declared ODD-bin counts, and a signable report.
 - **Reading aid:** Informative crosswalk from card fields to public EASA, FAA, NIST, and publisher descriptions of licensed standards.
-- **Integration:** A structural PR Action and five optional tools in the existing `mcp-kinetic-gain` server; the public MCP release remains separately gated. An optional aviation profile is planned for the existing AI Incident Card rather than another incident format.
+- **Integration:** A public structural PR Action and five optional tools under review in the existing `mcp-kinetic-gain` server; the public MCP release remains separately gated. An optional aviation profile is under review for the existing AI Incident Card rather than another incident format.
 
 ## Non-goals and trust boundaries
 

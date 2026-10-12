@@ -1,19 +1,19 @@
 # Aerospace assurance extension | product one-sheet
 
-**Status, 2026-10-12:** Local draft. No aerospace card endpoint, hosted tool, customer workflow, certification acceptance, or live buyer deployment was verified for this package. This is a vertical extension of the [Kinetic Gain Protocol Suite](../../../README.md).
+**Status, 2026-10-12:** Five public draft repositories have exact-commit CI evidence in the [proof index](PROOF_INDEX.md). No supplier-hosted card endpoint, hosted aviation MCP tool, customer workflow, certification acceptance, or live buyer deployment was verified. This is a vertical extension of the [Kinetic Gain Protocol Suite](../../../README.md).
 
 **One line:** A common way to disclose an aviation ML system, carry a human review with an AI-assisted maintenance finding, and check the dataset evidence those disclosures point to.
 
 | Required measure | Current evidence |
 | --- | --- |
-| Public aerospace repository count | Not measured. New repositories are under local review; count only after checking GitHub. |
-| Verified live aerospace surfaces | Not measured. No aerospace live endpoint was checked. |
+| Public aerospace repository count | Five new public draft repositories verified at their `main` heads on 2026-10-12; see [commit and CI links](PROOF_INDEX.md). This excludes the existing Incident Card and MCP repositories. |
+| Verified hosted aerospace operation | No supplier card endpoint, private MCP call, or live buyer workflow verified. Repository CI is narrower evidence. |
 | Best winnable keyword difficulty | Not measured. Ahrefs was not refreshed. |
 | Highest verified CPC | Not measured. Ahrefs was not refreshed. |
 
 ## What it is, three ways
 
-**Technical.** The draft Aviation ML Assurance Card is vendor-authored JSON for one system version: intended use, declared EASA AI level, proposed target DAL, operating and excluded conditions, evidence references, data and learning posture, and the human role. The draft MRO AI Sign-off Card records one model finding, an exact-byte artifact digest, a human finding disposition, and an embedded Ed25519 signature. An offline Rust CLI hashes declared dataset files, flags exact-byte and supplied-group split leakage, evaluates an optional time split, counts validation/test samples by declared ODD bin, and can sign its deterministic report. A sourced crosswalk relates fields to public EASA, FAA, and NIST topics. A structural GitHub Action and five opt-in tools are proposed for the existing `mcp-kinetic-gain` server. Each component has a separate trust boundary.
+**Technical.** The draft Aviation ML Assurance Card is vendor-authored JSON for one system version: intended use, declared EASA AI level, proposed target DAL, operating and excluded conditions, evidence references, data and learning posture, and the human role. The draft MRO AI Sign-off Card records one model finding, an exact-byte artifact digest, a human finding disposition, and an embedded Ed25519 signature. An offline Rust CLI hashes declared dataset files, flags exact-byte and supplied-group split leakage, evaluates an optional time split, counts validation/test samples by declared ODD bin, and can sign its deterministic report. A sourced crosswalk relates fields to public EASA, FAA, and NIST topics. A structural GitHub Action is public; five opt-in tools are under review for the existing `mcp-kinetic-gain` server. Each component has a separate trust boundary.
 
 **Simple.** A supplier says what its AI is meant to do and where it is meant to work. If the AI points to a maintenance finding, a person records what they decided about that finding. The data tool catches some obvious mistakes in the supplier's test data. A reviewer still has to check the actual evidence, the person's authority, and the applicable aviation process.
 
@@ -38,7 +38,7 @@ flowchart LR
 3. An inspection workflow retains the original artifact and its exact-byte digest. A human records a decision about the **finding**; a trusted signer binds the card fields. Key identity, staff privileges, and record-control obligations are checked separately.
 4. A buyer or reviewer checks source artifacts and authority in its own systems. The existing Procurement Decision Card can reference the aviation records. The crosswalk provides source context; it does not turn mapped fields into regulatory conformity.
 
-The draft Action checks missing declarations in PRs. The proposed opt-in aviation tools belong to the **existing** MCP server, preserving the one-config-entry architecture after a separately reviewed release. The current public MCP package and any hosted Glama instance are not evidence that these draft tools are deployed.
+The published draft Action checks missing declarations in PRs. The candidate opt-in aviation tools belong to the **existing** MCP server, preserving the one-config-entry architecture after a separately reviewed release. The current public MCP package and any hosted Glama instance are not evidence that these draft tools are deployed.
 
 ## Buyer and use-case hypotheses
 
@@ -52,15 +52,15 @@ These are positioning hypotheses. There is no buyer, measured sales funnel, appr
 
 ## SEO, GEO, and AEO opportunity
 
-No keyword difficulty, search volume, CPC, or traffic potential was measured. The [keyword backlog](KEYWORD_OPPORTUNITIES.md) proposes queries to research before choosing search-led titles. The four [article drafts](content/) are education and developer-relations material tied to implemented local drafts and public primary sources; they make no ranking or demand claim.
+No keyword difficulty, search volume, CPC, or traffic potential was measured. The [keyword backlog](KEYWORD_OPPORTUNITIES.md) proposes queries to research before choosing search-led titles. The four [article drafts](content/) are education and developer-relations material tied to the reviewed public drafts and public primary sources; they make no ranking or demand claim.
 
 ## Four-article pipeline
 
 | Draft | Reader and intent | Product connection | Proof needed before publication |
 | --- | --- | --- | --- |
-| [01: Versioned disclosure](content/article-01.md) | Vendor assurance lead seeking a shareable AI description | Aviation ML card fields and limitations | Public repo links and final schema review |
+| [01: Versioned disclosure](content/article-01.md) | Vendor assurance lead seeking a shareable AI description | Aviation ML card fields and limitations | Final schema and public-claim review |
 | [02: Maintenance finding sign-off](content/article-02.md) | MRO quality or engineering lead separating finding review from release | MRO card and signature profile | Legal/maintenance-process review for target jurisdiction |
-| [03: Dataset leakage and ODD bins](content/article-03.md) | ML validation engineer checking a dataset snapshot | Rust CLI and reproducible report | Published tool and independent fixture reproduction |
+| [03: Dataset leakage and ODD bins](content/article-03.md) | ML validation engineer checking a dataset snapshot | Rust CLI and reproducible report | Independent fixture reproduction and claim review |
 | [04: Proposal-to-field mapping](content/article-04.md) | Assurance or procurement reviewer reading changing sources | Informative crosswalk | Source-status recheck at publication time |
 
 ## Alternatives and adoption friction
@@ -69,4 +69,4 @@ The present alternative is usually a supplier's document bundle, a spreadsheet c
 
 ## Release boundary
 
-The local drafts use fictional examples and contain no aircraft records or defense technical data. The Action is structural, the crosswalk is informative, the CLI's pass flag covers only declared checks, and a cryptographic signature binds bytes rather than staff authority. Review and release each repository independently. Keep the public MCP extension behind its existing Glama private-build and access/privacy gate.
+The public draft repositories use fictional examples; their review found no aircraft records or defense technical data. The Action is structural, the crosswalk is informative, the CLI's pass flag covers only declared checks, and a cryptographic signature binds bytes rather than staff authority. Keep the public MCP extension behind its existing Glama private-build and access/privacy gate.

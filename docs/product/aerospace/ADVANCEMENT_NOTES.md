@@ -1,6 +1,6 @@
 # Hey Miz, advancement notes
 
-**Decision:** Package this as a Suite extension with one vendor card, one per-finding human review card, an offline dataset tool, and a sourced reading layer. Preserve the existing MCP server. Keep all current materials in draft status until the individual releases and hosted checks are observed.
+**Decision:** Package this as a Suite extension with one vendor card, one per-finding human review card, an offline dataset tool, and a sourced reading layer. Preserve the existing MCP server. The five new repositories are public drafts with exact-commit CI evidence; hosted operation and buyer use remain unverified.
 
 **Strongest productization path, inferred:** A vendor-side evidence export that a buyer can reference from the existing Procurement Decision Card. A permissioned design partner could test whether the format cuts repeated evidence-intake work. The current packet has no buyer interview, adoption metric, or validated price.
 
@@ -10,8 +10,8 @@
 
 **Mechanism-based advantage:** The existing Suite already separates vendor disclosure, per-artifact records, buyer decisions, incident context, and evidence pointers. Reusing those boundaries gives an aviation vendor a coherent intake packet. The moat would have to come from trustworthy workflow integration and a maintained source/validation corpus; a JSON Schema alone is easy to copy. No exclusive dataset, customer distribution, or regulatory endorsement has been established.
 
-**Highest-value missing proof:** One civil-aviation buyer or operator reviewing a synthetic end-to-end packet and identifying which fields change an actual intake decision. In parallel, show an independently reproducible local fixture, published CI, a trusted-key verification path, and a private MCP call/denial/privacy drill. For real records, a separate source of staff authority and record retention must be agreed with the operator.
+**Highest-value missing proof:** One civil-aviation buyer or operator reviewing a synthetic end-to-end packet and identifying which fields change an actual intake decision. Public CI is recorded in the [proof index](PROOF_INDEX.md); remaining technical proof includes independently reproducing the integrated fixture, a trusted-key verification path, and a private MCP call/denial/privacy drill. For real records, a separate source of staff authority and record retention must be agreed with the operator.
 
 **Risks to close before launch:** Source proposals may change. Licensed standards cannot be reproduced from memory. ODD-bin counts do not demonstrate operational representativeness. A valid signature does not prove who held the key or who had maintenance privileges. Customer datasets and aircraft findings may be sensitive; public PRs and examples remain synthetic. Defense-adjacent work needs export-control counsel.
 
-**Next build:** Publish and verify the reviewed draft spec/tool/crosswalk repositories, then run one synthetic integrated example and a buyer discovery review. Update public Suite pages only after the underlying repo links and live page readback work. Revisit pricing, SaaS, and managed evidence exchange after that evidence. Defer a UAS autonomy card until final Part 108 text is verified. Defer a separate aviation incident spec and a space-operations spec.
+**Next build:** Run one synthetic integrated example across the public drafts and a buyer discovery review. The Suite site aerospace page must be read back after deployment; source control alone does not establish its live content. Revisit pricing, SaaS, and managed evidence exchange after buyer evidence. Defer a UAS autonomy card until final Part 108 text is verified. Defer a separate aviation incident spec and a space-operations spec.
