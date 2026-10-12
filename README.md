@@ -129,88 +129,40 @@ The Suite is a set of specs. **This section maps related implementations** recor
 
 ### 🕸️ How it composes
 
-```mermaid
-flowchart TB
-    classDef spec fill:#10b981,stroke:#065f46,color:#fff,stroke-width:2px
-    classDef hook fill:#3b82f6,stroke:#1e40af,color:#fff,stroke-width:2px
-    classDef sup fill:#f3f4f6,stroke:#6b7280,color:#1f2937
-    classDef stream fill:#f59e0b,stroke:#92400e,color:#fff
-    classDef mcp fill:#a855f7,stroke:#581c87,color:#fff,stroke-width:2px
+The twelve Suite specs are the document foundation. These five **proposed** cross-repo hooks describe how a reviewer could use the implementations; they do not establish a deployed integration.
 
-    SPECS["📐 12 Suite specs<br/>AEO · Agent · Tool · Tutor · AUP · Disclosure<br/>Evidence · Provenance · Clinical · Incident · Decision · Claims"]:::spec
+| Step | Candidate path | What the component does |
+|---|---|---|
+| 1 | Suite documents → [`procurement-decision-api`](https://github.com/mizcausevic-dev/procurement-decision-api) | Drafts a buyer Decision Card. |
+| 2 | Reviewed Decision Card → [`policy-as-code-engine`](https://github.com/mizcausevic-dev/policy-as-code-engine) | Produces a candidate policy bundle for evaluation. Runtime enforcement needs an authenticated request path. |
+| 3 | Decision Card → [`data-contract-registry`](https://github.com/mizcausevic-dev/data-contract-registry) | Suggests contract owners; a steward must verify them before registration. |
+| 4 | Registry contract → [`csv-data-quality-rs`](https://github.com/mizcausevic-dev/csv-data-quality-rs) | Checks CSV rows against a contract. |
+| 5 | Registry contract → [`sql-contract-enforcer`](https://github.com/mizcausevic-dev/sql-contract-enforcer) | A review-branch adapter proposes cross-dialect DDL; execution and rollback on a target database remain unverified. |
 
-    SPECS -->|"#1 ingest Suite docs"| PDA["procurement-decision-api<br/>drafts Decision Cards"]:::hook
-    PDA -->|"#2 reviewed card → candidate bundle"| PAC["policy-as-code-engine<br/>policy evaluation"]:::hook
-    PDA -->|"#3 extract owners"| DCR["data-contract-registry<br/>schema + SLAs"]:::hook
-    DCR -->|"#4 streaming CSV check"| CDQ["csv-data-quality-rs<br/>row-by-row validation"]:::hook
-    DCR -.->|"#5 review-branch proposal adapter"| SCE["sql-contract-enforcer<br/>cross-dialect DDL generator"]:::hook
+Supporting components provide separate capabilities: [`hash-attestation-rs`](https://github.com/mizcausevic-dev/hash-attestation-rs) signs and verifies canonical hashes; [`aeo-validator-service`](https://github.com/mizcausevic-dev/aeo-validator-service) checks documents for drift; [`aeo-graph-explorer-rs`](https://github.com/mizcausevic-dev/aeo-graph-explorer-rs) queries `aeo-crawler` JSONL output; and [`incident-correlation-rs`](https://github.com/mizcausevic-dev/incident-correlation-rs) proposes remediation from the Suite graph. A valid signature proves possession of a signing key; attributing that key to a vendor requires a trusted identity binding.
 
-    SPECS -.->|sign + verify| HA["hash-attestation-rs<br/>ed25519 over canonical hash"]:::sup
-    SPECS -.->|drift detection| AVS["aeo-validator-service<br/>always-on validation"]:::sup
-    AVS -.->|JSONL feed| AGE["aeo-graph-explorer-rs<br/>graph-query layer #5"]:::sup
-    SPECS -.->|incident → plan| ICR["incident-correlation-rs<br/>Suite-graph BFS"]:::sup
-    ICR -.->|drives| PAC
-
-    PDA --> AS
-    PAC --> AS
-    DCR --> AS
-    AVS --> AS
-    ICR --> AS
-    HA --> AS
-    AS["📋 audit-stream-py<br/>optional hash-chained event store"]:::stream
-
-    SPECS ==>|spec tools| MCP
-    PDA ==>|preview tools| MCP
-    AS ==>|event tools| MCP
-    HA ==>|verify tools| MCP
-    MCP["🤖 mcp-kinetic-gain v0.10.0<br/>75 tools · one Claude Desktop config entry"]:::mcp
-```
-
-**Green** = the spec foundation. **Blue** = implementation components and proposed cross-repo hooks; an arrow is not proof of an integrated deployment. **Grey** = supporting tools. **Amber** = an optional, best-effort audit-stream path. **Purple** = the unified MCP tool surface.
+[`mcp-kinetic-gain`](https://github.com/mizcausevic-dev/mcp-kinetic-gain) v0.10.0 exposes 75 spec, preview, event, and verification tools through one Claude Desktop entry. These tools and the optional [`audit-stream-py`](https://github.com/mizcausevic-dev/audit-stream-py) event path do not by themselves prove end-to-end authorization or complete audit delivery.
 
 ### 📋 Optional audit event path — eleven source integrations, five runtimes
 
-These components contain optional event-emission paths. Delivery is best-effort: a failed POST does not block the governed action, and missing events are possible. The diagram maps source code in Python, Rust, PL/pgSQL, PHP, and Azure Functions; it does not establish compatibility with the current authenticated sink, a shared deployed log, or an auditor's ability to reconstruct every governance action end to end.
+These components contain optional event-emission paths. Delivery is best-effort: a failed POST does not block the governed action, and missing events are possible. This table maps source code across Python, Rust, PL/pgSQL, PHP, and Azure Functions; it does not establish compatibility with the current authenticated sink, a shared deployed log, or an auditor's ability to reconstruct every governance action end to end.
 
-```mermaid
-flowchart LR
-    classDef pyprod fill:#3b82f6,stroke:#1e40af,color:#fff,stroke-width:2px
-    classDef rsprod fill:#dea584,stroke:#92400e,color:#1f2937,stroke-width:2px
-    classDef spine fill:#f59e0b,stroke:#92400e,color:#fff,stroke-width:3px
-    classDef sink fill:#f3f4f6,stroke:#6b7280,color:#1f2937
+| Source integration | Runtime | Event kinds in its optional emission path |
+|---|---|---|
+| [`procurement-decision-api`](https://github.com/mizcausevic-dev/procurement-decision-api) | Python | `decision_card_drafted` |
+| [`aeo-validator-service`](https://github.com/mizcausevic-dev/aeo-validator-service) | Python | `watch_created`, `watch_drifted`, `watch_validity_flipped` |
+| [`policy-as-code-engine`](https://github.com/mizcausevic-dev/policy-as-code-engine) | Python | `policy_bundle_registered`, `request_allowed`, `request_denied` |
+| [`data-contract-registry`](https://github.com/mizcausevic-dev/data-contract-registry) | Python | `contract_promoted`, `contract_deprecated`, `contract_compatibility_failed` |
+| [`hash-attestation-rs`](https://github.com/mizcausevic-dev/hash-attestation-rs) | Rust library | `attestation_signed`, `attestation_verified`, `attestation_failed` |
+| [`incident-correlation-rs`](https://github.com/mizcausevic-dev/incident-correlation-rs) | Rust library | `incident_correlated`, `incident_correlation_failed` |
+| [`aeo-graph-explorer-rs`](https://github.com/mizcausevic-dev/aeo-graph-explorer-rs) | Rust service | `graph_ingested`, `graph_ingest_failed` |
+| [`mcp-permission-broker`](https://github.com/mizcausevic-dev/mcp-permission-broker) and [`azure-openai-governance-bridge`](https://github.com/mizcausevic-dev/azure-openai-governance-bridge) | Python / Azure Functions | `tool_invocation_allowed`, `tool_invocation_denied`, `tool_invocation_required_approval` in the combined runtime-gate path |
+| [`pg-audit-stream-extension`](https://github.com/mizcausevic-dev/pg-audit-stream-extension) | PL/pgSQL | Configured event kind on table CRUD |
+| [`wp-kinetic-gain-audit`](https://github.com/mizcausevic-dev/wp-kinetic-gain-audit) | PHP | `content_published`, `plugin_activated`, `user_role_changed` |
 
-    PDA["procurement-decision-api<br/>Python · FastAPI"]:::pyprod
-    AVS["aeo-validator-service<br/>Python · FastAPI"]:::pyprod
-    PCE["policy-as-code-engine<br/>Python · FastAPI"]:::pyprod
-    DCR["data-contract-registry<br/>Python · FastAPI"]:::pyprod
-    HA["hash-attestation<br/>Rust · crypto library"]:::rsprod
-    ICR["incident-correlation<br/>Rust · graph library"]:::rsprod
-    AGE["aeo-graph-explorer<br/>Rust · axum service"]:::rsprod
-    MPB["mcp-permission-broker +<br/>azure-openai-governance-bridge<br/>Python · runtime gates"]:::pyprod
-    PGX["pg-audit-stream-extension<br/>PL/pgSQL · pg_notify"]:::rsprod
-    WPA["wp-kinetic-gain-audit<br/>PHP · WordPress/MySQL"]:::rsprod
+The optional destination, [`audit-stream-py`](https://github.com/mizcausevic-dev/audit-stream-py), hash-chains **accepted** events. Its `/stream` endpoint supplies a live tail, `/events` queries accepted events, and `/verify` checks that chain. The two Rust libraries gate HTTP emission behind `--features audit-stream`; the Rust graph service enables its audit feature by default. These are source-level paths, not verified delivery from every producer.
 
-    PDA -->|"decision_card_drafted"| AS
-    AVS -->|"watch_created<br/>watch_drifted<br/>watch_validity_flipped"| AS
-    PCE -->|"policy_bundle_registered<br/>request_allowed<br/>request_denied"| AS
-    DCR -->|"contract_promoted<br/>contract_deprecated<br/>contract_compatibility_failed"| AS
-    HA -->|"attestation_signed<br/>attestation_verified<br/>attestation_failed"| AS
-    ICR -->|"incident_correlated<br/>incident_correlation_failed"| AS
-    AGE -->|"graph_ingested<br/>graph_ingest_failed"| AS
-    MPB -->|"tool_invocation_allowed<br/>tool_invocation_denied<br/>tool_invocation_required_approval"| AS
-    PGX -->|"&lt;configured kind&gt; on table CRUD"| AS
-    WPA -->|"content_published<br/>plugin_activated<br/>user_role_changed"| AS
-
-    AS{{"📋 audit-stream-py<br/>hash chain over accepted events<br/>SSE tail · REST query · GET /verify"}}:::spine
-
-    AS -->|GET /stream| LT["governance dashboards<br/>(live tail)"]:::sink
-    AS -->|GET /events| Q["accepted event query<br/>(REST)"]:::sink
-    AS -->|GET /verify| V["chain verification<br/>(accepted events only)"]:::sink
-```
-
-**Blue** = Python producers. **Tan** = Rust producers (two libraries gated behind `--features audit-stream` so library consumers can strip out the HTTP dep, one axum service with the feature on by default). **Amber** = the sink. **Grey** = query and visualization surfaces. The arrows describe source integrations, not verified delivery from every producer.
-
-Adding a producer takes more than setting `AUDIT_STREAM_URL`: the current sink requires a server-held `AUDIT_STREAM_TOKEN` in a Bearer header, an accepted event envelope, and a checked response. Each producer, including the MCP event tools, needs an integration test against the authenticated sink; the arrows above do not establish one. A valid chain over accepted events cannot reveal events that were never delivered; a complete audit claim also needs durable receipts and an independently held checkpoint.
+Adding a producer takes more than setting `AUDIT_STREAM_URL`: the current sink requires a server-held `AUDIT_STREAM_TOKEN` in a Bearer header, an accepted event envelope, and a checked response. Each producer, including the MCP event tools, needs an integration test against the authenticated sink; the paths above do not establish one. A valid chain over accepted events cannot reveal events that were never delivered; a complete audit claim also needs durable receipts and an independently held checkpoint.
 
 ### 🛒 Procurement reviewer / buyer-side governance
 
@@ -218,7 +170,7 @@ Adding a producer takes more than setting `AUDIT_STREAM_URL`: the current sink r
 |---|---|---|
 | [`procurement-decision-api`](https://github.com/mizcausevic-dev/procurement-decision-api) | Python · FastAPI | Drafts AI Procurement Decision Cards from a buyer rubric and a set of vendor Suite documents (AEO + agent-card + tool-card + ai-evidence + …). **The first cross-ecosystem bridge** in the portfolio — Suite × Decision Intelligence. |
 | [`policy-as-code-engine`](https://github.com/mizcausevic-dev/policy-as-code-engine) | Python · FastAPI | [PyPI 0.2.1](https://pypi.org/project/policy-as-code-engine/0.2.1/) reference evaluator. `POST /bundles/from-decision-card` can produce a candidate `PolicyBundle` from a reviewed, signed v0.1 Procurement Decision Card with a pinned buyer key. Runtime enforcement still requires an integrated, authenticated request path. **Cross-ecosystem hook #2.** |
-| [`hash-attestation-rs`](https://github.com/mizcausevic-dev/hash-attestation-rs) | Rust · ed25519 | Sign and verify Suite documents with ed25519 over the canonical-hash convention every other Suite repo already uses. **The missing "this AEO actually came from the vendor" layer.** |
+| [`hash-attestation-rs`](https://github.com/mizcausevic-dev/hash-attestation-rs) | Rust · ed25519 | Signs and verifies Suite document canonical hashes. Vendor attribution also requires a trusted binding between the signing key and the vendor. |
 
 ### 🌐 AEO consumer / spec implementer
 
