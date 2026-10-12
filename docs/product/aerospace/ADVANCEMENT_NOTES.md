@@ -1,0 +1,17 @@
+# Hey Miz, advancement notes
+
+**Decision:** Package this as a Suite extension with one vendor card, one per-finding human review card, an offline dataset tool, and a sourced reading layer. Preserve the existing MCP server. Keep all current materials in draft status until the individual releases and hosted checks are observed.
+
+**Strongest productization path, inferred:** A vendor-side evidence export that a buyer can reference from the existing Procurement Decision Card. A permissioned design partner could test whether the format cuts repeated evidence-intake work. The current packet has no buyer interview, adoption metric, or validated price.
+
+**Public API and distribution:** The vendor card's proposed `/.well-known/aviation-ml/<system_id>.json` path is a useful interoperable convention if a supplier elects to host it. The Rust CLI is an offline engineering aid. The MCP tools should remain optional within one server and one client configuration entry after the Glama private-build, access-denial, and privacy checks pass. There is no reason to operate a new public aviation API or a second MCP server now.
+
+**Packaging hypothesis:** Open MIT card formats and local validators can lower evaluation friction. A future paid offer could be workflow integration, controlled evidence exchange, key and authority registry integration, or managed review support. Price should follow observed buyer procurement and operating costs; no numerical price is defensible yet. A `suite.kineticgain.com` aerospace section is a natural documentation home after source and deployment verification. Do not create a separate brand domain for the draft.
+
+**Mechanism-based advantage:** The existing Suite already separates vendor disclosure, per-artifact records, buyer decisions, incident context, and evidence pointers. Reusing those boundaries gives an aviation vendor a coherent intake packet. The moat would have to come from trustworthy workflow integration and a maintained source/validation corpus; a JSON Schema alone is easy to copy. No exclusive dataset, customer distribution, or regulatory endorsement has been established.
+
+**Highest-value missing proof:** One civil-aviation buyer or operator reviewing a synthetic end-to-end packet and identifying which fields change an actual intake decision. In parallel, show an independently reproducible local fixture, published CI, a trusted-key verification path, and a private MCP call/denial/privacy drill. For real records, a separate source of staff authority and record retention must be agreed with the operator.
+
+**Risks to close before launch:** Source proposals may change. Licensed standards cannot be reproduced from memory. ODD-bin counts do not demonstrate operational representativeness. A valid signature does not prove who held the key or who had maintenance privileges. Customer datasets and aircraft findings may be sensitive; public PRs and examples remain synthetic. Defense-adjacent work needs export-control counsel.
+
+**Next build:** Publish and verify the reviewed draft spec/tool/crosswalk repositories, then run one synthetic integrated example and a buyer discovery review. Update public Suite pages only after the underlying repo links and live page readback work. Revisit pricing, SaaS, and managed evidence exchange after that evidence. Defer a UAS autonomy card until final Part 108 text is verified. Defer a separate aviation incident spec and a space-operations spec.
