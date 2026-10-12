@@ -7,6 +7,15 @@
     "decided_at": "2026-09-12",
     "note": "ai-claims-decision-card-spec brought to full template compliance the same day (PR merged) to make this count honest: root-level schema, examples/, docs/ORIGIN.md, validate.yml, single MIT license."
   },
+  "aerospace_extension": {
+    "status": "draft_reference_formats",
+    "recorded_on": "2026-10-12",
+    "counting_note": "Two additional aviation draft cards are separate from the twelve established specs and from the published mcp-kinetic-gain 0.10.0 75-tool count. Do not increase the published count until those surfaces are released and verified.",
+    "spec_repos": ["aviation-ml-assurance-card-spec", "mro-ai-signoff-card-spec"],
+    "supporting_repos": ["aero-dataset-provenance-rs", "aero-assurance-crosswalk", "aviation-ml-card-fleet-summary-action"],
+    "incident_profile_repo": "ai-incident-card-spec",
+    "mcp_status": "candidate PR only; Glama private build, access and privacy gate still pending"
+  },
   "mcp_kinetic_gain": {
     "npm_published_version": "0.10.0",
     "tagged_unpublished_version": "0.9.2",
@@ -38,17 +47,17 @@
       "host": "suite.kineticgain.com",
       "role": "spec-family-landing",
       "spec": null,
-      "source_repo": "kinetic-gain-suite-landing",
+      "source_repo": "kg-suite-web",
       "deploy": {
-        "target": "hostinger-ftp",
-        "path": "/",
-        "workflow": ".github/workflows/deploy.yml"
+        "target": "hostinger-manual-selective-upload",
+        "path": "/public_html/suite/",
+        "workflow": null
       },
       "status": "live",
       "title_observed": "Kinetic Gain Protocol Suite - twelve JSO...",
       "favicon": "/favicon.svg",
       "listed_in_readme": true,
-      "notes": "At the 2026-09-12 audit, this landing had already been reconciled for the then-current spec, tool, and package counts. Current content has not been rechecked for this manifest update."
+      "notes": "Source/deploy correction checked 2026-10-12 against kg-suite-web README and its 2026-10-10 site-sync review: kinetic-gain-suite-landing is retired and must not deploy. This corrects source attribution only; the live host status and complete current content have not been reverified for this manifest update."
     },
     {
       "host": "docs.kineticgain.com",

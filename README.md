@@ -1,7 +1,7 @@
 # Kinetic Gain Protocol Suite
 
-> **A family of twelve open JSON specifications for the answer-engine and agent era, with 65 related repositories in the dated [estate inventory](estate/manifest.json).**
-> Five core specs · three EdTech extensions · one HealthTech extension · one cross-cutting incident-disclosure spec · one buyer-side procurement Decision Card (v0.3 — adds `data_vault_targets` + `retention_envelope`) · one InsurTech Claims Decision Card · one unified visualizer · one operator console · one unified MCP server · a [dated property-availability snapshot](#-live-properties) · specs MIT, implementation stack split by tier — see [License](#-license).
+> **Twelve established open JSON specifications, plus a draft two-card aerospace extension, with 65 repositories in the dated [September 2026 estate inventory](estate/manifest.json).**
+> Five core specs · three EdTech extensions · one HealthTech extension · two draft aerospace cards · one cross-cutting incident-disclosure spec · one buyer-side procurement Decision Card (v0.3 — adds `data_vault_targets` + `retention_envelope`) · one InsurTech Claims Decision Card · one unified visualizer · one operator console · one unified MCP server · a [dated property-availability snapshot](#-live-properties) · specs MIT, implementation stack split by tier — see [License](#-license).
 >
 > Public front door: **[suite.kineticgain.com](https://suite.kineticgain.com)**.
 
@@ -35,6 +35,7 @@ This repository is the **single landing** for the Suite — both for the **specs
 │  MCP Tool Cards ── per-tool disclosure for MCP servers                    │
 │                                                                            │
 └────────────────────────────────────────────────────────────────────────────┘
+
                                     │
                                     │ pairs with
                                     ▼
@@ -53,6 +54,14 @@ This repository is the **single landing** for the Suite — both for the **specs
 │  Clinical AI Disclosure ── what a healthcare AI system does               │
 │  HIPAA / FDA / SaMD posture · bias audits · EHR (FHIR / CDS Hooks)        │
 │  references → Agent Card · AI Evidence · AI Incident Card                  │
+│                                                                            │
+└────────────────────────────────────────────────────────────────────────────┘
+
+┌──────────────── Aerospace extension (draft disclosure + review) ───────────┐
+│                                                                            │
+│  Aviation ML Assurance Card ─ vendor-declared system and ODD posture       │
+│  MRO AI Sign-off Card ─ artifact-bound human review, not release to service│
+│  Dataset provenance ─ observed hashes, split leakage, ODD bin counts      │
 │                                                                            │
 └────────────────────────────────────────────────────────────────────────────┘
                                     │
@@ -76,7 +85,7 @@ This repository is the **single landing** for the Suite — both for the **specs
 └────────────────────────────────────────────────────────────────────────────┘
 ```
 
-The Suite is **bilateral**: vendors publish disclosures (the first six rows); buyers publish Decision Cards that approve or reject those disclosures. AI Incident Cards close the loop when something breaks.
+The Suite is **bilateral**: vendors publish disclosures; buyers publish Decision Cards that record their own approval or rejection decisions. AI Incident Cards close the loop when something breaks. The aerospace cards are additional draft disclosures and review records.
 
 ---
 
@@ -99,7 +108,24 @@ Every spec carries a top-level `<name>_version` field. The unified visualizer de
 | **AI Procurement Decision Card** _(cross-cutting, buyer-side)_ | [`ai-procurement-decision-spec`](https://github.com/mizcausevic-dev/ai-procurement-decision-spec) | `decision_card_version` | `/.well-known/decisions/<decision_id>.json` |
 | **AI Claims Decision Card** _(InsurTech, buyer-side)_ | [`ai-claims-decision-card-spec`](https://github.com/mizcausevic-dev/ai-claims-decision-card-spec) | `claims_card_version` | (travels with the artifact) |
 
-All twelve: MIT spec text, freely implementable, v0.1 draft, JSON Schema draft 2020-12, tagged [`kinetic-gain-protocol-suite`](https://github.com/topics/kinetic-gain-protocol-suite). The **[NIST AI RMF crosswalk](https://suite.kineticgain.com/docs/nist-rmf-crosswalk.md)** maps every spec — plus the implementation tooling below — to specific NIST AI RMF subcategories.
+All twelve established specs: MIT spec text, freely implementable, independently versioned drafts with JSON Schema draft 2020-12, tagged [`kinetic-gain-protocol-suite`](https://github.com/topics/kinetic-gain-protocol-suite). The historical **[NIST AI RMF crosswalk](https://suite.kineticgain.com/docs/nist-rmf-crosswalk.md)** describes the pre-aerospace family and is not a conformance assessment.
+
+### Aerospace extension: draft reference formats
+
+The civil-aviation extension follows the EdTech/HealthTech pattern: a vendor discloses its system posture, an AI-assisted maintenance review card travels with a specific artifact, and existing buyer-side Procurement Decision Cards can reference those documents. The new cards are **additional drafts**, outside the twelve-spec published MCP/visualizer count until their integration is reviewed and released. They are not airworthiness approvals or maintenance release records.
+
+| Artifact | Repository | Boundary |
+| --- | --- | --- |
+| Aviation ML Assurance Card | [`aviation-ml-assurance-card-spec`](https://github.com/mizcausevic-dev/aviation-ml-assurance-card-spec) | Vendor-declared EASA proposal level, separately declared DAL target, operating conditions, data and learning assurance evidence, and human role. Level 3B is reserved outside this draft profile. |
+| MRO AI Sign-off Card | [`mro-ai-signoff-card-spec`](https://github.com/mizcausevic-dev/mro-ai-signoff-card-spec) | Binds one AI-assisted finding to artifact digest, model, evidence, human review, and an embedded signature; a signature does not establish certifying-staff authority or return to service. |
+| Dataset provenance CLI | [`aero-dataset-provenance-rs`](https://github.com/mizcausevic-dev/aero-dataset-provenance-rs) | Hashes observed files, flags exact/group/temporal split leakage, counts declared ODD bins, and can sign the report using `hash-attestation` v0.2. Counts do not prove representativeness. |
+| Source crosswalk | [`aero-assurance-crosswalk`](https://github.com/mizcausevic-dev/aero-assurance-crosswalk) | Maps fields to public EASA/FAA/NIST topics. Paywalled standards are identified by name only, without copied objective text or invented objective IDs. |
+| PR summary gate | [`aviation-ml-card-fleet-summary-action`](https://github.com/mizcausevic-dev/aviation-ml-card-fleet-summary-action) | Flags missing condition-level evidence refs, our conservative 2B/3A override disclosure, and unsigned review-card fields; it does not authenticate evidence or signers. |
+| Aviation incident context | [`ai-incident-card-spec`](https://github.com/mizcausevic-dev/ai-incident-card-spec) | An optional profile of the existing Incident Card, with category references but no asserted ECCAIRS-format compatibility. |
+
+EASA [NPA 2025-07](https://www.easa.europa.eu/en/document-library/notices-of-proposed-amendment/npa-2025-07) is a proposal, the [FAA AI Safety Assurance Roadmap](https://www.faa.gov/aircraft/air_cert/step/roadmap_for_AI_safety_assurance) is a roadmap, and [EUROCAE WG-114](https://www.eurocae.net/working-group/wg-114/) lists ED-324 as a draft. The [aerospace crosswalk](https://github.com/mizcausevic-dev/aero-assurance-crosswalk) records source status and applicability. No UAS/BVLOS card is included while final Part 108 text remains unverified. Do not place restricted maintenance, defense technical, export-controlled, or customer data in public examples.
+
+The [aerospace product one-sheet](docs/product/aerospace/ONE_SHEET.md) and [dated proof index](docs/product/aerospace/PROOF_INDEX.md) distinguish the five public draft repositories and their CI results from the still-unverified hosted MCP, supplier, and buyer boundaries.
 
 Note on the Decision Card path: this table previously read `/.well-known/procurement-decisions/<id>.json`. The spec repo and `CROSS_MODEL_BRIEF.md` both use `/.well-known/decisions/{decision_id}.json`; the apex currently serves both paths. Standardized on the spec's own path here; the apex should drop the alias once it's confirmed nothing external depends on it (Phase 4).
 
@@ -237,6 +263,8 @@ The components are usable as reference implementations. Three-layer Decision Car
 ## 🔌 One MCP server. 75 tools. Twelve specs + DefenseTech.
 
 [`mcp-kinetic-gain`](https://github.com/mizcausevic-dev/mcp-kinetic-gain) v0.10.0 is published on npm and the official MCP Registry (verified 2026-10-08). The npm-installed 0.10.0 package answered MCP `tools/list` with 75 tools in a local stdio smoke check on that date. Those tools cover the twelve specs, implementation previews, and DefenseTech semantics through one MCP client config entry.
+
+The aerospace integration is a **candidate change** to that same server, not a second MCP package. It proposes five opt-in tools (`aviation_ml_card_validate`, `aviation_ml_card_inspect`, `aviation_ml_card_odd_check`, `aviation_ml_card_dal_check`, `mro_signoff_verify`) behind `MCP_KG_VERTICALS=aviation`; the default published tool set remains 75. Do not advertise the optional tools as available on npm or the Registry until a later version passes the existing private Glama build, protocol, access, and privacy gates.
 
 | Spec | Tools |
 |---|---|
@@ -455,6 +483,7 @@ License is **not uniform** across the stack. This table is built from a live che
 | Operator Console | **Apache-2.0** | 1 | `kinetic-gain-operator-console` |
 
 Full per-repo list: `estate/manifest.json` → `repos_license_audit.repos` (65 entries, one license each, independently checked, not carried over from any prior claim). `facts-check.yml` fails the build if this table's counts drift from that data.
+The September 2026 census excludes the five new aerospace repositories; their individual LICENSE files govern them until a new full estate audit is run.
 Supporting sites are unrestricted under their own licenses.
 
 ## 👤 Author

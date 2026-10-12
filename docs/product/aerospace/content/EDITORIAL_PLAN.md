@@ -1,0 +1,12 @@
+# Four-article editorial plan
+
+**Status:** Research and publication plan, 2026-10-12. The primary queries are hypotheses with **Not measured** search metrics. No verified gold keyword or buyer demand is asserted. Use the [full drafts](.) and [channel adaptations](social-derivatives.md) only after the listed gates.
+
+| Article | Primary query; secondary entities | Intent and reader | Outline | Proof/source gate | CTA and internal links | Structured-data option |
+| --- | --- | --- | --- | --- | --- | --- |
+| [01](article-01.md) | `aviation AI assurance card`; EASA NPA, ODD, DAL, human role | Shareable format; vendor assurance lead | Why stable fields; card shape; visible evidence gaps; source status; review exercise | Published spec, exact wire version, EASA/FAA status recheck | Invite field feedback; [one-sheet](../ONE_SHEET.md), [dataset article](article-03.md) | `Article` after publication |
+| [02](article-02.md) | `AI aircraft maintenance sign-off`; artifact hash, certifying staff, Part-145, 14 CFR 43.9 | Finding-review boundary; MRO quality lead | Three separate questions; signed record; authority; failure cases; synthetic drill | Published card/signature tests, jurisdiction-specific maintenance-process review | Request workflow review; [one-sheet](../ONE_SHEET.md), [proof index](../PROOF_INDEX.md) | `Article` after publication |
+| [03](article-03.md) | `aviation ML dataset leakage`; ODD bins, train/test, acquisition group | Engineering check; ML validation engineer | Exact/group/time leakage; ODD counts; report/signing; synthetic reproduction | Published CLI/CI and independently reproduced fixture | Run fictional fixture; [card article](article-01.md), [proof index](../PROOF_INDEX.md) | `Article`; factual software metadata after release |
+| [04](article-04.md) | `EASA AI NPA 2025-07 disclosure`; FAA roadmap, ED-324, NIST AI RMF | Source mapping; assurance/procurement reviewer | Meaning of a row; EASA/FAA status; licensed standards; maintenance and NIST limits; maintenance method | Current primary-source status and generated crosswalk readback | Correct a source row; [one-sheet](../ONE_SHEET.md), [proof index](../PROOF_INDEX.md) | `Article`, no certification markup |
+
+**Distribution:** kineticgain.com is the canonical article location after deployment. Medium versions should point to that canonical URL. LinkedIn, X, and Bluesky variants are drafted in [social-derivatives.md](social-derivatives.md); replace URL placeholders only after live readback. No rankings, click-through, lead, or adoption figures are available.
