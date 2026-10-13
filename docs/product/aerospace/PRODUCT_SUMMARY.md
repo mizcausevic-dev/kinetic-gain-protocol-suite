@@ -8,7 +8,7 @@
 - **Artifact record:** MRO AI Sign-off Card v0.1 for one AI-assisted maintenance finding, exact-byte artifact digest, human finding decision, and embedded signature.
 - **Engineering aid:** Offline Rust dataset tool with file hashes, exact/group split leakage checks, optional UTC time boundary, declared ODD-bin counts, and a signable report.
 - **Reading aid:** Informative crosswalk from card fields to public EASA, FAA, NIST, and publisher descriptions of licensed standards.
-- **Integration:** A public structural PR Action and five optional tools under review in the existing `mcp-kinetic-gain` server; the public MCP release remains separately gated. An optional aviation profile is under review for the existing AI Incident Card rather than another incident format.
+- **Integration:** A public structural PR Action and five optional tools under review in the existing `mcp-kinetic-gain` server; the public MCP release remains separately gated. The optional aviation profile is merged into the existing AI Incident Card rather than another incident format.
 
 ## Non-goals and trust boundaries
 
@@ -16,7 +16,7 @@ The formats do not assign a DAL, approve a design, verify the truth of a linked 
 
 ## Decision path
 
-The strongest first test is a bounded **synthetic integration**: generate a valid vendor card, run the dataset tool on a fixed fixture, attach an MRO finding card, validate the cards, and show where a human reviewer must use an external key/authority registry. After that, seek a permissioned civil-aviation design partner to learn which fields actually reduce intake work. No such partner is currently identified.
+A bounded **synthetic integration** is under review in [Aviation Card PR #1](https://github.com/mizcausevic-dev/aviation-ml-assurance-card-spec/pull/1): it joins a vendor card, fixed dataset report, signed MRO review card, incident profile, and buyer decision with negative checks. This verifies fixture consistency, not the authority of a real reviewer or the origin and fitness of a real dataset. The next product test is a permissioned civil-aviation design partner evaluating which fields reduce intake work. No such partner is currently identified.
 
 ## Where to read next
 
