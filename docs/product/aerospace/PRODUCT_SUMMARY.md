@@ -1,6 +1,6 @@
 # Aerospace Suite extension | product summary
 
-**Dated status:** 2026-10-12 public draft sources. Five aerospace repositories were read back with exact-commit CI results in the [proof index](PROOF_INDEX.md). This is an extension of the Kinetic Gain Protocol Suite, not a new product line. Adoption, regulatory acceptance, and hosted aviation operation are unverified.
+**Dated status:** 2026-10-13 source and CI review. Five aerospace repositories were read back with exact-commit results in the [proof index](PROOF_INDEX.md). The Rust, MRO, and Aviation source changes are merged; the crosswalk update remains a draft PR, and the optional MCP tools remain unreleased. This is an extension of the Kinetic Gain Protocol Suite, not a new product line. Adoption, regulatory acceptance, and hosted aviation operation are unverified.
 
 ## Scope
 
@@ -16,7 +16,7 @@ The formats do not assign a DAL, approve a design, verify the truth of a linked 
 
 ## Decision path
 
-A bounded **synthetic integration** is under review in [Aviation Card PR #1](https://github.com/mizcausevic-dev/aviation-ml-assurance-card-spec/pull/1): it joins a vendor card, fixed dataset report, signed MRO review card, incident profile, and buyer decision with negative checks. This verifies fixture consistency, not the authority of a real reviewer or the origin and fitness of a real dataset. The next product test is a permissioned civil-aviation design partner evaluating which fields reduce intake work. No such partner is currently identified.
+A bounded **synthetic integration** is merged in the [Aviation Card repository](https://github.com/mizcausevic-dev/aviation-ml-assurance-card-spec): it joins a vendor card, fixed dataset report, signed MRO review card, incident profile, and buyer decision with negative checks. Its [post-merge packet CI](https://github.com/mizcausevic-dev/aviation-ml-assurance-card-spec/actions/runs/38492177548) verifies fixture consistency, not the authority of a real reviewer or the origin and fitness of a real dataset. The next product test is a permissioned civil-aviation design partner evaluating which fields reduce intake work. No such partner is currently identified.
 
 ## Where to read next
 

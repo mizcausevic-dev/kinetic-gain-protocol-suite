@@ -1,12 +1,12 @@
 # Aerospace assurance extension | product one-sheet
 
-**Status, 2026-10-12:** Five public draft repositories have exact-commit CI evidence in the [proof index](PROOF_INDEX.md). No supplier-hosted card endpoint, hosted aviation MCP tool, customer workflow, certification acceptance, or live buyer deployment was verified. This is a vertical extension of the [Kinetic Gain Protocol Suite](../../../README.md).
+**Status, 2026-10-13:** Five public draft repositories have exact-commit CI evidence in the [proof index](PROOF_INDEX.md). The Rust, MRO, and Aviation source changes are merged; the crosswalk update is still a draft PR. No supplier-hosted card endpoint, hosted aviation MCP tool, customer workflow, certification acceptance, or live buyer deployment was verified. This is a vertical extension of the [Kinetic Gain Protocol Suite](../../../README.md).
 
 **One line:** A common way to disclose an aviation ML system, carry a human review with an AI-assisted maintenance finding, and check the dataset evidence those disclosures point to.
 
 | Required measure | Current evidence |
 | --- | --- |
-| Public aerospace repository count | Five new public draft repositories verified at their `main` heads on 2026-10-12; see [commit and CI links](PROOF_INDEX.md). This excludes the existing Incident Card and MCP repositories. |
+| Public aerospace repository count | Five new public draft repositories verified at their `main` heads on 2026-10-13; see [commit and CI links](PROOF_INDEX.md). This excludes the existing Incident Card and MCP repositories. |
 | Verified hosted aerospace operation | No supplier card endpoint, private MCP call, or live buyer workflow verified. Repository CI is narrower evidence. |
 | Best winnable keyword difficulty | Not measured. Ahrefs was not refreshed. |
 | Highest verified CPC | Not measured. Ahrefs was not refreshed. |
